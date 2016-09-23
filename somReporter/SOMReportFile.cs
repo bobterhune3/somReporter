@@ -33,6 +33,17 @@ namespace somReporter
             get {return reports; }
         }
 
+        public Report FindReport(String name)
+        {
+            foreach(Report report in reports)
+            {
+                if (report.Name.Equals(name))
+                    return report;
+            }
+            return null;
+        }
+
+
         public SOMReportFile( String reportPath ) {
             m_fileName = reportPath;
             if (!File.Exists(m_fileName))
@@ -69,6 +80,7 @@ namespace somReporter
                     else
                     {
                         currentReport = loadReport(reportTitle);
+                        Reports.Add(currentReport);
                     }
                 }
                 else {
@@ -141,7 +153,7 @@ namespace somReporter
             line = line.Replace("[1]", "");
             line = line.Replace("[2]", "");
             line = line.Replace("[3]", "");
-            line = line.Replace("[4]", "");
+         //   line = line.Replace("[4]", "");
             return line.Trim();
         }
     }

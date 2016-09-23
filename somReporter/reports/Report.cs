@@ -8,6 +8,8 @@ namespace somReporter
 {
     public class Report
     {
+        public static DataStore DATABASE = new DataStore();
+
         private String m_Title;
         protected List<String> m_lines = new List<String>();
         
@@ -32,5 +34,26 @@ namespace somReporter
         {
             throw new NotImplementedException();
         }
+
+        public Team getTeamDataByCode(string code)
+        {
+            foreach (Team team in DATABASE.Teams())
+            {
+                if (team.Abrv.Equals(code))
+                    return team;
+            }
+            return null;
+        }
+
+        public Team getTeamDataByName(string name)
+        {
+            foreach (Team team in DATABASE.Teams())
+            {
+                if (team.Name.Equals(name))
+                    return team;
+            }
+            return null;
+        }
+
     }
 }
