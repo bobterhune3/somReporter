@@ -96,6 +96,8 @@ namespace somReporter
         {
             if (reportTitle.StartsWith("LEAGUE STANDINGS"))
                 return new LeagueStandingsReport(reportTitle);
+            if (reportTitle.StartsWith("LEAGUE GRAND TOTALS (primary report) FOR"))
+                return new LeagueGrandTotalsReport(reportTitle);
             else
                 return new Report(reportTitle);
         }

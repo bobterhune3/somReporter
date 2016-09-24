@@ -18,6 +18,12 @@ namespace somReporter
         private String division = "";
         private String full_div = "";
         private String owner = "";
+        private int runsScored = 0;
+        private double average = .0;
+        private double era = .0;
+        private double ip = .0;
+        private int runsAllowed = 0;
+        private double pythagoreanTheorem = .0;
 
         public string Name
         {
@@ -89,7 +95,7 @@ namespace somReporter
             get
             {
               //  return wpct;
-                return (double)Wins / ((double)Wins + (double)Loses);
+                return Report.RoundToSignificantDigits((double)Wins / ((double)Wins + (double)Loses),3);
             }
 
  
@@ -124,6 +130,13 @@ namespace somReporter
             }
         }
 
+        public double PythagoreanTheorem
+        {
+            get {
+                return Report.RoundToSignificantDigits(pythagoreanTheorem,3);
+            }
+        }
+
         public string Division
         {
             get
@@ -132,13 +145,86 @@ namespace somReporter
             }
         }
 
+        public int RunsScored
+        {
+            get
+            {
+                return runsScored;
+            }
+
+            set
+            {
+                runsScored = value;
+                calculatePythagoreanTheorem();
+            }
+        }
+
+        public double Average
+        {
+            get
+            {
+                return average;
+            }
+
+            set
+            {
+                average = value;
+            }
+        }
+
+        public double ERA
+        {
+            get
+            {
+                return era;
+            }
+
+            set
+            {
+                era = value;
+            }
+        }
+
+
+        public double IP
+        {
+            get
+            {
+                return ip;
+            }
+
+            set
+            {
+                ip = value;
+            }
+        }
+
+        public int RunsAllowed
+        {
+            get
+            {
+                return runsAllowed;
+            }
+
+            set
+            {
+                runsAllowed = value;
+                calculatePythagoreanTheorem();
+            }
+        }
+
+        private void calculatePythagoreanTheorem() {
+
+            if( runsAllowed > 0 && runsScored > 0) {
+                pythagoreanTheorem = (Math.Pow((double)runsScored,2) / 
+                                    (Math.Pow((double)runsScored,2) + Math.Pow((double)runsAllowed,2)));
+            }
+        }
+
         public Team(String div) {
            league = div.Substring(0,2);
            division = div.Substring(3);
            full_div = div;
-         
         }
-
-
     }
 }

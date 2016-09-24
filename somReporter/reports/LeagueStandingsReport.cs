@@ -110,10 +110,18 @@ namespace somReporter
 
             matches.Sort(delegate (Team x, Team y)
             {
-                if (scope.OrderAscending)
-                    return x.Wpct.CompareTo(y.Wpct);
-                else
-                    return y.Wpct.CompareTo(x.Wpct);
+                if (scope.OrderAscending) {
+                    int result = x.Wpct.CompareTo(y.Wpct);
+                    if (result == 0)
+                        return x.PythagoreanTheorem.CompareTo(y.PythagoreanTheorem);
+                    else return result;
+                }
+                else {
+                    int result = y.Wpct.CompareTo(x.Wpct);
+                    if (result == 0)
+                        return y.PythagoreanTheorem.CompareTo(x.PythagoreanTheorem);
+                    else return result;
+                }
 
             });
 

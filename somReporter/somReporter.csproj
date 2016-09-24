@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="data\DataStore.cs" />
     <Compile Include="data\Team.cs" />
+    <Compile Include="reports\LeagueGrandTotalsReport.cs" />
     <Compile Include="reports\LeagueStandingsReport.cs" />
     <Compile Include="reports\Report.cs" />
     <Compile Include="Program.cs" />
