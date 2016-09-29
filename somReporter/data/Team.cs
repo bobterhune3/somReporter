@@ -221,6 +221,12 @@ namespace somReporter
             }
         }
 
+        public double calculateGamesBehind(Team leader) {
+            double a1 = ((double)leader.Wins - (double)this.Wins);
+            double a2 = ((double)this.Loses - (double)leader.Loses);
+            return (a1 + a2) / 2.0;
+        }
+
         public Team(String div) {
            league = div.Substring(0,2);
            division = div.Substring(3);

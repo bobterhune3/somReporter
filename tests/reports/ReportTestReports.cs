@@ -19,6 +19,9 @@ namespace somReporter.Tests
 
             report = new LeagueStandingsReport("test");
             Assert.AreEqual(report.getReportType(), "LEAGUE STANDINGS");
+
+            report = new LeagueGrandTotalsReport("test");
+            Assert.AreEqual(report.getReportType(), "LEAGUE GRAND TOTALS");
         }
 
     }
