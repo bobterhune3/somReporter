@@ -1,4 +1,5 @@
 ﻿using Microsoft.Isam.Esent.Collections.Generic;
+using somReporter.output;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +14,13 @@ namespace somReporter
         private LeagueStandingsReport leagueStandingsReport;
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private SOMReportFile file;
-
+        IOutput output;
+        public Program() {
+            output = new ConsoleOutput();
+        }
 
         static void Main(string[] args)
         {
-            
             Program program = new Program();
             program.initialize();
 
@@ -71,7 +74,6 @@ namespace somReporter
 
             string fileName = String.Format("{0}-{1}", file.SeasonTitle, highestValue);
             return fileName;
-
         }
 
         public void loadPreviousStorageInfo(PersistentDictionary<string, string>  prevDictionaryFile)
@@ -104,29 +106,19 @@ namespace somReporter
 
         public void processDraftOrder()
         {
-            Console.Out.WriteLine("===============");
-            Console.Out.WriteLine("= DRAFT ORDER =");
-            Console.Out.WriteLine("===============");
+            output.draftOrderHeader();
 
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
             scope.OrderAscending = true;
             scope.AllTeams = true;
 
+            output.draftOrderTableHeader();
 
             List<Team> teams = leagueStandingsReport.getTeamsByWinPercentage(scope);
-
-            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-5} {5}",
-                                                "#",
-                                                "TEAM",
-                                                "WINS",
-                                                "LOSES",
-                                                "WPCT",
-                                                "PYTG"));
-            Console.Out.WriteLine("==========================================");
-
             int pickNum = 0;
             List<Team> tieBreakerList = new List<Team>();
             Team prevTeam = null;
+
             foreach (Team team in teams)
             {
                 if (prevTeam == null) {
@@ -155,15 +147,15 @@ namespace somReporter
                         WriteOutTeamForDraftPicks(pickNum, prevTeam);
                         prevTeam = team;
                     }
-
                 }
-
             }
             pickNum++;
             WriteOutTeamForDraftPicks(pickNum, prevTeam);
         }
 
         public void processWildCardStandings() {
+            output.spacer();
+
             List<Team> teamsALEast = getStandings("AL", "East");
             List<Team> teamsALWest = getStandings("AL", "West");
             List<Team> teamsNLEast = getStandings("NE", "East");
@@ -185,40 +177,21 @@ namespace somReporter
             sortLeagueByWinningPct(teamsAL);
             sortLeagueByWinningPct(teamsNL);
 
-            Console.Out.WriteLine(" ");
+            output.wildCardHeader("AL");
+            output.wildCardTableHeader();
 
-            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {5,-7}",
-                                                "#",
-                                                "TEAM",
-                                                "WINS",
-                                                "LOSES",
-                                                "GB",
-                                                "GBDIF"));
-            Console.Out.WriteLine("===========================================");
+            writeOutLeagueWildcards(teamsAL);
+            output.spacer();
 
-            writeOutLeagueWildcards("AL Wildcard", teamsAL);
+            output.wildCardHeader("NL");
+            output.wildCardTableHeader();
 
-            Console.Out.WriteLine(" ");
-
-            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {5,-7}",
-                                    "#",
-                                    "TEAM",
-                                    "WINS",
-                                    "LOSES",
-                                    "GB",
-                                    "GBDIF"));
-            Console.Out.WriteLine("===========================================");
-
-            writeOutLeagueWildcards("NL Wildcard", teamsNL);
+            writeOutLeagueWildcards(teamsNL);
 
         }
 
-        private void writeOutLeagueWildcards( String title, List<Team> teams ) {
-            int pickNum = 1;
-            Console.Out.WriteLine(title);
-
-
-            Team secondPlaceTeam = teams.ElementAt(1);
+        private void writeOutLeagueWildcards( List<Team> teams ) {
+             Team secondPlaceTeam = teams.ElementAt(1);
             WriteOutLeadingTeamForWildCard(teams.ElementAt(0), secondPlaceTeam);
             WriteOutTeamForWildCard(2, secondPlaceTeam, 999);
 
@@ -232,10 +205,10 @@ namespace somReporter
         }
 
         private void sortLeagueByWinningPct(List<Team> teams) { 
-                teams.Sort(delegate (Team x, Team y)
-                {
-                    return y.Wpct.CompareTo(x.Wpct);
-                });
+            teams.Sort(delegate (Team x, Team y)
+            {
+                return y.Wpct.CompareTo(x.Wpct);
+            });
         }
 
         private List<Team> getStandings( String league, String division) {
@@ -246,15 +219,8 @@ namespace somReporter
             return leagueStandingsReport.getTeamsByWinPercentage(scope); 
         }
 
-        private void WriteOutTeamForDraftPicks(int pickNum, Team team ) { 
-            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-5} {5,-3} {6,1}",
-                                                        pickNum,
-                                                        team.Name,
-                                                        team.Wins,
-                                                        team.Loses,
-                                                        team.Wpct,
-                                                        team.PythagoreanTheorem,
-                                                        showDraftPickRankDif(team, pickNum)));
+        private void WriteOutTeamForDraftPicks(int pickNum, Team team ) {
+            output.draftOrderTeamLine(pickNum, team);
             team.DraftPickPositionCurrent = pickNum;
          }
 
@@ -263,7 +229,6 @@ namespace somReporter
             double gb = secondPlaceTeam.calculateGamesBehind(team);
             WriteOutTeamForWildCard(1, team, gb);
         }
-
 
         private void WriteOutTeamForWildCard(int rank, Team team, double wcGamesBehind)
         {
@@ -274,34 +239,8 @@ namespace somReporter
                 gamesBehind = String.Format("{0}",wcGamesBehind);
             }
 
-            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {5,-4} {6,-1}",
-                                                        rank,
-                                                        team.Name,
-                                                        team.Wins,
-                                                        team.Loses,
-                                                        gamesBehind,
-                                                        rank == 1 ? 0 : showGBDif(team),
-                                                        showWildCardRankDif(team, rank)));                                                   
-        }
-
-        private double showGBDif(Team team) {
-            double diff = team.Gb - team.GbPrevious;
-            return diff;
-        }
-        private string showWildCardRankDif(Team team, int rank) {
-            if (team.WildCardPositionPrevious > rank)
-                return "-";
-            else if (team.WildCardPositionPrevious < rank)
-                return "+";
-            else return "=";
-        }
-        private string showDraftPickRankDif(Team team, int rank)
-        {
-            if (team.DraftPickPositionPrevious > rank)
-                return "-";
-            else if (team.DraftPickPositionPrevious < rank)
-                return "+";
-            else return "=";
+            output.wildCardTeamLine(rank, team, gamesBehind);
+                                                
         }
     }
 }
