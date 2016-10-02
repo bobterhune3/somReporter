@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Isam.Esent.Collections.Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,6 @@ namespace somReporter
     public class Report
     {
         public static DataStore DATABASE = new DataStore();
-
         private String m_Title;
         protected List<String> m_lines = new List<String>();
         
@@ -33,16 +33,6 @@ namespace somReporter
         public virtual void processReport()
         {
             throw new NotImplementedException();
-        }
-
-        public Team getTeamDataByCode(string code)
-        {
-            foreach (Team team in DATABASE.Teams())
-            {
-                if (team.Abrv.Equals(code))
-                    return team;
-            }
-            return null;
         }
 
         public Team getTeamDataByName(string name)
@@ -77,6 +67,72 @@ namespace somReporter
                     return Math.Round(result, digits - (int)leftSideNumbers, MidpointRounding.AwayFromZero);
                 }
             }
+        }
+
+
+
+        public List<Team> getTeamsByOwner(string owner)
+        {
+            List<Team> matches = new List<Team>();
+            foreach (Team team in DATABASE.Teams())
+            {
+                if (team.Owner.Equals(owner))
+                    matches.Add(team);
+            }
+            return matches;
+        }
+
+
+        public Team getTeamByAbbreviation(string abvr)
+        {
+            foreach (Team team in DATABASE.Teams())
+            {
+                if (team.Abrv.Equals(abvr))
+                    return team;
+            }
+            return null;
+        }
+
+        public static PersistentDictionary<string, string> saveReportInformation(String reportName)
+        {
+            PersistentDictionary<string, string> dictionary = new PersistentDictionary<string, string>(reportName);
+
+            List<Team> teams = Report.DATABASE.Teams();
+            foreach (Team team in teams)
+            {
+                dictionary[team.Abrv] = team.buildStorageData();
+            }
+
+            return dictionary;
+        }
+
+        public void loadPreviousStorageInfo(PersistentDictionary<string, string>  dictionary)
+        {
+            Console.WriteLine("Read in Previous Save File");
+
+            foreach (string teamAbrv in dictionary.Keys)
+            {
+                string data = dictionary[teamAbrv];
+
+                Team team = this.getTeamByAbbreviation(teamAbrv);
+                Dictionary<string, string> teamData = loadStorageString(data);
+
+                //               team.PrevWin = Int32.Parse(teamData["Wins"]);
+                //               team.PrevLos = Int32.Parse(teamData["Loses"]);
+                team.GbPrevious = Double.Parse(teamData["GB"]);
+                team.DivisionPositionPrevious = Int32.Parse(teamData["DIVPos"]);
+                team.DraftPickPositionPrevious = Int32.Parse(teamData["DPickPos"]);
+                team.WildCardPositionPrevious = Int32.Parse(teamData["WCardPos"]);
+            }
+        }
+
+        public Dictionary<string, string> loadStorageString(String s)
+        {
+            var data = new Dictionary<string, string>();
+            foreach (var row in s.Split('|'))
+                data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
+
+            return data;
         }
 
     }

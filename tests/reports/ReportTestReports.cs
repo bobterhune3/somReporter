@@ -24,5 +24,6 @@ namespace somReporter.Tests
             Assert.AreEqual(report.getReportType(), "LEAGUE GRAND TOTALS");
         }
 
+
     }
 }

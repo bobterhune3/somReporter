@@ -14,6 +14,7 @@ namespace somReporter
         private int loses = 0;
         private double wpct = .0;
         private double gb = .0;
+        private double gbPrevious = .0;
         private String league = "";
         private String division = "";
         private String full_div = "";
@@ -24,6 +25,14 @@ namespace somReporter
         private double ip = .0;
         private int runsAllowed = 0;
         private double pythagoreanTheorem = .0;
+        private int divisionPositionCurrent = -1;
+        private int draftPickPositionCurrent = -1;
+        private int divisionPositionPrevious = -1;
+        private int draftPickPositionPrevious = -1;
+        private int wildCardPositionCurrent = -1;
+        private int wildCardPositionPrevious = -1;
+
+        public static int TOTAL_GAMES = 0;
 
         public string Name
         {
@@ -87,6 +96,8 @@ namespace somReporter
             set
             {
                 loses = value;
+                if (Abrv.Equals("MNB"))
+                    TOTAL_GAMES = Wins + loses;
             }
         }
 
@@ -101,17 +112,15 @@ namespace somReporter
  
         }
 
-         public double Gb
-        {
-            get
-            {
-                return gb;
-            }
+        public double Gb {
+            get { return gb; }
+            set { gb = value;  }
+        }
 
-            set
-            {
-                gb = value;
-            }
+        public double GbPrevious
+        {
+            get { return gbPrevious; }
+            set { gbPrevious = value; }
         }
 
         public string Full_div
@@ -213,6 +222,37 @@ namespace somReporter
             }
         }
 
+        public int DivisionPositionCurrent
+        {
+            get { return divisionPositionCurrent; }
+            set { divisionPositionCurrent = value; }
+        }
+        public int DraftPickPositionCurrent
+        {
+            get { return draftPickPositionCurrent; }
+            set { draftPickPositionCurrent = value; }
+        }
+        public int DivisionPositionPrevious
+        {
+            get { return divisionPositionPrevious; }
+            set { divisionPositionPrevious  = value; }
+        }
+        public int DraftPickPositionPrevious
+        {
+            get { return draftPickPositionPrevious; }
+            set { draftPickPositionPrevious  = value; }
+        }
+        public int WildCardPositionPrevious
+        {
+            get { return wildCardPositionPrevious; }
+            set { wildCardPositionPrevious = value; }
+        }
+        public int WildCardPositionCurrent
+        {
+            get { return wildCardPositionCurrent; }
+            set { wildCardPositionCurrent = value; }
+        }
+
         private void calculatePythagoreanTheorem() {
 
             if( runsAllowed > 0 && runsScored > 0) {
@@ -231,6 +271,15 @@ namespace somReporter
            league = div.Substring(0,2);
            division = div.Substring(3);
            full_div = div;
+        }
+
+        public string buildStorageData()
+        {
+
+            String data = String.Format("Wins={0}|Loses={1}|GB={2}|DIVPos={3}|DPickPos={4}|WCardPos={5}",
+                Wins, Loses, this.Gb, this.DivisionPositionCurrent, this.DraftPickPositionCurrent,
+                this.WildCardPositionCurrent);
+            return data;
         }
     }
 }

@@ -33,6 +33,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Esent.Collections">
+      <HintPath>..\libs\ESENT1.9.4\Esent.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Esent.Isam">
+      <HintPath>..\libs\ESENT1.9.4\Esent.Isam.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />

@@ -167,15 +167,5 @@ namespace somReporter
             return matches;
         }
 
-        public List<Team> getTeamsByOwner(string owner)
-        {
-            List<Team> matches = new List<Team>();
-            foreach ( Team team in DATABASE.Teams())
-            {
-                if (team.Owner.Equals(owner))
-                    matches.Add(team);
-            }
-            return matches;
-        }
     }
 }
