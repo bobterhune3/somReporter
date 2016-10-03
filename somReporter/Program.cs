@@ -37,6 +37,8 @@ namespace somReporter
                 program.loadPreviousStorageInfo(prevDictionaryFile);
             }
 
+            program.processStandings();
+
             program.processWildCardStandings();
 
             program.processDraftOrder();
@@ -162,6 +164,32 @@ namespace somReporter
             WriteOutTeamForDraftPicks(pickNum, prevTeam);
             output.endOfTable();
         }
+
+        public void processStandings() {
+            List<Team> teamsALEast = getStandings("AL", "East");
+            List<Team> teamsALWest = getStandings("AL", "West");
+            List<Team> teamsNLEast = getStandings("NE", "East");
+            List<Team> teamsNLWest = getStandings("NL", "West");
+
+
+            processDivision("AL EAST", teamsALEast);
+            processDivision("AL WEST", teamsALWest);
+            processDivision("NL EAST", teamsNLEast);
+            processDivision("NL WEST", teamsNLWest);
+        }
+
+        private void processDivision( string division, List<Team> teams) {
+            output.divisionStandingsHeader(division);
+            output.divisionStandingsTableHeader();
+
+            int rank = 1;
+            foreach(Team team in teams) {
+                team.DivisionPositionCurrent = rank;
+                output.divisionStandingsTeamLine(rank++, team);
+            }
+            output.endOfTable();
+        }
+
 
         public void processWildCardStandings() {
             output.spacer();

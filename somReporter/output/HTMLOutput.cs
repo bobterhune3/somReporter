@@ -41,12 +41,12 @@ namespace somReporter.output
         public void draftOrderTableHeader()
         {
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
-            addHeaderCell("PICK#", "#5B9BD5", "#F8CBAD", 48);
-            addHeaderCell("TEAM", "#5B9BD5", "#F8CBAD", 149);
-            addHeaderCell("WON", "#5B9BD5", "#F8CBAD", 48);
-            addHeaderCell("LOST", "#5B9BD5", "#F8CBAD", 48);
-            addHeaderCell("PCT.", "#5B9BD5", "#F8CBAD", 53);
-            addHeaderCell("PYG", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("PICK#", "#5B9BD5", "#F8CBAD", 48);
+            addTableCell("TEAM", "#5B9BD5", "#F8CBAD", 149);
+            addTableCell("WON", "#5B9BD5", "#F8CBAD", 48);
+            addTableCell("LOST", "#5B9BD5", "#F8CBAD", 48);
+            addTableCell("PCT.", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("PYG", "#5B9BD5", "#F8CBAD", 53);
             lines.Add("</tr>");
         }
 
@@ -55,16 +55,28 @@ namespace somReporter.output
             string bgColor = getBackgroundColor(pickNum);
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
  
-            addHeaderCell(pickNum, "#5B9BD5", "#FFFFFF", 48, true, returnRankDifToolTip(pickNum,team.DraftPickPositionPrevious));
-            addHeaderCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
-            addHeaderCell(team.Wins, bgColor, "#000000", 48);
-            addHeaderCell(team.Loses, bgColor, "#000000", 48);
-            addHeaderCell(team.Wpct, bgColor, "#000000", 53);
-            addHeaderCell(team.PythagoreanTheorem, bgColor, "#000000", 53, false);
+            addTableCell(pickNum, "#5B9BD5", returnRankDifColor(pickNum, team.DraftPickPositionPrevious), 
+                         48, true, returnRankDifToolTip(pickNum,team.DraftPickPositionPrevious));
+            addTableCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
+            addTableCell(team.Wins, bgColor, "#000000", 48);
+            addTableCell(team.Loses, bgColor, "#000000", 48);
+            addTableCell(team.Wpct, bgColor, "#000000", 53);
+            addTableCell(team.PythagoreanTheorem, bgColor, "#000000", 53, false);
             lines.Add("</tr>");
         }
 
-        private String returnRankDifToolTip(int rank, int previous)
+        private string returnRankDifColor(int rank, int previous)
+        {
+            int rankDif = rank - previous;
+            if (rankDif < 0)
+                return "#FF0000";
+            else if (rankDif > 0)
+                return "#00FF00";
+            else
+                return "#FFFFFF";
+        }
+
+        private string returnRankDifToolTip(int rank, int previous)
         {
             int rankDif = rank - previous;
             if (rankDif == -1)
@@ -74,7 +86,16 @@ namespace somReporter.output
             else if (rankDif == 1)
                 return String.Format("Gained 1 spot", rankDif);
             else if (rankDif > 0)
-                return String.Format("Gained {0} spots", rankDif * -1);
+                return String.Format("Gained {0} spots", rankDif);
+            return "No Change";
+        }
+
+        private string returnGBDifToolTip( Team team) {
+            double dif = team.Gb - team.GbPrevious;
+            if (dif < 0)
+                return String.Format("Gained {0} games", dif * -1);
+            else if (dif > 0)
+                return String.Format("Dropped {0} games", dif);
             return "No Change";
         }
 
@@ -91,14 +112,14 @@ namespace somReporter.output
         public void wildCardTableHeader()
         {
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
-            addHeaderCell("#", "#5B9BD5", "#F8CBAD", 15);
-            addHeaderCell("AL EAST", "#5B9BD5", "#F8CBAD", 149);
-            addHeaderCell("WON", "#5B9BD5", "#F8CBAD", 48);
-            addHeaderCell("LOST", "#5B9BD5", "#F8CBAD", 48);
-            addHeaderCell("PCT.", "#5B9BD5", "#F8CBAD", 53);
-            addHeaderCell("GB", "#5B9BD5", "#F8CBAD", 53);
-            addHeaderCell("LAST", "#5B9BD5", "#F8CBAD", 53);
-            addHeaderCell("", "#F8CBAD", "#F8CBAD", 10);
+            addTableCell("#", "#5B9BD5", "#F8CBAD", 15);
+            addTableCell("TEAM", "#5B9BD5", "#F8CBAD", 149);
+            addTableCell("WON", "#5B9BD5", "#F8CBAD", 48);
+            addTableCell("LOST", "#5B9BD5", "#F8CBAD", 48);
+            addTableCell("PCT.", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("GB", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("LAST", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("", "#F8CBAD", "#F8CBAD", 10);
             lines.Add("</tr>");
         }
 
@@ -106,39 +127,78 @@ namespace somReporter.output
         {
             string bgColor = getBackgroundColor(rank);
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
-            addHeaderCell(rank, "#5B9BD5", "#FFFFFF", 15);
-            addHeaderCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
-            addHeaderCell(team.Wins, bgColor, "#000000", 48);
-            addHeaderCell(team.Loses, bgColor, "#000000", 48);
-            addHeaderCell(team.Wpct, bgColor, "#000000", 53);
-            addHeaderCell(gamesBehind, bgColor, "#000000", 53);
-            addHeaderCell(team.RecordLastRun, bgColor, "#000000", 53);
-            addHeaderCell("", "#F8CBAD", "#F8CBAD", 10);
+            addTableCell(rank, "#5B9BD5", "#FFFFFF", 15);
+            addTableCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
+            addTableCell(team.Wins, bgColor, "#000000", 48);
+            addTableCell(team.Loses, bgColor, "#000000", 48);
+            addTableCell(team.Wpct, bgColor, "#000000", 53);
+            addTableCell(gamesBehind, bgColor, "#000000", 53);
+            addTableCell(team.RecordLastRun, bgColor, "#000000", 53);
+            addTableCell("", "#F8CBAD", "#F8CBAD", 10);
             lines.Add("</tr>");
         }
 
+        public void divisionStandingsHeader(string division)
+        {
+            lines.Add(String.Format("<h3>{0} STANDINGS</h3>", division)); 
+        }
+
+        public void divisionStandingsTableHeader()
+        {
+            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
+            addTableCell("#", "#5B9BD5", "#F8CBAD", 15);
+            addTableCell("TEAM", "#5B9BD5", "#F8CBAD", 149);
+            addTableCell("WON", "#5B9BD5", "#F8CBAD", 48);
+            addTableCell("LOST", "#5B9BD5", "#F8CBAD", 48);
+            addTableCell("PCT.", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("GB", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("LAST", "#5B9BD5", "#F8CBAD", 53);
+            addTableCell("", "#F8CBAD", "#F8CBAD", 10);
+            lines.Add("</tr>");
+        }
+
+        public void divisionStandingsTeamLine(int rank, Team team)
+        {
+            string bgColor = getBackgroundColor(rank);
+            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
+            addTableCell(rank, "#5B9BD5", returnRankDifColor(rank, team.DivisionPositionPrevious), 
+                         15, true, returnRankDifToolTip(rank, team.DivisionPositionPrevious));
+            addTableCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
+            addTableCell(team.Wins, bgColor, "#000000", 48);
+            addTableCell(team.Loses, bgColor, "#000000", 48);
+            addTableCell(team.Wpct, bgColor, "#000000", 53);
+            if( team.Gb == 0)
+                addTableCell("--", bgColor, "#000000", 53, true, returnGBDifToolTip(team));
+            else
+                addTableCell(team.Gb, bgColor, "#000000", 53, true, returnGBDifToolTip(team));
+            addTableCell(team.RecordLastRun, bgColor, "#000000", 53);
+            addTableCell("", "#F8CBAD", "#F8CBAD", 10);
+            lines.Add("</tr>");
+        }
+
+
         private string getBackgroundColor(int rank)
         {
-          return (rank % 2 == 0) ? "#BDD6EE" : "#DEEAF6";
+            return (rank % 2 == 0) ? "#BDD6EE" : "#DEEAF6";
         }
 
-        private void addHeaderCell(string text, string bgColor, string textColor, int width, bool center = true, string tooltip = "")
+        private void addTableCell(string text, string bgColor, string textColor, int width, bool center = true, string tooltip = "")
         {
-            if(tooltip.Length > 0)
+            if (tooltip.Length > 0)
                 lines.Add(String.Format(S_TABLE_HEADER_CELL_TOOLTIP, width, bgColor, center ? "center" : "left", textColor, text, tooltip));
             else
-                lines.Add(String.Format(S_TABLE_HEADER_CELL, width, bgColor, center? "center" : "left",textColor, text));
-            
+                lines.Add(String.Format(S_TABLE_HEADER_CELL, width, bgColor, center ? "center" : "left", textColor, text));
+
         }
 
-        private void addHeaderCell(double number, string bgColor, string textColor, int width, bool center = true, string tooltip = "")
+        private void addTableCell(double number, string bgColor, string textColor, int width, bool center = true, string tooltip = "")
         {
-            addHeaderCell(number.ToString(), bgColor, textColor, width, center, tooltip);
+            addTableCell(number.ToString(), bgColor, textColor, width, center, tooltip);
         }
 
-        private void addHeaderCell(int number, string bgColor, string textColor, int width, bool center = true, string tooltip = "")
+        private void addTableCell(int number, string bgColor, string textColor, int width, bool center = true, string tooltip = "")
         {
-            addHeaderCell(number.ToString(), bgColor, textColor, width, center, tooltip);
+            addTableCell(number.ToString(), bgColor, textColor, width, center, tooltip);
         }
 
         private string getToolTipScript()

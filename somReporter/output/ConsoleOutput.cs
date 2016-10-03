@@ -42,6 +42,7 @@ namespace somReporter.output
 
         public void wildCardHeader(string league)
         {
+            spacer();
             Console.Out.WriteLine("===========================");
             Console.Out.WriteLine("= "+ league +" WILD CARD STANDINGS =");
             Console.Out.WriteLine("===========================");
@@ -50,7 +51,6 @@ namespace somReporter.output
 
         public void wildCardTableHeader()
         {
-
             Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {5,-7}",
                                                 "#",
                                                 "TEAM",
@@ -64,7 +64,7 @@ namespace somReporter.output
 
         public void wildCardTeamLine(int rank, Team team, string gamesBehind)
         {
-            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {6,-1}",
+            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {5,-1}",
                                                         rank,
                                                         team.Name,
                                                         team.Wins,
@@ -75,11 +75,40 @@ namespace somReporter.output
         }
 
 
+        public void divisionStandingsHeader(string division)
+        {
+            Console.Out.WriteLine("==========================");
+            Console.Out.WriteLine("= " + division + " STANDINGS");
+            Console.Out.WriteLine("==========================");
+            spacer();
+        }
+
+        public void divisionStandingsTableHeader()
+        {
+            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3}",
+                                                "#",
+                                                "TEAM",
+                                                "WINS",
+                                                "LOSES",
+                                                "GB"));
+            Console.Out.WriteLine("===========================================");
+            spacer();
+        }
+
+        public void divisionStandingsTeamLine(int rank, Team team)
+        {
+            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3}",
+                                                        rank,
+                                                        team.Name,
+                                                        team.Wins,
+                                                        team.Loses,
+                                                        team.Gb));
+        }
+
         public void spacer()
         {
             Console.Out.WriteLine(" ");
         }
-
 
         private string showWildCardRankDif(Team team, int rank)
         {
@@ -105,16 +134,8 @@ namespace somReporter.output
             return diff;
         }
 
-        public void setOutputHeader(string title)
-        {
-        }
-
-        public void setOutputFooter()
-        {
-        }
-
-        public void endOfTable()
-        {
-        }
+        public void setOutputHeader(string title) { }
+        public void setOutputFooter() { }
+        public void endOfTable() { }
     }
 }

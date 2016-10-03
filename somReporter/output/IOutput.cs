@@ -18,5 +18,8 @@ namespace somReporter.output
         void setOutputHeader(string title);
         void setOutputFooter();
         void endOfTable();
+        void divisionStandingsHeader(string division);
+        void divisionStandingsTableHeader();
+        void divisionStandingsTeamLine(int rank, Team team);
     }
 }
