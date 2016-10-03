@@ -16,14 +16,20 @@ namespace somReporter
         private SOMReportFile file;
         IOutput output;
         public Program() {
-            output = new ConsoleOutput();
+        //    output = new ConsoleOutput();
+            output = new HTMLOutput();
         }
+
+        public void cleanup() {
+            output.setOutputFooter();
+        }
+
 
         static void Main(string[] args)
         {
             Program program = new Program();
             program.initialize();
-
+       
             string fileName = program.lookupPreviousSaveFile();
             if( fileName.Length > 0 ) {
                 PersistentDictionary<string, string> prevDictionaryFile = 
@@ -31,10 +37,9 @@ namespace somReporter
                 program.loadPreviousStorageInfo(prevDictionaryFile);
             }
 
-            program.processDraftOrder();
-
             program.processWildCardStandings();
 
+            program.processDraftOrder();
 
             Console.WriteLine("Press ESC to stop or S to save");
             ConsoleKey key;
@@ -48,6 +53,8 @@ namespace somReporter
                     break;
                 }
             } while (key != ConsoleKey.Escape);
+
+            program.cleanup();
         }
 
         public String lookupPreviousSaveFile()
@@ -90,6 +97,8 @@ namespace somReporter
 
             leaguePrimaryStatReport = (LeagueGrandTotalsReport)file.FindReport("LEAGUE GRAND TOTALS (primary report) FOR");
             leaguePrimaryStatReport.processReport();
+
+            output.setOutputHeader(file.SeasonTitle);
         }
 
         public void saveReportInformation()
@@ -151,6 +160,7 @@ namespace somReporter
             }
             pickNum++;
             WriteOutTeamForDraftPicks(pickNum, prevTeam);
+            output.endOfTable();
         }
 
         public void processWildCardStandings() {
@@ -181,13 +191,15 @@ namespace somReporter
             output.wildCardTableHeader();
 
             writeOutLeagueWildcards(teamsAL);
+            output.endOfTable();
+
             output.spacer();
 
             output.wildCardHeader("NL");
             output.wildCardTableHeader();
 
             writeOutLeagueWildcards(teamsNL);
-
+            output.endOfTable();
         }
 
         private void writeOutLeagueWildcards( List<Team> teams ) {
@@ -240,7 +252,6 @@ namespace somReporter
             }
 
             output.wildCardTeamLine(rank, team, gamesBehind);
-                                                
         }
     }
 }

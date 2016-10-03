@@ -61,6 +61,7 @@
     <Compile Include="data\DataStore.cs" />
     <Compile Include="data\Team.cs" />
     <Compile Include="output\ConsoleOutput.cs" />
+    <Compile Include="output\HTMLOutput.cs" />
     <Compile Include="output\IOutput.cs" />
     <Compile Include="reports\LeagueGrandTotalsReport.cs" />
     <Compile Include="reports\LeagueStandingsReport.cs" />

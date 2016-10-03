@@ -117,8 +117,8 @@ namespace somReporter
                 Team team = this.getTeamByAbbreviation(teamAbrv);
                 Dictionary<string, string> teamData = loadStorageString(data);
 
-                //               team.PrevWin = Int32.Parse(teamData["Wins"]);
-                //               team.PrevLos = Int32.Parse(teamData["Loses"]);
+                team.WinsPrevious = Int32.Parse(teamData["Wins"]);
+                team.LosesPrevious = Int32.Parse(teamData["Loses"]);
                 team.GbPrevious = Double.Parse(teamData["GB"]);
                 team.DivisionPositionPrevious = Int32.Parse(teamData["DIVPos"]);
                 team.DraftPickPositionPrevious = Int32.Parse(teamData["DPickPos"]);

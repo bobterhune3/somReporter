@@ -12,6 +12,8 @@ namespace somReporter
         private String abrv = "";
         private int wins = 0;
         private int loses = 0;
+        private int winsPrevious = 0;
+        private int losesPrevious = 0;
         private double wpct = .0;
         private double gb = .0;
         private double gbPrevious = .0;
@@ -73,32 +75,31 @@ namespace somReporter
                 owner = value;
             }
         }
-        public int Wins
-        {
-            get
-            {
-                return wins;
-            }
 
-            set
-            {
-                wins = value;
-            }
+        public int Wins {
+            get { return wins; }
+            set { wins = value; }
         }
 
-        public int Loses
+        public int WinsPrevious
         {
-            get
-            {
-                return loses;
-            }
+            get { return winsPrevious; }
+            set { winsPrevious = value; }
+        }
 
-            set
-            {
+        public int Loses {
+            get { return loses; }
+            set {
                 loses = value;
                 if (Abrv.Equals("MNB"))
                     TOTAL_GAMES = Wins + loses;
             }
+        }
+
+        public int LosesPrevious
+        {
+            get { return losesPrevious; }
+            set { losesPrevious = value; }
         }
 
         public double Wpct
@@ -281,5 +282,14 @@ namespace somReporter
                 this.WildCardPositionCurrent);
             return data;
         }
+
+        public string RecordLastRun {
+            get {
+                int wins = this.Wins - this.WinsPrevious;
+                int loses = this.Loses - this.LosesPrevious;
+                return String.Format("{0}-{1}", wins, loses);
+            }
+        }
+
     }
 }

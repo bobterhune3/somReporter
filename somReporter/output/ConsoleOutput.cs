@@ -64,13 +64,13 @@ namespace somReporter.output
 
         public void wildCardTeamLine(int rank, Team team, string gamesBehind)
         {
-            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {5,-4} {6,-1}",
+            Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-3} {6,-1}",
                                                         rank,
                                                         team.Name,
                                                         team.Wins,
                                                         team.Loses,
                                                         gamesBehind,
-                                                        rank == 1 ? 0 : showGBDif(team),
+                                                   //     rank == 1 ? 0 : showGBDif(team),
                                                         showWildCardRankDif(team, rank)));
         }
 
@@ -103,6 +103,18 @@ namespace somReporter.output
         {
             double diff = team.Gb - team.GbPrevious;
             return diff;
+        }
+
+        public void setOutputHeader(string title)
+        {
+        }
+
+        public void setOutputFooter()
+        {
+        }
+
+        public void endOfTable()
+        {
         }
     }
 }
