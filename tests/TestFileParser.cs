@@ -31,13 +31,13 @@ namespace somReporter
         {
             Assert.AreEqual(file.cleanUpLine("AA AAA"), "AA AAA");
             Assert.AreEqual(file.cleanUpLine("AA [A]AA"), "AA [A]AA");
-            Assert.AreEqual(file.cleanUpLine("AA [0]AA"), "AA AA");
+            Assert.AreEqual(file.cleanUpLine("AA [0]AA"), "AA [0]AA");
             Assert.AreEqual(file.cleanUpLine("AA [1]AA"), "AA AA");
             Assert.AreEqual(file.cleanUpLine("AA [2]AA"), "AA AA");
             Assert.AreEqual(file.cleanUpLine("AA [3]AA"), "AA AA");
             Assert.AreEqual(file.cleanUpLine("AA [4]AA"), "AA [4]AA");
             Assert.AreEqual(file.cleanUpLine("AA [5]AA"), "AA [5]AA");
-            Assert.AreEqual(file.cleanUpLine("[0]AA AA"), "AA AA");
+            Assert.AreEqual(file.cleanUpLine("[0]AA AA"), "[0]AA AA");
             //Assert.AreEqual(file.cleanUpLine("AA AA[0]"), "AA AA");
         }
 

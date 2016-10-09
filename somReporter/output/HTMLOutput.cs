@@ -1,4 +1,5 @@
-﻿using System;
+﻿using somReporter.util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace somReporter.output
         private const string S_DOC_HEADER = "<h1 align = center style='text-align:center'>{0} - Strat-O-Matic League</h1>\r\n";
         private const string S_LINK_TO_SOM_PAGE = "<p><a href = \"../../../../../../2015ND/index.html\" > Click HERE for full details</a></p>\r\n";
         private const string S_HTML_EXTRA_TEXT = "<pre>{0}</pre>";
-        private const string S_TABLE_HEADER_CELL = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span style='color:{3}'>&nbsp;{4}</span></p></td>";
+        private const string S_TABLE_HEADER_CELL         = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span style='color:{3}'>&nbsp;{4}</span></p></td>";
         private const string S_TABLE_HEADER_CELL_TOOLTIP = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span class='tooltip' style='color:{3}'>&nbsp;{4}<span class='tooltiptext'>{5}</span></span></p></td>";
 
         List<String> lines = new List<String>();
@@ -117,6 +118,38 @@ namespace somReporter.output
             return "No Change";
         }
 
+
+        private string returnRecentRecordsTip( Team team ) {
+            int gamesToReport = (team.Wins-team.WinsPrevious) + (team.Loses- team.LosesPrevious);
+            List<Game> games = team.GetLastGames(gamesToReport);
+            List<Pair> allSeries = new List<Pair>();
+            Pair currentSeries = null;
+            foreach(Game game in games) {
+                if (currentSeries == null) { 
+                    currentSeries = new Pair(game.DisplayOpponent);
+                    allSeries.Add(currentSeries);
+                }
+                else if( !currentSeries.MetaData().Equals(game.DisplayOpponent)) {
+                    currentSeries = new Pair(game.DisplayOpponent);
+                    allSeries.Add(currentSeries);
+                }
+
+                if (game.Won)
+                    currentSeries.AddWin();
+                else
+                    currentSeries.AddLoss();
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for( int i= allSeries.Count-1; i>=0; i--) { 
+      //      foreach(Pair series in allSeries) {
+                sb.Append(allSeries[i].ToString());
+                sb.Append("<br>");
+            }
+
+            return sb.ToString();
+        }
+
         public void spacer()
         {
             lines.Add("<p><b><span style='color:white'>&nbsp;</span></b></p>");
@@ -193,7 +226,7 @@ namespace somReporter.output
                 addTableCell("--", bgColor, "#000000", 53, true, returnGBDifToolTip(team));
             else
                 addTableCell(team.Gb, 1, bgColor, "#000000", 53, true, returnGBDifToolTip(team));
-            addTableCell(team.RecordLastRun, bgColor, "#000000", 53);
+            addTableCell(team.RecordLastRun, bgColor, "#000000", 53, true, returnRecentRecordsTip(team));
 
             addTableCell("", "#F8CBAD", "#F8CBAD", 10);
 

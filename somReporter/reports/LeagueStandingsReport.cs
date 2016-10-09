@@ -25,10 +25,9 @@ namespace somReporter
         public override String getReportType() { return REPORT_TYPE; }
 
         public override void processReport() {
-            String currentLeague = "";
-            foreach( String line in m_lines)
-            {
-                collectData(line);
+            foreach( String line in m_lines)  {
+                string fixedLine = line.Replace("[0]", "");
+                collectData(fixedLine);
             }
         }
 

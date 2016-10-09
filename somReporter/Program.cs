@@ -13,6 +13,8 @@ namespace somReporter
     {
         private LeagueStandingsReport leagueStandingsReport;
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
+        private LineScoreReport lineScoreReport;
+
         private SOMReportFile file;
         IOutput output;
         public Program() {
@@ -100,6 +102,9 @@ namespace somReporter
             leaguePrimaryStatReport = (LeagueGrandTotalsReport)file.FindReport("LEAGUE GRAND TOTALS (primary report) FOR");
             leaguePrimaryStatReport.processReport();
 
+            lineScoreReport = (LineScoreReport)file.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
+            lineScoreReport.processReport();
+
             output.setOutputHeader(file.SeasonTitle);
         }
 
@@ -108,11 +113,9 @@ namespace somReporter
             Report.saveReportInformation(buildReportDBName());
         }
 
-
         private String buildReportDBName()
         {
             return String.Format("{0}-{1}", file.SeasonTitle, Team.TOTAL_GAMES);
-
         }
 
         public void processDraftOrder()

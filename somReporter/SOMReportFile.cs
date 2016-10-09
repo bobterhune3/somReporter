@@ -98,6 +98,8 @@ namespace somReporter
                 return new LeagueStandingsReport(reportTitle);
             if (reportTitle.StartsWith("LEAGUE GRAND TOTALS (primary report) FOR"))
                 return new LeagueGrandTotalsReport(reportTitle);
+            else if (reportTitle.StartsWith("INJURY/MINOR LEAGUE REPORT FOR"))
+                return new LineScoreReport(reportTitle);
             else
                 return new Report(reportTitle);
         }
@@ -151,7 +153,7 @@ namespace somReporter
 
         public string cleanUpLine(string line)
         {
-            line = line.Replace("[0]", "");
+     //       line = line.Replace("[0]", "");
             line = line.Replace("[1]", "");
             line = line.Replace("[2]", "");
             line = line.Replace("[3]", "");

@@ -28,11 +28,12 @@ namespace somReporter
 
         public override void processReport()
         {
-
             foreach (String line in m_lines)
             {
-                if( line.Length > 0)
-                  collectData(line);
+                if( line.Length > 0) {
+                    string fixedLine = line.Replace("[0]", "");
+                    collectData(fixedLine);
+               }
             }
         }
 

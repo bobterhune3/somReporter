@@ -37,6 +37,8 @@ namespace somReporter
 
         public static int TOTAL_GAMES = 0;
 
+        List<Game> linescores = new List<Game>();
+
         Dictionary<CATEGORY, Boolean> hLeaders = new Dictionary<CATEGORY, Boolean>();
         Dictionary<CATEGORY, Boolean> hTrailing = new Dictionary<CATEGORY, Boolean>();
 
@@ -44,30 +46,25 @@ namespace somReporter
 
         public string Name
         {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                name = value;
-            }
+            get { return name; }
+            set { name = value; }
         }
 
         public string Abrv
         {
-            get
-            {
-                return abrv;
-            }
-
-            set
-            {
+            get { return abrv; }
+            set {
                 abrv = value;
                 owner = abrv.Substring(2,1);
             }
         }
+
+        internal void addLineScore(int teama_score, string teamb_abv, int teamb_score, bool homeTeam)
+        {
+           linescores.Insert(0, new Game(teama_score, teamb_abv, teamb_score, homeTeam));
+        }
+
+        public List<Game> LineScores { get { return linescores; } }
 
         public string Owner
         {
@@ -234,6 +231,12 @@ namespace somReporter
             get { return divisionPositionCurrent; }
             set { divisionPositionCurrent = value; }
         }
+
+        public List<Game> GetLastGames(int gamesToReport)
+        {
+            return linescores.GetRange(0, gamesToReport);
+        }
+
         public int DraftPickPositionCurrent
         {
             get { return draftPickPositionCurrent; }
@@ -329,5 +332,30 @@ namespace somReporter
             hTrailing.Add(cat, true);
         }
         
+    }
+
+    public class Game {
+        int scoreus;
+        String abv;
+        int scorethem;
+        bool homeTeam;
+
+        public Game(int scoreus, String abv, int scorethem, bool homeTeam) {
+            this.scoreus= scoreus;
+            this.abv = abv;
+            this.scorethem = scorethem;
+            this.homeTeam = homeTeam;
+        }
+
+        public bool Won { get { return scoreus > scorethem; } }
+        public string Opponent { get { return abv; } }
+
+        public bool HomeTeam { get { return homeTeam; } }
+
+        public string DisplayOpponent {
+            get {
+                return (homeTeam ? "" : "@") + Opponent;
+            }
+        }
     }
 }
