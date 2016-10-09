@@ -80,7 +80,7 @@ namespace somReporter.output
             addTableCell(team.Wins, bgColor, "#000000", 48);
             addTableCell(team.Loses, bgColor, "#000000", 48);
             addTableCell(team.Wpct, 3, bgColor, "#000000", 53);
-            addTableCell(team.PythagoreanTheorem, 3, bgColor, "#000000", 53, false);
+            addTableCell(team.PythagoreanTheorem, 3, bgColor, "#000000", 53);
             lines.Add("</tr>");
         }
 
@@ -338,6 +338,11 @@ namespace somReporter.output
         public void endOfTable()
         {
             lines.Add("</table>");
+        }
+
+        public void ShowWhosHotData(string v)
+        {
+            lines.Add("<br/><pre>"+v+"</pre>");
         }
     }
 }

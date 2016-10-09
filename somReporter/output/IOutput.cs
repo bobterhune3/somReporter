@@ -21,5 +21,6 @@ namespace somReporter.output
         void divisionStandingsHeader(string division);
         void divisionStandingsTableHeader();
         void divisionStandingsTeamLine(int rank, Team team);
+        void ShowWhosHotData(string v);
     }
 }

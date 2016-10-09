@@ -14,6 +14,7 @@ namespace somReporter
         private LeagueStandingsReport leagueStandingsReport;
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
+        private NewspaperStyleReport newspaperStyleReport;
 
         private SOMReportFile file;
         IOutput output;
@@ -41,6 +42,8 @@ namespace somReporter
 
             program.processStandings();
 
+            program.showWhosHot();
+
             program.processWildCardStandings();
 
             program.processDraftOrder();
@@ -59,6 +62,11 @@ namespace somReporter
             } while (key != ConsoleKey.Escape);
 
             program.cleanup();
+        }
+
+        private void showWhosHot()
+        {
+            output.ShowWhosHotData(newspaperStyleReport.getWhosHotData());
         }
 
         public String lookupPreviousSaveFile()
@@ -104,6 +112,9 @@ namespace somReporter
 
             lineScoreReport = (LineScoreReport)file.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
             lineScoreReport.processReport();
+
+            newspaperStyleReport = (NewspaperStyleReport)file.FindReport("AWARDS VOTING FOR");
+            newspaperStyleReport.processReport();
 
             output.setOutputHeader(file.SeasonTitle);
         }

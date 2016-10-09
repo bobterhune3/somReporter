@@ -137,5 +137,10 @@ namespace somReporter.output
         public void setOutputHeader(string title) { }
         public void setOutputFooter() { }
         public void endOfTable() { }
+
+        public void ShowWhosHotData(string v)
+        {
+     //       throw new NotImplementedException();
+        }
     }
 }

@@ -100,6 +100,8 @@ namespace somReporter
                 return new LeagueGrandTotalsReport(reportTitle);
             else if (reportTitle.StartsWith("INJURY/MINOR LEAGUE REPORT FOR"))
                 return new LineScoreReport(reportTitle);
+            else if (reportTitle.StartsWith("AWARDS VOTING FOR"))
+                return new NewspaperStyleReport(reportTitle);
             else
                 return new Report(reportTitle);
         }
