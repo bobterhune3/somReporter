@@ -166,9 +166,17 @@ namespace somReporter
         }
 
         public void processStandings() {
+
+            leagueStandingsReport.calculateHighLowTeamStats("AL", Team.CATEGORY.BATTING_AVERAGE);
+            leagueStandingsReport.calculateHighLowTeamStats("NL", Team.CATEGORY.BATTING_AVERAGE);
+            leagueStandingsReport.calculateHighLowTeamStats("AL", Team.CATEGORY.HOME_RUNS);
+            leagueStandingsReport.calculateHighLowTeamStats("NL", Team.CATEGORY.HOME_RUNS);
+            leagueStandingsReport.calculateHighLowTeamStats("AL", Team.CATEGORY.EARNED_RUNS_AVG);
+            leagueStandingsReport.calculateHighLowTeamStats("NL", Team.CATEGORY.EARNED_RUNS_AVG);
+
             List<Team> teamsALEast = getStandings("AL", "East");
             List<Team> teamsALWest = getStandings("AL", "West");
-            List<Team> teamsNLEast = getStandings("NE", "East");
+            List<Team> teamsNLEast = getStandings("NL", "East");
             List<Team> teamsNLWest = getStandings("NL", "West");
 
 
@@ -196,7 +204,7 @@ namespace somReporter
 
             List<Team> teamsALEast = getStandings("AL", "East");
             List<Team> teamsALWest = getStandings("AL", "West");
-            List<Team> teamsNLEast = getStandings("NE", "East");
+            List<Team> teamsNLEast = getStandings("NL", "East");
             List<Team> teamsNLWest = getStandings("NL", "West");
 
             //Remove Winners of each Divisino

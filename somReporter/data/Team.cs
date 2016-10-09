@@ -25,6 +25,7 @@ namespace somReporter
         private double average = .0;
         private double era = .0;
         private double ip = .0;
+        private double homeruns = 0;
         private int runsAllowed = 0;
         private double pythagoreanTheorem = .0;
         private int divisionPositionCurrent = -1;
@@ -35,6 +36,11 @@ namespace somReporter
         private int wildCardPositionPrevious = -1;
 
         public static int TOTAL_GAMES = 0;
+
+        Dictionary<CATEGORY, Boolean> hLeaders = new Dictionary<CATEGORY, Boolean>();
+        Dictionary<CATEGORY, Boolean> hTrailing = new Dictionary<CATEGORY, Boolean>();
+
+        public enum CATEGORY { BATTING_AVERAGE, EARNED_RUNS_AVG, HOME_RUNS, NONE };
 
         public string Name
         {
@@ -270,6 +276,8 @@ namespace somReporter
 
         public Team(String div) {
            league = div.Substring(0,2);
+            if (league.Equals("NE"))
+                league = "NL";
            division = div.Substring(3);
            full_div = div;
         }
@@ -291,5 +299,35 @@ namespace somReporter
             }
         }
 
+        public double BattingAverage { get { return average; }
+                                       set { this.average = value; } }
+        public double HomeRuns { get { return homeruns; }
+                                 set { this.homeruns = value; }}
+        public double EarnedRunAvg { get { return era; }
+                                     set { this.era = value; } }
+
+        public bool getLeader( CATEGORY cat ) {
+            bool bResult = false;
+            if (hLeaders.Count == 0) return bResult;
+            hLeaders.TryGetValue(cat, out bResult);
+            return bResult;
+        }
+
+        public bool getTrailing(CATEGORY cat) {
+            bool bResult = false;
+            if (hTrailing.Count == 0) return bResult;
+            hTrailing.TryGetValue(cat, out bResult);
+            return bResult;             
+        }
+
+        public void setLeader(CATEGORY cat ) {
+            hLeaders.Add(cat, true);
+
+        }
+
+        public void setTrailing(CATEGORY cat) {
+            hTrailing.Add(cat, true);
+        }
+        
     }
 }

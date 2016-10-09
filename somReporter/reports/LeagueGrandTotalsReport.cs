@@ -76,7 +76,7 @@ namespace somReporter
                     //        team.Hits = Convert.ToInt32(teamMatch.Groups[6].Value.Trim());
                     team.RunsAllowed = Convert.ToInt32(teamMatch.Groups[7].Value.Trim());
                     //        team.EarnedRuns = Convert.ToInt32(teamMatch.Groups[8].Value.Trim());
-                    //        team.HomeRuns = Convert.ToInt32(teamMatch.Groups[9].Value.Trim());
+                    team.HomeRuns = Convert.ToInt32(teamMatch.Groups[9].Value.Trim());
                     //        team.Walks = Convert.ToInt32(teamMatch.Groups[10].Value.Trim());
                     //        team.Strikeouts = Convert.ToInt32(teamMatch.Groups[10].Value.Trim());
 

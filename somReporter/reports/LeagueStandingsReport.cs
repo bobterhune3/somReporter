@@ -19,7 +19,6 @@ namespace somReporter
         private String m_CurrentDivision = "";
 
         public enum REPORT_SCOPE { ALL, LEAGUE, DIVISION }
-
         public LeagueStandingsReport(String title) : base(title)
         { }
 
@@ -167,5 +166,47 @@ namespace somReporter
             return matches;
         }
 
+        public void calculateHighLowTeamStats( String league, Team.CATEGORY cat)
+        {
+            ReportScope scope = new ReportScope();
+            scope.League = league;
+            List<Team> teams = getTeamsByScope(scope);
+            Team leader = null;
+            Team trailing = null;
+            foreach( Team t in teams) {
+                if( leader == null || trailing == null ) {
+                    leader = t;
+                    trailing = t;
+                }
+                processCategory(ref leader, ref trailing, t, cat);
+            }
+
+            leader.setLeader(cat);
+            trailing.setTrailing(cat);
+        }
+
+        private void processCategory(ref Team leader, ref Team trailing, Team t, Team.CATEGORY cat)
+        {
+            if( cat == Team.CATEGORY.BATTING_AVERAGE) {
+                if (t.BattingAverage > leader.BattingAverage)
+                    leader = t;
+                else if (t.BattingAverage < trailing.BattingAverage)
+                    trailing = t;
+            }
+            else if (cat == Team.CATEGORY.EARNED_RUNS_AVG)
+            {
+                if (t.EarnedRunAvg < leader.EarnedRunAvg)
+                    leader = t;
+                else if (t.EarnedRunAvg > trailing.EarnedRunAvg)
+                    trailing = t;
+            }
+            else if (cat == Team.CATEGORY.HOME_RUNS)
+            {
+                if (t.HomeRuns > leader.HomeRuns)
+                    leader = t;
+                else if (t.HomeRuns < trailing.HomeRuns)
+                    trailing = t;
+            }
+        }
     }
 }
