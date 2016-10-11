@@ -102,6 +102,8 @@ namespace somReporter
                 return new LineScoreReport(reportTitle);
             else if (reportTitle.StartsWith("AWARDS VOTING FOR"))
                 return new NewspaperStyleReport(reportTitle);
+            else if (reportTitle.StartsWith("RECORD BOOK FOR FOR"))
+                return new RecordBookReport(reportTitle);
             else
                 return new Report(reportTitle);
         }

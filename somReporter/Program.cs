@@ -15,6 +15,7 @@ namespace somReporter
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
         private NewspaperStyleReport newspaperStyleReport;
+        private RecordBookReport recordBookReport;
 
         private SOMReportFile file;
         IOutput output;
@@ -47,6 +48,8 @@ namespace somReporter
             program.processWildCardStandings();
 
             program.processDraftOrder();
+
+            program.processRecordBook();
 
             Console.WriteLine("Press ESC to stop or S to save");
             ConsoleKey key;
@@ -115,6 +118,9 @@ namespace somReporter
 
             newspaperStyleReport = (NewspaperStyleReport)file.FindReport("AWARDS VOTING FOR");
             newspaperStyleReport.processReport();
+
+            recordBookReport = (RecordBookReport)file.FindReport("RECORD BOOK FOR FOR");
+            recordBookReport.processReport();
 
             output.setOutputHeader(file.SeasonTitle);
         }
@@ -251,6 +257,31 @@ namespace somReporter
             writeOutLeagueWildcards(teamsNL);
             output.endOfTable();
         }
+
+
+        private void processRecordBook()
+        {
+            int counter = 1;
+            List<SOMRecord> teamRecords = ((RecordBookReport)recordBookReport).getTeamRecords();
+            if(teamRecords.Count > 0) {
+                output.recordBookHeader(true);
+                foreach( SOMRecord rec in teamRecords) {
+                    output.recordBookItem(rec, counter++, true);
+                }
+            }
+
+            counter = 1;
+            List<SOMRecord> playerRecords = ((RecordBookReport)recordBookReport).getPlayerRecords();
+            if (playerRecords.Count > 0)
+            {
+                output.recordBookHeader(false);
+                foreach (SOMRecord rec in playerRecords)  {
+                    output.recordBookItem(rec, counter++, false);
+                }
+            }
+            output.spacer();
+        }
+
 
         private void writeOutLeagueWildcards( List<Team> teams ) {
              Team secondPlaceTeam = teams.ElementAt(1);

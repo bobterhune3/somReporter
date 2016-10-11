@@ -344,5 +344,44 @@ namespace somReporter.output
         {
             lines.Add("<br/><pre>"+v+"</pre>");
         }
+
+        public void recordBookHeader(bool teamRecords)
+        {
+            lines.Add(String.Format("<h3>{0} RECORD BOOK</h3>", teamRecords?"TEAM":"PLAYER"));
+            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><br/><tr>");
+
+            if(teamRecords) {
+                addTableCell("RECORD", "#339966", "#F8CBAD", 200);
+                addTableCell("VALUE", "#339966", "#F8CBAD", 60);
+                addTableCell("TEAM", "#339966", "#F8CBAD", 60);
+                addTableCell("VS", "#339966", "#F8CBAD", 60);
+            }
+            else {
+                addTableCell("RECORD", "#339966", "#F8CBAD", 200);
+                addTableCell("VALUE", "#339966", "#F8CBAD", 60);
+                addTableCell("DESCRIPTION", "#339966", "#F8CBAD", 300);
+            }
+            lines.Add("</tr></table>");
+        }
+
+        public void recordBookItem(SOMRecord rec, int counter, bool teamRecord)
+        {
+            string bgColor = getBackgroundColor(counter, true);
+            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
+
+            if(teamRecord) {
+                addTableCell(rec.Label, bgColor, "#000000", 200, false);
+                addTableCell(rec.RecordValue, bgColor, "#000000", 60, false);
+                addTableCell(rec.Team, bgColor, "#000000", 60);
+                addTableCell(rec.Opponent, bgColor, "#000000", 60);
+            }
+            else {
+                addTableCell(rec.Label, bgColor, "#000000", 200, false);
+                addTableCell(rec.RecordValue, bgColor, "#000000", 60);
+                addTableCell(rec.Description, bgColor, "#000000", 300, false);
+            }
+
+            lines.Add("</tr></table>");
+        }
     }
 }

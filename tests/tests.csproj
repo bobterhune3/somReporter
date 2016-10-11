@@ -56,6 +56,7 @@
     <Compile Include="reports\TestLeagueStandingsReport.cs" />
     <Compile Include="reports\ReportTestReports.cs" />
     <Compile Include="reports\TestTeamGrandTotalReports.cs" />
+    <Compile Include="reports\RecordBookReportTest.cs" />
     <Compile Include="TestFileParser.cs" />
     <Compile Include="TestSOMReportFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

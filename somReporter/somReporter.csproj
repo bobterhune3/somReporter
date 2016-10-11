@@ -67,6 +67,7 @@
     <Compile Include="reports\LeagueStandingsReport.cs" />
     <Compile Include="reports\LineScoreReport.cs" />
     <Compile Include="reports\AwardVotingReport.cs" />
+    <Compile Include="reports\RecordBookReport.cs" />
     <Compile Include="reports\Report.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

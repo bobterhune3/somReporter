@@ -22,5 +22,7 @@ namespace somReporter.output
         void divisionStandingsTableHeader();
         void divisionStandingsTeamLine(int rank, Team team);
         void ShowWhosHotData(string v);
+        void recordBookHeader(bool teamRecord);
+        void recordBookItem(SOMRecord rec, int counter, bool teamRecord);
     }
 }

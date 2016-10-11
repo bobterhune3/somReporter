@@ -140,7 +140,14 @@ namespace somReporter.output
 
         public void ShowWhosHotData(string v)
         {
-     //       throw new NotImplementedException();
+        }
+
+        public void recordBookHeader(bool v)
+        {
+        }
+
+        public void recordBookItem(SOMRecord rec, int counter, bool teamRecord)
+        {
         }
     }
 }
