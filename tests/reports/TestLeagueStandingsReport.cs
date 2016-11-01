@@ -16,7 +16,7 @@ namespace somReporter
         {
             Report.DATABASE.reset();
             file = new SOMReportFile("ALL_REPORTS.PRT");
-            file.parseFile();
+            file.parseLeagueFile();
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
             leagueStandingsReport.processReport();
         }

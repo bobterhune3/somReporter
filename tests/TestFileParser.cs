@@ -8,12 +8,14 @@ namespace somReporter
     [TestClass()]
     public class TestFileParser
     {
-        private SOMReportFile file;
+        private SOMReportFile leagueReportFile;
+        private SOMReportFile teamReportFile;
 
         [TestInitialize()]
         public void Initialize()
         {
-            file = new SOMReportFile("ALL_REPORTS.PRT");
+            leagueReportFile = new SOMReportFile("ALL_REPORTS.PRT");
+            teamReportFile = new SOMReportFile("TEAM_ALL_REPORTS.PRT");
         }
 
         [TestCleanup()]
@@ -22,12 +24,19 @@ namespace somReporter
         [TestMethod]
         public void verifyTheFileLoaded()
         {
-            Assert.IsNotNull(file, "SOM Report File is null");
+            Assert.IsNotNull(leagueReportFile, "SOM League Report File is null");
+            Assert.IsNotNull(teamReportFile, "SOM Team Report File is null");
         }
 
 
         [TestMethod()]
-        public void cleanUpLineTestCleanupLine()
+        public void cleanUpLineTestCleanupLine(SOMReportFile file)
+        {
+            internal_cleanUpLineTestCleanupLine(leagueReportFile);
+            internal_cleanUpLineTestCleanupLine(teamReportFile);
+        }
+
+        private void internal_cleanUpLineTestCleanupLine(SOMReportFile file)
         {
             Assert.AreEqual(file.cleanUpLine("AA AAA"), "AA AAA");
             Assert.AreEqual(file.cleanUpLine("AA [A]AA"), "AA [A]AA");
@@ -42,34 +51,56 @@ namespace somReporter
         }
 
         [TestMethod()]
-        public void testFirstLineOfReportSuccess()
+        public void testFirstLineOfLeagueReportSuccess()
         {
-            file.parseFirstLineOfReport("LEAGUE STANDINGS FOR 2015 No Dice");
-            Assert.AreEqual(file.Season, "2015");
-            Assert.AreEqual(file.LeagueName, "No Dice");
-            Assert.AreEqual(file.SeasonTitle, "2015 No Dice");
-            file.parseFirstLineOfReport("LEAGUE STANDINGS FOR 2016 No Dice");
-            Assert.AreEqual(file.Season, "2016");
-            Assert.AreEqual(file.LeagueName, "No Dice");
-            Assert.AreEqual(file.SeasonTitle, "2016 No Dice");
-            file.parseFirstLineOfReport("LEAGUE STANDINGS FOR 999 No Dice");
-            Assert.AreEqual(file.Season, "999");
-            Assert.AreEqual(file.LeagueName, "No Dice");
-            Assert.AreEqual(file.SeasonTitle, "999 No Dice");
-            file.parseFirstLineOfReport("LEAGUE STANDINGS FOR 2015 TEST LEAGUE NAME");
-            Assert.AreEqual(file.Season, "2015");
-            Assert.AreEqual(file.LeagueName, "TEST LEAGUE NAME");
-            Assert.AreEqual(file.SeasonTitle, "2015 TEST LEAGUE NAME");
-
+            leagueReportFile.parseLeagueFirstLineOfReport("LEAGUE STANDINGS FOR 2015 No Dice");
+            Assert.AreEqual(leagueReportFile.Season, "2015");
+            Assert.AreEqual(leagueReportFile.LeagueName, "No Dice");
+            Assert.AreEqual(leagueReportFile.SeasonTitle, "2015 No Dice");
+            leagueReportFile.parseLeagueFirstLineOfReport("LEAGUE STANDINGS FOR 2016 No Dice");
+            Assert.AreEqual(leagueReportFile.Season, "2016");
+            Assert.AreEqual(leagueReportFile.LeagueName, "No Dice");
+            Assert.AreEqual(leagueReportFile.SeasonTitle, "2016 No Dice");
+            leagueReportFile.parseLeagueFirstLineOfReport("LEAGUE STANDINGS FOR 999 No Dice");
+            Assert.AreEqual(leagueReportFile.Season, "999");
+            Assert.AreEqual(leagueReportFile.LeagueName, "No Dice");
+            Assert.AreEqual(leagueReportFile.SeasonTitle, "999 No Dice");
+            leagueReportFile.parseLeagueFirstLineOfReport("LEAGUE STANDINGS FOR 2015 TEST LEAGUE NAME");
+            Assert.AreEqual(leagueReportFile.Season, "2015");
+            Assert.AreEqual(leagueReportFile.LeagueName, "TEST LEAGUE NAME");
+            Assert.AreEqual(leagueReportFile.SeasonTitle, "2015 TEST LEAGUE NAME");
         }
 
         [TestMethod()]
-        public void testFirstLineOfReportFailure()
+        public void testFirstLineOfTeamReportSuccess()
+        {
+            teamReportFile.parseTeamFirstLineOfReport("Team Statistics For 2015 Oakland Athletics Totals After 162 Games");
+            Assert.AreEqual(teamReportFile.Season, "2015");
+            Assert.AreEqual(teamReportFile.TeamName, "Oakland Athl");
+        }
+
+        [TestMethod()]
+        public void testFirstLeagueLineOfReportFailure()
         {
             bool testFailed = false;
             try
             {
-                file.parseFirstLineOfReport("THIS IS NOT A VALID FIRST LINE");
+                leagueReportFile.parseLeagueFirstLineOfReport("THIS IS NOT A VALID FIRST LINE");
+            }
+            catch (Exception ex)
+            {
+                testFailed = true;
+            }
+            Assert.IsTrue(testFailed, "Expected Line is not a valid");
+        }
+
+        [TestMethod()]
+        public void testFirstTeamLineOfReportFailure()
+        {
+            bool testFailed = false;
+            try
+            {
+                teamReportFile.parseLeagueFirstLineOfReport("THIS IS NOT A VALID FIRST LINE");
             }
             catch (Exception ex)
             {

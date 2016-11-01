@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using somReporter.team;
 
 namespace somReporter.output
 {
@@ -148,6 +149,16 @@ namespace somReporter.output
 
         public void recordBookItem(SOMRecord rec, int counter, bool teamRecord)
         {
+        }
+
+        public void usageHeader()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool usageReportItem(Player player, int counter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

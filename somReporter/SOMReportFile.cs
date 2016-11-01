@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using somReporter.team;
 
 namespace somReporter
 {
@@ -10,8 +11,10 @@ namespace somReporter
         private String m_fileName = "";
         private String m_Season = "";
         private String m_LeagueName = "";
+        private String m_TeamName = "";
         private String m_SeasonTitle = "";
         private List<Report> reports = new List<Report>();
+        private ComparisonReport comparisonReport = null;
 
         public string Season
         {
@@ -21,6 +24,11 @@ namespace somReporter
         public string LeagueName
         {
             get { return m_LeagueName; }
+        }
+
+        public string TeamName
+        {
+            get { return m_TeamName; }
         }
 
         public string SeasonTitle
@@ -51,9 +59,61 @@ namespace somReporter
 
         }
 
-        public void parseFile() {
-             List<String> lines = readReportLines();
+        public void parseLeagueFile() {
+             List<String> lines = readReportLines(true);
             organizeByReportType(lines);
+        }
+
+        public void parseTeamFile()
+        {
+            List<String> lines = readReportLines(false);
+            organizeByTeamAndReportType(lines);
+        }
+
+        private void organizeByTeamAndReportType(List<string> lines)
+        {
+            Report currentReport = null;
+            String reportTitle = "";
+            String currentTeam = "";
+            bool skipThisReport = false;
+            foreach (String line in lines)
+            {
+                Regex regex = new Regex(@"(.*) [0-9]+ (.*) [0-9]+ [\S]+");
+                Match match = regex.Match(line);
+                if (match.Success && line.Contains(" For "))
+                {
+                    reportTitle = match.Groups[1].Value.Trim();
+                    int x = reportTitle.IndexOf(" For ");
+                    if (x > 0)
+                        reportTitle = reportTitle.Substring(0, x);
+                    try {
+                        currentTeam = match.Groups[2].Value.Substring(0, 12).Trim();
+                    }catch(Exception ex ) { }
+
+                    if (currentReport != null)
+                    {
+                        currentReport = loadReport(reportTitle);
+                        skipThisReport = !(currentReport is TeamReport);
+                        if (!skipThisReport && FindReport(reportTitle) == null)
+                            Reports.Add(currentReport);
+                    }
+                    else
+                    {
+                        currentReport = loadReport(reportTitle);
+                        skipThisReport = !(currentReport is TeamReport);
+                        if (!skipThisReport && FindReport(reportTitle) == null)
+                            Reports.Add(currentReport);
+                    }
+                }
+                else
+                {
+                    if(!skipThisReport)
+                      ((TeamReport)currentReport).AddLine(currentTeam, line);
+                }
+
+            }
+            if (isNewReport(reportTitle))
+                Reports.Add(currentReport);
         }
 
         private void organizeByReportType(List<string> lines)
@@ -89,7 +149,7 @@ namespace somReporter
 
             }
             if (isNewReport(reportTitle))
-                reports.Add(currentReport);
+                Reports.Add(currentReport);
         }
 
         private Report loadReport(string reportTitle)
@@ -104,9 +164,16 @@ namespace somReporter
                 return new NewspaperStyleReport(reportTitle);
             else if (reportTitle.StartsWith("RECORD BOOK FOR FOR"))
                 return new RecordBookReport(reportTitle);
+            else if (reportTitle.StartsWith("Comparison Report"))
+            {
+                if(comparisonReport == null)
+                    comparisonReport = new ComparisonReport(reportTitle);
+                return comparisonReport;
+            }
             else
                 return new Report(reportTitle);
         }
+
 
         private bool isNewReport(string reportTitle)
         {
@@ -119,20 +186,26 @@ namespace somReporter
             return true;
         }
 
-        public List<String> readReportLines() {
+        public List<String> readReportLines(Boolean bParseLeagueFile) {
             List<String> lines = new List<String>();
             System.IO.StreamReader file = null;
             try { 
                 string line;
 
                 // Read the file and display it line by line.
-                file =
-                       new System.IO.StreamReader(m_fileName);
+                file = new System.IO.StreamReader(m_fileName);
                 while((line = file.ReadLine()) != null)
                 {
                     line = cleanUpLine(line);
-                    if (lines.Count == 0)
-                        parseFirstLineOfReport(line);
+                    if( line.Trim().Length == 0)
+                        continue;
+                    if (lines.Count == 0 && bParseLeagueFile)
+                        parseLeagueFirstLineOfReport(line);
+                    else if (lines.Count == 0 ) {
+                        if (line.Trim().Length == 0)
+                            continue;
+                        parseTeamFirstLineOfReport(line);
+                    }
                     lines.Add(line);
                 }
             }
@@ -143,9 +216,8 @@ namespace somReporter
             return lines;
          }
 
-        public void parseFirstLineOfReport(string line)
+        public void parseLeagueFirstLineOfReport(string line)
         {
-
             Regex regex = new Regex(@"\.* ([0-9]+) (.*)");
             Match match = regex.Match(line);
             if(match.Groups.Count != 3)
@@ -153,6 +225,18 @@ namespace somReporter
             m_SeasonTitle = match.Value.Trim();
             m_Season = match.Groups[1].Value.Trim();
             m_LeagueName = match.Groups[2].Value.Trim();
+        }
+
+        
+      public void parseTeamFirstLineOfReport(string line)
+        {
+            Regex regex = new Regex(@"\.* ([0-9]+) (.*)");
+            Match match = regex.Match(line);
+            if (match.Groups.Count != 3)
+                throw new Exception("Expecting ALL REPORTS to run, first report should be titled 'LEAGUE STANDINGS FOR'");
+            m_SeasonTitle = match.Value.Trim();
+            m_Season = match.Groups[1].Value.Trim();
+            m_TeamName = match.Groups[2].Value.Substring(0, 12).Trim();
         }
 
         public string cleanUpLine(string line)

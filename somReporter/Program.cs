@@ -1,5 +1,6 @@
 ﻿using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
+using somReporter.team;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +17,14 @@ namespace somReporter
         private LineScoreReport lineScoreReport;
         private NewspaperStyleReport newspaperStyleReport;
         private RecordBookReport recordBookReport;
+        private ComparisonReport teamComparisonReport;
 
-        private SOMReportFile file;
+        private SOMReportFile leagueReportFile;
+        private SOMReportFile teamReportFile;
+
+        public static bool SHOW_WARNING = false;
+        public static bool SHOW_MORAL = false;
+
         IOutput output;
         public Program() {
         //    output = new ConsoleOutput();
@@ -32,6 +39,8 @@ namespace somReporter
         static void Main(string[] args)
         {
             Program program = new Program();
+
+            Console.WriteLine("Intializing...");
             program.initialize();
        
             string fileName = program.lookupPreviousSaveFile();
@@ -41,15 +50,23 @@ namespace somReporter
                 program.loadPreviousStorageInfo(prevDictionaryFile);
             }
 
+            Console.WriteLine("Process Standings...");
             program.processStandings();
 
+            Console.WriteLine("Process Who Hot...");
             program.showWhosHot();
 
+            Console.WriteLine("Process Wild Card...");
             program.processWildCardStandings();
 
+            Console.WriteLine("Process Draft Order...");
             program.processDraftOrder();
 
+            Console.WriteLine("Process Record Book...");
             program.processRecordBook();
+
+            Console.WriteLine("Process Player Usage ...");
+            program.processPlayerUsage();
 
             Console.WriteLine("Press ESC to stop or S to save");
             ConsoleKey key;
@@ -74,7 +91,7 @@ namespace somReporter
 
         public String lookupPreviousSaveFile()
         {
-            string[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory(), file.SeasonTitle+"*");
+            string[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory(), leagueReportFile.SeasonTitle+"*");
             if (directories.Length == 0)
                 return "";
 
@@ -94,7 +111,7 @@ namespace somReporter
             if (highestValue == 0)
                 return "";
 
-            string fileName = String.Format("{0}-{1}", file.SeasonTitle, highestValue);
+            string fileName = String.Format("{0}-{1}", leagueReportFile.SeasonTitle, highestValue);
             return fileName;
         }
 
@@ -105,24 +122,41 @@ namespace somReporter
 
         public void initialize() {
             Report.DATABASE.reset();
-            file = new SOMReportFile("ALL_REPORTS.PRT");
-            file.parseFile();
-            leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
+            Console.WriteLine("  Loading League Report File ...");
+            leagueReportFile = new SOMReportFile("ALL_REPORTS.PRT");
+            leagueReportFile.parseLeagueFile();
+
+            Console.WriteLine("    Building Standings...");
+            leagueStandingsReport = (LeagueStandingsReport)leagueReportFile.FindReport("LEAGUE STANDINGS FOR");
             leagueStandingsReport.processReport();
 
-            leaguePrimaryStatReport = (LeagueGrandTotalsReport)file.FindReport("LEAGUE GRAND TOTALS (primary report) FOR");
+            Console.WriteLine("    Building Grand Totals...");
+            leaguePrimaryStatReport = (LeagueGrandTotalsReport)leagueReportFile.FindReport("LEAGUE GRAND TOTALS (primary report) FOR");
             leaguePrimaryStatReport.processReport();
 
-            lineScoreReport = (LineScoreReport)file.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
+            Console.WriteLine("    Building League Report ...");
+            lineScoreReport = (LineScoreReport)leagueReportFile.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
             lineScoreReport.processReport();
 
-            newspaperStyleReport = (NewspaperStyleReport)file.FindReport("AWARDS VOTING FOR");
+            Console.WriteLine("    Building Awards...");
+            newspaperStyleReport = (NewspaperStyleReport)leagueReportFile.FindReport("AWARDS VOTING FOR");
             newspaperStyleReport.processReport();
 
-            recordBookReport = (RecordBookReport)file.FindReport("RECORD BOOK FOR FOR");
+            Console.WriteLine("    Building Record Book...");
+            recordBookReport = (RecordBookReport)leagueReportFile.FindReport("RECORD BOOK FOR FOR");
             recordBookReport.processReport();
 
-            output.setOutputHeader(file.SeasonTitle);
+            output.setOutputHeader(leagueReportFile.SeasonTitle);
+
+            Console.WriteLine("  Loading Team Report File...");
+            teamReportFile = new SOMReportFile("TEAM_ALL_REPORTS.PRT");
+            teamReportFile.parseTeamFile();
+
+            Console.WriteLine("    Building Comparison...");
+            Console.WriteLine("      Showing Moral="+Program.SHOW_MORAL+", Showing Warnings="+Program.SHOW_WARNING);
+
+            teamComparisonReport = (ComparisonReport)teamReportFile.FindReport("Comparison Report");
+            teamComparisonReport.processReport();
         }
 
         public void saveReportInformation()
@@ -132,7 +166,7 @@ namespace somReporter
 
         private String buildReportDBName()
         {
-            return String.Format("{0}-{1}", file.SeasonTitle, Team.TOTAL_GAMES);
+            return String.Format("{0}-{1}", leagueReportFile.SeasonTitle, Team.TOTAL_GAMES);
         }
 
         public void processDraftOrder()
@@ -333,6 +367,22 @@ namespace somReporter
             }
 
             output.wildCardTeamLine(rank, team, gamesBehind);
+        }
+
+        public void processPlayerUsage()
+        {
+            output.usageHeader();
+            int counter = 1;
+            List<Player> players = teamComparisonReport.getPlayers();
+            string currentTeam = "";
+            foreach (Player player in players)
+            {
+                if( !currentTeam.Equals(player.Team))
+                    counter = 1;
+                currentTeam = player.Team;
+                if (output.usageReportItem(player, counter))
+                    counter++;
+            }
         }
     }
 }

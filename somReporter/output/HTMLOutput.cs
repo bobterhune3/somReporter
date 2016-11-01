@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using somReporter.team;
 
 namespace somReporter.output
 {
@@ -382,6 +383,114 @@ namespace somReporter.output
             }
 
             lines.Add("</tr></table>");
+        }
+
+        public void usageHeader()
+        {
+            lines.Add(String.Format("<h3>OVER USAGE REPORT</h3>"));
+
+            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><br/><tr>");
+
+                addTableCell("#", "#339966", "#FFFFFF", 30);
+                addTableCell("PLAYER", "#339966", "#FFFFFF", 100);
+                addTableCell("TEAM", "#339966", "#FFFFFF", 60);
+                addTableCell("TYPE", "#339966", "#FFFFFF", 60);
+                addTableCell("ACTUAL", "#339966", "#FFFFFF", 75);
+                addTableCell("REPLAY", "#339966", "#FFFFFF", 75);
+                addTableCell("USAGE", "#339966", "#FFFFFF", 75);
+
+            lines.Add("</tr></table>");
+        }
+
+        public bool usageReportItem(Player player, int counter )
+        {
+            string bgColor = getBackgroundColor(player.Usage, player.IsHitter);
+
+            if (bgColor.Length == 0) //Skip line if player does not fall within boundry
+                return false;
+
+            if (counter == 1)
+                this.emptyUsageRow();
+
+            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
+
+                addTableCell(counter, "#339966", "#000000", 30, false);
+                addTableCell(player.Name, bgColor, "#000000", 100, false);
+                addTableCell(prettyTeamName(player.Team), bgColor, "#000000", 60, false);
+                addTableCell(player.IsHitter?"B":"P", bgColor, "#000000", 60);
+                addTableCell(player.Actual, bgColor, "#000000", 75);
+                addTableCell(player.Replay, bgColor, "#000000", 75);
+                addTableCell(player.Usage, 2, bgColor, "#000000", 75);
+
+            lines.Add("</tr></table>");
+            return true;
+        }
+
+        private void emptyUsageRow() {
+            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
+
+            addTableCell("", "#FFFFFF", "#000000", 30);
+            addTableCell("", "#FFFFFF", "#000000", 100);
+            addTableCell("", "#FFFFFF", "#000000", 60);
+            addTableCell("", "#FFFFFF", "#000000", 60);
+            addTableCell("", "#FFFFFF", "#000000", 75);
+            addTableCell("", "#FFFFFF", "#000000", 75);
+            addTableCell("", "#FFFFFF", "#000000", 75);
+
+            lines.Add("</tr></table>");
+        }
+
+        private string prettyTeamName(string teamName ) {
+            if (teamName.Equals("Anaheim Ange")) return "ANS";
+            if (teamName.Equals("Arizona Diam")) return "AZB";
+            if (teamName.Equals("Atlanta Brav")) return "ATS";
+            if (teamName.Equals("Baltimore Or")) return "BLJ";
+            if (teamName.Equals("Boston Red S")) return "BSS";
+            if (teamName.Equals("Chicago (AL)")) return "CHS";
+            if (teamName.Equals("Chicago (NL)")) return "CHJ";
+            if (teamName.Equals("Cleveland In")) return "CLM";
+            if (teamName.Equals("Colorado Roc")) return "CRM";
+            if (teamName.Equals("Detroit Tige")) return "DTB";
+            if (teamName.Equals("Houston Astr")) return "HOJ";
+            if (teamName.Equals("Kansas City")) return "KCJ";
+            if (teamName.Equals("Los Angeles")) return "LAM";
+            if (teamName.Equals("Miami Marlin")) return "MMS";
+            if (teamName.Equals("Milwaukee Br")) return "MLS";
+            if (teamName.Equals("Minnesota Tw")) return "MNB";
+            if (teamName.Equals("New York Yan")) return "NYB";
+            if (teamName.Equals("Oakland Athl")) return "OKM";
+            if (teamName.Equals("Philadelphia")) return "PHM";
+            if (teamName.Equals("Pittsburgh P")) return "PIS";
+            if (teamName.Equals("San Diego Pa")) return "SDG";
+            if (teamName.Equals("San Francisc")) return "SFJ";
+            if (teamName.Equals("Seattle Mari")) return "SEG";
+            if (teamName.Equals("St. Louis Ca")) return "STB";
+            if (teamName.Equals("Tampa Bay Ra")) return "TBM";
+            if (teamName.Equals("Texas Ranger")) return "TXG";
+            if (teamName.Equals("Toronto Blue")) return "TOG";
+            if (teamName.Equals("Washington N")) return "WAG";
+            return "UNK";
+        }
+        private string getBackgroundColor( double usage, bool isHitter ) {
+            if( isHitter)
+            {
+                if (usage > 1.5)        // Penality For Hitters
+                    return "#FF0000";
+                if (usage > 1.2 && Program.SHOW_MORAL)        // Moral Ceiling
+                    return "#FF6611";
+                if (usage > .8 && Program.SHOW_WARNING)         // Danger Level
+                    return "#FFFF55";
+                return "";
+            }
+            else {
+                if (usage > 1.5)         // Penality For Pitchers
+                    return "#FF0000";
+                if (usage > 1.2 && Program.SHOW_MORAL)         // Moral Ceiling
+                    return "#FF6611";
+                if (usage > .8 && Program.SHOW_WARNING)          // Danger Level
+                    return "#FFFF55";
+                return "";
+            }
         }
     }
 }

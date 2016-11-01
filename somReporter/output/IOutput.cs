@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using somReporter.team;
 
 namespace somReporter.output
 {
@@ -24,5 +25,7 @@ namespace somReporter.output
         void ShowWhosHotData(string v);
         void recordBookHeader(bool teamRecord);
         void recordBookItem(SOMRecord rec, int counter, bool teamRecord);
+        void usageHeader();
+        bool usageReportItem(Player player, int counter);
     }
 }

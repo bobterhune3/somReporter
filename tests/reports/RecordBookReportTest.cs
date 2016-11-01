@@ -11,7 +11,7 @@ namespace somReporter
         {
             Report.DATABASE.reset();
             SOMReportFile file = new SOMReportFile("ALL_REPORTS.PRT");
-            file.parseFile();
+            file.parseLeagueFile();
             RecordBookReport recordBookReport = (RecordBookReport)file.FindReport("RECORD BOOK FOR FOR");
             recordBookReport.processReport();
         }

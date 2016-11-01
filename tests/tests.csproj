@@ -60,6 +60,7 @@
     <Compile Include="TestFileParser.cs" />
     <Compile Include="TestSOMReportFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestTeamReportLoader.cs" />
     <Compile Include="util\PairTestReports.cs" />
   </ItemGroup>
   <ItemGroup>
