@@ -5,8 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using somReporter.reports;
 
 namespace somReporter
 {
@@ -68,6 +67,9 @@ namespace somReporter
             Console.WriteLine("Process Player Usage ...");
             program.processPlayerUsage();
 
+            Console.WriteLine("Create Win Pct History Charts ...");
+            program.buildCharts();
+
             Console.WriteLine("Press ESC to stop or S to save");
             ConsoleKey key;
             do
@@ -80,6 +82,7 @@ namespace somReporter
                     break;
                 }
             } while (key != ConsoleKey.Escape);
+
 
             program.cleanup();
         }
@@ -122,6 +125,7 @@ namespace somReporter
 
         public void initialize() {
             Report.DATABASE.reset();
+
             Console.WriteLine("  Loading League Report File ...");
             leagueReportFile = new SOMReportFile("ALL_REPORTS.PRT");
             leagueReportFile.parseLeagueFile();
@@ -384,5 +388,27 @@ namespace somReporter
                     counter++;
             }
         }
+
+        public void buildCharts()
+        {
+            TeamWinPctHistory teamWinPctHistory = new TeamWinPctHistory();
+            teamWinPctHistory.loadWinPctFile(@"wpct.csv");
+
+            //LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
+            //scope.OrderAscending = true;
+            //scope.AllTeams = true;
+            //          teamWinPctHistory.addCurrentSeason()
+
+            // Create Division Charts
+            List<Team> teamsALEast = getStandings("AL", "East");
+            //     List<Team> teamsALWest = getStandings("AL", "West");
+            //     List<Team> teamsNLEast = getStandings("NL", "East");
+            //     List<Team> teamsNLWest = getStandings("NL", "West");
+
+            LineGraph lg = new LineGraph();
+            lg.setGraphData(teamsALEast);
+            lg.save("winpcthistALW.html");
+        }
+
     }
 }

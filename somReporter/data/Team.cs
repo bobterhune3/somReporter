@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace somReporter
 {
@@ -34,6 +31,7 @@ namespace somReporter
         private int draftPickPositionPrevious = -1;
         private int wildCardPositionCurrent = -1;
         private int wildCardPositionPrevious = -1;
+        private List<double> wpctHistory;
 
         public static int TOTAL_GAMES = 0;
 
@@ -331,8 +329,19 @@ namespace somReporter
         public void setTrailing(CATEGORY cat) {
             hTrailing.Add(cat, true);
         }
-        
+
+        public List<double> WinPctHistoryData
+        {
+            get { return wpctHistory; }
+            set { wpctHistory = new List<double>(value); }
+        }
+
+        public void addWinPctHistoryData(double value)
+        {
+            wpctHistory.Add(value);
+        }
     }
+
 
     public class Game {
         int scoreus;
