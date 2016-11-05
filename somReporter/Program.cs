@@ -392,23 +392,34 @@ namespace somReporter
         public void buildCharts()
         {
             TeamWinPctHistory teamWinPctHistory = new TeamWinPctHistory();
-            teamWinPctHistory.loadWinPctFile(@"wpct.csv");
+            bool firstTimeLoad = !teamWinPctHistory.loadWinPctFile(@"wpct.csv");
 
-            //LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
-            //scope.OrderAscending = true;
-            //scope.AllTeams = true;
-            //          teamWinPctHistory.addCurrentSeason()
+            LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
+            scope.OrderAscending = true;
+            scope.AllTeams = true;
 
-            // Create Division Charts
-            List<Team> teamsALEast = getStandings("AL", "East");
-            //     List<Team> teamsALWest = getStandings("AL", "West");
-            //     List<Team> teamsNLEast = getStandings("NL", "East");
-            //     List<Team> teamsNLWest = getStandings("NL", "West");
+            // Only create and save if additional games added.
+            List<Team> teams = leagueStandingsReport.getTeamsByWinPercentage(scope);
+        //    if( teamWinPctHistory.addCurrentSeason(teams))
+            {
+           //     if(!firstTimeLoad)
+                { 
+                    // Create Division Charts
+                    buildDivisionChart("AL", "East");
+                    buildDivisionChart("AL", "West");
+                    buildDivisionChart("NL", "East");
+                    buildDivisionChart("NL", "West");
+                }
 
-            LineGraph lg = new LineGraph();
-            lg.setGraphData(teamsALEast);
-            lg.save("winpcthistALW.html");
+           //     teamWinPctHistory.csvSaveTeamParser(@"wpct.csv");
+            }
         }
 
+        private void buildDivisionChart(String league, String division) {
+            List<Team> teams= getStandings(league, division);
+            LineGraph lg = new LineGraph();
+            lg.setGraphData("Trend Report for "+ league +" " + division, teams);
+            lg.save(String.Format("winpct_{0}{1}.html", league, division.ToUpper()));
+        }
     }
 }

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Line Chart</title>
+    <script src="dist/Chart.bundle.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width:75%;">
+        <canvas id="canvas"></canvas>
+    </div>
+    <script>
+        var config = {
+            type: 'line',
+            data: 
+            [PUT_DATA_HERE]
+            ,
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                },
+                hover: {
+                    mode: 'label'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Runs'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Win Percentage'
+                        },
+                      }]
+                },
+                title: {
+                    display: true,
+                    text: '[PUT_TITLE_HERE]'
+                }
+            }
+        };
+
+        $.each(config.data.datasets, function(i, dataset) {
+           var background = dataset.borderColor;
+            dataset.backgroundColor = background;
+            dataset.pointBorderColor = background;
+            dataset.pointBackgroundColor = background;
+            dataset.pointBorderWidth = 1;
+        });
+
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myLine = new Chart(ctx, config);
+        };
+
+    </script>
+</body>
+
+</html>

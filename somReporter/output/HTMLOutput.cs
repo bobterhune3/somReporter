@@ -192,7 +192,8 @@ namespace somReporter.output
 
         public void divisionStandingsHeader(string division)
         {
-            lines.Add(String.Format("<h3>{0} STANDINGS</h3>", division)); 
+            string name = division.Replace(" ", "");
+            lines.Add(String.Format("<h3>{0} STANDINGS <a href=\"winpct_{1}.html\">Trend Chart!</a></h3>", division, name)); 
         }
 
         public void divisionStandingsTableHeader()

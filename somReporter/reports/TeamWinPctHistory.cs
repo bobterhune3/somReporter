@@ -11,17 +11,18 @@ namespace somReporter.reports
         public TeamWinPctHistory() : base("Win Pct History")
         { }
 
-        //    private List<Team> teams = new List<Team>();
-
-        public void loadWinPctFile(string fileName)
+        public bool loadWinPctFile(string fileName)
         {
+            try {
             string[] rawData = File.ReadAllLines(fileName);
-            foreach (string rawLine in rawData)
-            {
-                csvLoadTeamParser(rawLine);
-      //          teams.Add(team);
+                foreach (string rawLine in rawData)
+                {
+                    csvLoadTeamParser(rawLine);
+                }
+
             }
-            return;
+            catch( Exception ex) { return false; }
+            return true;
         }
 
         private void csvLoadTeamParser(string csv, char separator = ',')
@@ -46,8 +47,10 @@ namespace somReporter.reports
                 }
                 if (counter == 0)
                     team = getTeamByAbbreviation(data);
+                else if (counter == 1)
+                    team.WinPctHistoryGameCount = Int32.Parse(data);
                 else
-                    parsed.Add(float.Parse(data));
+                    parsed.Add(Math.Round(float.Parse(data),3));
                 counter++;
             }
 
@@ -55,7 +58,7 @@ namespace somReporter.reports
                 team.WinPctHistoryData = parsed;
         }
 
-        private void csvSaveTeamParser(string csv, char separator = ',')
+        public void csvSaveTeamParser(string csv, char separator = ',')
         {
             List<String> lines = new List<String>();
             List<Team> teams = DATABASE.Teams();
@@ -63,11 +66,27 @@ namespace somReporter.reports
             foreach (Team team in teams)
             {
                 string abrv = team.Abrv;
+                int games = team.Wins + team.Loses;
                 string data2 = String.Join(",", team.WinPctHistoryData.Select(x => x.ToString()).ToArray());
-                string data = abrv + "," + data2;
+                string data = abrv + "," + games + "," + data2;
                 lines.Add(data);
             }
             File.WriteAllLines(csv, lines);
+        }
+
+        public bool addCurrentSeason( List<Team> teams)
+        {
+            bool updatesMade = false;
+            foreach (Team team in teams)
+            {
+                int curGames = team.Wins + team.Loses;
+                if (curGames > team.WinPctHistoryGameCount)
+                {
+                    team.addWinPctHistoryData(team.Wpct);
+                    updatesMade = true;
+                }
+            }
+            return updatesMade;
         }
     }
 }

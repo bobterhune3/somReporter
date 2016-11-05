@@ -32,6 +32,7 @@ namespace somReporter
         private int wildCardPositionCurrent = -1;
         private int wildCardPositionPrevious = -1;
         private List<double> wpctHistory;
+        private int winPctHistoryGameCount = 0;
 
         public static int TOTAL_GAMES = 0;
 
@@ -131,6 +132,11 @@ namespace somReporter
             {
                 return full_div;
             }
+        }
+
+        public int WinPctHistoryGameCount {
+            get { return winPctHistoryGameCount; }
+            set { winPctHistoryGameCount = value; }
         }
 
         public string League
@@ -338,6 +344,8 @@ namespace somReporter
 
         public void addWinPctHistoryData(double value)
         {
+            if(wpctHistory == null )
+                wpctHistory = new List<double>();
             wpctHistory.Add(value);
         }
     }

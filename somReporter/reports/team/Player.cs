@@ -49,6 +49,8 @@ namespace somReporter.team
         {
             get
             {
+                if (Actual == 0)
+                    Actual = 1;
                 return Report.RoundToSignificantDigits((double)Replay / (double)Actual, 3);
             }
         }

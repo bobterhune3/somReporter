@@ -16,7 +16,7 @@ namespace somReporter
             rawData = File.ReadAllText("line-legend.template");
         }
 
-        public void setGraphData(List<Team> teams) {
+        public void setGraphData(String title, List<Team> teams) {
             Data data = buildJSONObjects(teams);
 
             string json = new JavaScriptSerializer().Serialize(data);
@@ -28,6 +28,7 @@ namespace somReporter
             json = json.Replace("\"lineTension\"", "lineTension");
             json = json.Replace("\"fill\"", "fill");
             rawData = rawData.Replace("[PUT_DATA_HERE]", json);
+            rawData = rawData.Replace("[PUT_TITLE_HERE]", title);
         }
 
         public void save(string htmlFile)
