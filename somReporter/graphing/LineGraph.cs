@@ -16,8 +16,8 @@ namespace somReporter
             rawData = File.ReadAllText("line-legend.template");
         }
 
-        public void setGraphData(String title, List<Team> teams) {
-            Data data = buildJSONObjects(teams);
+         public void setGraphData(String title, List<Team> teams, bool draftOrder) {
+            Data data = buildJSONObjects(teams, draftOrder);
 
             string json = new JavaScriptSerializer().Serialize(data);
             json = json.Replace("\"labels\"", "labels");
@@ -36,18 +36,22 @@ namespace somReporter
             File.WriteAllText(htmlFile, rawData);
         }
 
-        private Data buildJSONObjects(List<Team> teams)
+        private Data buildJSONObjects(List<Team> teams, bool draftOrderReport)
         {
             Data data = new Data();
             List<DataSets> datasets = new List<DataSets>();
 
             data.setLabels(teams[0]);
             foreach( Team team in teams ) {
-                DataSets ds = new DataSets();
-                ds.label = team.Abrv;
-                ds.borderColor = getTeamColor(team.Abrv);
-                ds.setData(team);
-                datasets.Add(ds);
+                if( !draftOrderReport || 
+                    (draftOrderReport && team.Wpct < .450 )) {
+                        DataSets ds = new DataSets();
+                        ds.label = team.Abrv;
+                        ds.borderColor = getTeamColor(team.Abrv);
+                        ds.setData(team);
+                        datasets.Add(ds);
+                }
+
             }
             data.datasets = datasets.ToArray();
 
@@ -76,11 +80,11 @@ namespace somReporter
             if( abv.Equals("SEG")) return "4,23,68";
             if( abv.Equals("TXG")) return "28,46,118";
 
-            if( abv.Equals("CHJ")) return "7,23,83";
+            if( abv.Equals("CHB")) return "7,23,83";
             if( abv.Equals("MMS")) return "32,142,139";
             if( abv.Equals("MLG")) return "73,95,155";
             if( abv.Equals("PHM")) return "198,58,67";
-            if( abv.Equals("PTS")) return "252,177,13";
+            if( abv.Equals("PTB")) return "252,177,13";
             if( abv.Equals("SLB")) return "212,4,36";
             if( abv.Equals("WSG")) return "4,37,92";
 
@@ -128,7 +132,7 @@ namespace somReporter
             List<double> list = new List<double>();
             foreach (float f in team.WinPctHistoryData)
             {
-                list.Add(f);
+                list.Add(Math.Round(f, 3));
             }
             data = list.ToArray();
         }

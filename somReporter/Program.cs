@@ -11,6 +11,15 @@ namespace somReporter
 {
     public class Program
     {
+        public static string[] LEAGUES = { "" };
+        //      private readonly string[] LEAGUES = { "AL", "NL" };
+        public static string[] DIVISIONS = { "Federal", "American", "National" };
+        public static string[] DIVISION_DRAFT_ORDER = { "National", "American", "Federal" };
+        //      private readonly string[] DIVISIONS = { "East", "West" };
+        private static bool HAS_WILDCARD = false;
+        private static bool RANK_STATS_BY_DIVISION = true;
+        private static bool STRAIGHT_DRAFT_ORDER = false;
+
         private LeagueStandingsReport leagueStandingsReport;
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
@@ -55,11 +64,16 @@ namespace somReporter
             Console.WriteLine("Process Who Hot...");
             program.showWhosHot();
 
-            Console.WriteLine("Process Wild Card...");
-            program.processWildCardStandings();
+            if(HAS_WILDCARD) {
+                Console.WriteLine("Process Wild Card...");
+                program.processWildCardStandings();
+            }
 
             Console.WriteLine("Process Draft Order...");
-            program.processDraftOrder();
+            if (Program.STRAIGHT_DRAFT_ORDER)
+                program.processDraftOrder();
+            else
+                program.processTierdDraftOrder();
 
             Console.WriteLine("Process Record Book...");
             program.processRecordBook();
@@ -223,25 +237,118 @@ namespace somReporter
             output.endOfTable();
         }
 
+        public void processTierdDraftOrder() {
+            output.draftOrderHeader();
+
+            LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
+            scope.OrderAscending = true;
+            scope.League = "X";
+
+            // Get Team Draft order by division
+            Dictionary<String, List<Team>> draftOrder = new Dictionary<string, List<Team>>();
+            foreach (string division in DIVISIONS) {
+                scope.Division = division;
+                draftOrder[division] = leagueStandingsReport.getTeamsByWinPercentage(scope);
+            }
+
+            output.draftOrderTableHeader();
+
+            int pickNum = 0;
+            List<Team> tieBreakerList = new List<Team>();
+            Team prevTeam = null;
+
+       
+            foreach( String division in Program.DIVISION_DRAFT_ORDER) {
+                List<Team> teams = draftOrder[division];
+                foreach (Team team in teams)
+                {
+                    if (prevTeam == null)
+                    {
+                        prevTeam = team;
+                    }
+                    else if (team.Wpct == prevTeam.Wpct)
+                    {
+                        if (tieBreakerList.Count == 0)
+                            tieBreakerList.Add(prevTeam);
+                        tieBreakerList.Add(team);
+                    }
+                    else
+                    {
+                        if (tieBreakerList.Count > 0)
+                        {
+                            foreach (Team tbTeam in tieBreakerList)
+                            {
+                                pickNum++;
+                                WriteOutTeamForDraftPicks(pickNum, tbTeam);
+                            }
+                            tieBreakerList.Clear();
+                            prevTeam = team;
+                        }
+                        else
+                        {
+                            pickNum++;
+                            WriteOutTeamForDraftPicks(pickNum, prevTeam);
+                            prevTeam = team;
+                        }
+                    }
+                }
+            }
+            pickNum++;
+            WriteOutTeamForDraftPicks(pickNum, prevTeam);
+            output.endOfTable();
+        }
+
         public void processStandings() {
 
-            leagueStandingsReport.calculateHighLowTeamStats("AL", Team.CATEGORY.BATTING_AVERAGE);
-            leagueStandingsReport.calculateHighLowTeamStats("NL", Team.CATEGORY.BATTING_AVERAGE);
-            leagueStandingsReport.calculateHighLowTeamStats("AL", Team.CATEGORY.HOME_RUNS);
-            leagueStandingsReport.calculateHighLowTeamStats("NL", Team.CATEGORY.HOME_RUNS);
-            leagueStandingsReport.calculateHighLowTeamStats("AL", Team.CATEGORY.EARNED_RUNS_AVG);
-            leagueStandingsReport.calculateHighLowTeamStats("NL", Team.CATEGORY.EARNED_RUNS_AVG);
+            foreach (string league in LEAGUES)
+            {
+                if(RANK_STATS_BY_DIVISION) { 
+                    foreach (string division in DIVISIONS)
+                    {
+                        leagueStandingsReport.calculateHighLowTeamStats(league, division, Team.CATEGORY.BATTING_AVERAGE);
+                        leagueStandingsReport.calculateHighLowTeamStats(league, division, Team.CATEGORY.HOME_RUNS);
+                        leagueStandingsReport.calculateHighLowTeamStats(league, division, Team.CATEGORY.EARNED_RUNS_AVG);
 
-            List<Team> teamsALEast = getStandings("AL", "East");
-            List<Team> teamsALWest = getStandings("AL", "West");
-            List<Team> teamsNLEast = getStandings("NL", "East");
-            List<Team> teamsNLWest = getStandings("NL", "West");
+                    }
+                }
+                else
+                {
+                    leagueStandingsReport.calculateHighLowTeamStats(league, "", Team.CATEGORY.BATTING_AVERAGE);
+                    leagueStandingsReport.calculateHighLowTeamStats(league, "", Team.CATEGORY.HOME_RUNS);
+                    leagueStandingsReport.calculateHighLowTeamStats(league, "", Team.CATEGORY.EARNED_RUNS_AVG);
+                }
+            }
 
+            Dictionary<String, Dictionary<String, List<Team>>> teams = new Dictionary<String, Dictionary<String, List<Team>>>();
 
-            processDivision("AL EAST", teamsALEast);
-            processDivision("AL WEST", teamsALWest);
-            processDivision("NL EAST", teamsNLEast);
-            processDivision("NL WEST", teamsNLWest);
+            foreach (string league in LEAGUES)
+            {
+                foreach (string division in DIVISIONS)
+                {
+                    Dictionary<String, List<Team>> divs = null;
+                    if (teams.Count > 0)
+                        divs = teams[league];
+                    else
+                        teams[""] = new Dictionary<string, List<Team>>();
+
+                    if (divs == null)
+                    {
+                        divs = new Dictionary<String, List<Team>>();
+                        teams[league] = divs;
+                    }
+
+                    divs[division] = getStandings(league, division);
+                }
+            }
+
+            foreach (string league in LEAGUES)
+            {
+                foreach (string division in DIVISIONS)
+                {
+                    List<Team> div = teams[league][division];
+                    processDivision(league+division, div);
+                }
+            }
         }
 
         private void processDivision( string division, List<Team> teams) {
@@ -256,30 +363,30 @@ namespace somReporter
             output.endOfTable();
         }
 
+        private List<Team> getWildCardTeams(string league)
+        {
+            List<Team> teams = new List<Team>();
+
+            List<Team> teamsEast = getStandings(league, "East");
+            List<Team> teamsWest = getStandings(league, "West");
+
+            teamsEast.RemoveAt(0);
+            teamsWest.RemoveAt(0);
+
+            teams.AddRange(teamsEast);
+            teams.AddRange(teamsWest);
+
+            sortLeagueByWinningPct(teams);
+
+            return teams;
+        }
+
 
         public void processWildCardStandings() {
             output.spacer();
 
-            List<Team> teamsALEast = getStandings("AL", "East");
-            List<Team> teamsALWest = getStandings("AL", "West");
-            List<Team> teamsNLEast = getStandings("NL", "East");
-            List<Team> teamsNLWest = getStandings("NL", "West");
-
-            //Remove Winners of each Divisino
-            teamsALEast.RemoveAt(0);
-            teamsALWest.RemoveAt(0);
-            teamsNLWest.RemoveAt(0);
-            teamsNLEast.RemoveAt(0);
-
-            List<Team> teamsAL = new List<Team>();
-            List<Team> teamsNL = new List<Team>();
-            teamsAL.AddRange(teamsALEast);
-            teamsAL.AddRange(teamsALWest);
-            teamsNL.AddRange(teamsNLWest);
-            teamsNL.AddRange(teamsNLEast);
-
-            sortLeagueByWinningPct(teamsAL);
-            sortLeagueByWinningPct(teamsNL);
+            List<Team> teamsAL = getWildCardTeams("AL");
+            List<Team> teamsNL = getWildCardTeams("NL");
 
             output.wildCardHeader("AL");
             output.wildCardTableHeader();
@@ -346,7 +453,7 @@ namespace somReporter
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
             scope.OrderAscending = false;
             scope.Division = division;
-            scope.League = league;
+            scope.League = Program.LEAGUES[0].Length == 0 ? "X" : league;
             return leagueStandingsReport.getTeamsByWinPercentage(scope); 
         }
 
@@ -400,26 +507,64 @@ namespace somReporter
 
             // Only create and save if additional games added.
             List<Team> teams = leagueStandingsReport.getTeamsByWinPercentage(scope);
-        //    if( teamWinPctHistory.addCurrentSeason(teams))
+            if( teamWinPctHistory.addCurrentSeason(teams))
             {
-           //     if(!firstTimeLoad)
-                { 
+                if(!firstTimeLoad)
+                {
                     // Create Division Charts
-                    buildDivisionChart("AL", "East");
-                    buildDivisionChart("AL", "West");
-                    buildDivisionChart("NL", "East");
-                    buildDivisionChart("NL", "West");
+                    foreach (string league in LEAGUES)
+                    {
+                        foreach (string division in DIVISIONS)
+                            buildDivisionChart(league, division);
+                    }
                 }
 
-           //     teamWinPctHistory.csvSaveTeamParser(@"wpct.csv");
+                teamWinPctHistory.csvSaveTeamParser(@"wpct.csv");
+            }
+
+            buildDraftOrderChart(teams);
+
+            if(HAS_WILDCARD) {
+                List<Team> teamsAL = getWildCardTeams("AL");
+                buildWildcardChart(teamsAL, "AL");           
+                
+                List<Team> teamsNL = getWildCardTeams("NL");
+                buildWildcardChart(teamsNL, "NL");
             }
         }
 
         private void buildDivisionChart(String league, String division) {
             List<Team> teams= getStandings(league, division);
             LineGraph lg = new LineGraph();
-            lg.setGraphData("Trend Report for "+ league +" " + division, teams);
+            lg.setGraphData("Trend Report for "+ league +" " + division, teams, false);
             lg.save(String.Format("winpct_{0}{1}.html", league, division.ToUpper()));
         }
+
+        private void buildWildcardChart(List<Team> teams, String league)
+        {
+            LineGraph lg = new LineGraph();
+            Team secondPlaceTeam = teams.ElementAt(1);
+            List<Team> chartedTeams = new List<Team>();
+            chartedTeams.Add(teams[0]);
+            chartedTeams.Add(teams[1]);
+
+            for (int i = 2; i < teams.Count; i++)
+            {
+                Team team = teams.ElementAt(i);
+                double gb = team.calculateGamesBehind(secondPlaceTeam);
+                if (gb < 11.5)
+                    chartedTeams.Add(team);
+            }
+            lg.setGraphData("Trend Report for "+ league + " Wild Cards", chartedTeams, false);
+            lg.save(String.Format("winpct_{0}wildcard.html", league));
+        }
+
+        private void buildDraftOrderChart(List<Team> teams)
+        {
+            LineGraph lg = new LineGraph();
+            lg.setGraphData("Trend Report for Draft Order", teams, true);
+            lg.save("winpct_draftorder.html");
+        }
+
     }
 }

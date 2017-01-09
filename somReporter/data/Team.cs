@@ -5,6 +5,7 @@ namespace somReporter
 {
     public class Team 
     {
+        private const String BASELINE_TEAM = "DTB";
         private String name = "";
         private String abrv = "";
         private int wins = 0;
@@ -93,7 +94,7 @@ namespace somReporter
             get { return loses; }
             set {
                 loses = value;
-                if (Abrv.Equals("MNB"))
+                if (Abrv.Equals(BASELINE_TEAM))
                     TOTAL_GAMES = Wins + loses;
             }
         }
@@ -282,11 +283,20 @@ namespace somReporter
         }
 
         public Team(String div) {
-           league = div.Substring(0,2);
-            if (league.Equals("NE"))
-                league = "NL";
-           division = div.Substring(3);
-           full_div = div;
+            if (Program.LEAGUES[0].Length > 0) { 
+                league = div.Substring(0, 2);
+                // This fixes a typo in the league
+                if (league.Equals("NE"))
+                    league = "NL";
+                division = div.Substring(3);
+            }
+            else { 
+                league = "";
+                division = div;
+            }
+
+
+            full_div = div;
         }
 
         public string buildStorageData()

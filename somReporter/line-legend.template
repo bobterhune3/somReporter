@@ -15,7 +15,9 @@
 </head>
 
 <body>
-    <div style="width:75%;">
+  <a href="index.html">&lt;&lt; Back</a>
+
+  <div style="width:75%;">
         <canvas id="canvas"></canvas>
     </div>
     <script>

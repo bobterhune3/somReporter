@@ -53,7 +53,7 @@ namespace somReporter.output
 
         public void draftOrderHeader()
         {
-            lines.Add(String.Format("<h3>DRAFT PICK ORDER</h3>"));
+            lines.Add(String.Format("<h3>DRAFT PICK ORDER <a href=\"winpct_draftorder.html\">Trend Chart!</a></h3>"));
         }
 
         public void draftOrderTableHeader()
@@ -158,7 +158,7 @@ namespace somReporter.output
 
         public void wildCardHeader(string league)
         {
-            lines.Add(String.Format("<h3>{0} WILD CARD STANDINGS</h3>", league));
+            lines.Add(String.Format("<h3>{0} WILD CARD STANDINGS <a href=\"winpct_{0}wildcard.html\">Trend Chart!</a></h3>", league));
         }
 
         public void wildCardTableHeader()

@@ -155,7 +155,7 @@ namespace somReporter
         private Report loadReport(string reportTitle)
         {
             if (reportTitle.StartsWith("LEAGUE STANDINGS"))
-                return new LeagueStandingsReport(reportTitle);
+                return new LeagueStandingsReport(reportTitle, Program.LEAGUES[0].Length > 0 );
             if (reportTitle.StartsWith("LEAGUE GRAND TOTALS (primary report) FOR"))
                 return new LeagueGrandTotalsReport(reportTitle);
             else if (reportTitle.StartsWith("INJURY/MINOR LEAGUE REPORT FOR"))

@@ -12,15 +12,19 @@ namespace somReporter
     {
         //        private static String REGEX_HEADER      = @"([\s\S]{0,15}) +([\S]+) +([\S]+) +([\S]+) +([\S]+) +([\s\S]+) ([\S]+) +([\S]+) ([\S]+) ([\S]+)";
         private const String REGEX_HEADER = @"([A-Z][A-Z] [a-zA-Z]+]{0,15}) +";
+        private const String REGEX_HEADER_NO_LEAGUE = @"([a-zA-Z]+]{0,15}) +"; 
         private const String REGEX_TEAM_RECORD = @"[0-9]+ (.+?(?=[4]))4] +([0-9]+) +(.[0-9]+) +([(|1).0-9]+) +([\S]+)";
 
         private const String REPORT_TYPE = "LEAGUE STANDINGS";
 
         private String m_CurrentDivision = "";
+        private bool header_contains_League = true;
 
         public enum REPORT_SCOPE { ALL, LEAGUE, DIVISION }
-        public LeagueStandingsReport(String title) : base(title)
-        { }
+        public LeagueStandingsReport(String title, bool containsLeague) : base(title)
+        {
+            header_contains_League = containsLeague;
+        }
 
         public override String getReportType() { return REPORT_TYPE; }
 
@@ -31,11 +35,23 @@ namespace somReporter
             }
         }
 
+        private bool isThisADivisionName( string line ) {
+            if(!header_contains_League) {
+                foreach(string div in Program.DIVISIONS) {
+                    if (line.StartsWith(div))
+                        return true;
+                }
+                return false;
+            }
+            return true;
+        }
+
         public void collectData(string line)
         {
-            Regex regex = new Regex(REGEX_HEADER);
+            String headerRegEx = header_contains_League ? REGEX_HEADER : REGEX_HEADER_NO_LEAGUE;
+            Regex regex = new Regex(headerRegEx);
             Match headerMatch = regex.Match(line);
-            if (headerMatch.Success)
+            if (headerMatch.Success && isThisADivisionName(line))
             {
                 m_CurrentDivision = headerMatch.Groups[1].Value.Trim();
             }
@@ -79,7 +95,8 @@ namespace somReporter
             {
                 if (scope.AllTeams)
                     matches.Add(team);
-                if (scope.Division.Length > 0 && scope.League.Length > 0)
+                if (scope.Division.Length > 0 && 
+                    (Program.LEAGUES[0].Length > 0 && scope.League.Length > 0))
 
                 {
                     if (team.Division.Equals(scope.Division) &&
@@ -94,7 +111,13 @@ namespace somReporter
                     matches.Add(team);
                 }
                 else if (scope.League.Length > 0 &&
-                    team.League.Equals(scope.League))
+                    team.League.Equals(scope.League) )
+                {
+                    matches.Add(team);
+                }
+                else if (scope.League.Equals("X") &&
+                    scope.Division.Length == 0 &&
+                    Program.LEAGUES[0].Length == 0)
                 {
                     matches.Add(team);
                 }
@@ -165,10 +188,15 @@ namespace somReporter
             return matches;
         }
 
-        public void calculateHighLowTeamStats( String league, Team.CATEGORY cat)
+        public void calculateHighLowTeamStats( String league, String division, Team.CATEGORY cat)
         {
             ReportScope scope = new ReportScope();
-            scope.League = league;
+            if( league.Length > 0 )
+                scope.League = league;
+            if (division.Length > 0) {
+                scope.Division = division;
+                scope.League = "X";
+            }
             List<Team> teams = getTeamsByScope(scope);
             Team leader = null;
             Team trailing = null;
