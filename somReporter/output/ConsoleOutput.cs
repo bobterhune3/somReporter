@@ -29,7 +29,7 @@ namespace somReporter.output
             Console.Out.WriteLine("==========================================");
         }
 
-        public void draftOrderTeamLine(int pickNum, Team team)
+        public void draftOrderTeamLine(int pickNum, int n, Team team)
         {
             Console.Out.WriteLine(String.Format("{0,-3} {1,-15} {2,-5} {3,-5} {4,-5} {5,-3} {6,1}",
                                                         pickNum,

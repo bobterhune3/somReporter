@@ -62,6 +62,7 @@ namespace somReporter.output
             addTableCell("PICK#", "#5B9BD5", "#F8CBAD", 48);
             addTableCell("TEAM", "#5B9BD5", "#F8CBAD", 149);
             addTableCell("OWNER", "#5B9BD5", "#F8CBAD", 65);
+            addTableCell("FINISH", "#5B9BD5", "#F8CBAD", 30);
             addTableCell("WON", "#5B9BD5", "#F8CBAD", 48);
             addTableCell("LOST", "#5B9BD5", "#F8CBAD", 48);
             addTableCell("PCT.", "#5B9BD5", "#F8CBAD", 53);
@@ -69,7 +70,7 @@ namespace somReporter.output
             lines.Add("</tr>");
         }
 
-        public void draftOrderTeamLine(int pickNum, Team team)
+        public void draftOrderTeamLine(int pickNum, int divPick, Team team)
         {
             string bgColor = getBackgroundColor(pickNum);
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
@@ -78,6 +79,7 @@ namespace somReporter.output
                          48, true, returnRankDifToolTip(pickNum,team.DraftPickPositionPrevious));
             addTableCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
             addTableCell(team.Owner, bgColor, "#000000", 65);
+            addTableCell(team.Division+ divPick, bgColor, "#000000",30);
             addTableCell(team.Wins, bgColor, "#000000", 48);
             addTableCell(team.Loses, bgColor, "#000000", 48);
             addTableCell(team.Wpct, 3, bgColor, "#000000", 53);

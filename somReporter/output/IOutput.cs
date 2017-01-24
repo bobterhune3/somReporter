@@ -11,7 +11,7 @@ namespace somReporter.output
     {
         void draftOrderHeader();
         void draftOrderTableHeader();
-        void draftOrderTeamLine(int pickNum, Team team);
+        void draftOrderTeamLine(int pickNum, int dicPick, Team team);
         void wildCardHeader(string league);
         void wildCardTableHeader();
         void wildCardTeamLine(int rank, Team team, string gamesBehind);
