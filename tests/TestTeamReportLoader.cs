@@ -34,7 +34,7 @@ namespace somReporter.team
 
         [TestMethod]
         public void testParsingCompanionReport() {
-            ComparisonReport teamComparisonReport = new ComparisonReport("COMPANION");
+            ComparisonReport teamComparisonReport = new ComparisonReport("COMPARISON");
             teamComparisonReport.collectData("TEAM","--AVERAGE-- AT-BATS DOUBLES TRIPLES --HRs-- -RBIS-- -WALKS- --Ks---");
             teamComparisonReport.collectData("TEAM", " ");
             teamComparisonReport.collectData("TEAM", "R.Flaherty [4] .202  .195 267 307   8  10   3   0   9  10  31  29  26  29  81  86");

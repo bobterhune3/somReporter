@@ -64,14 +64,40 @@ namespace somReporter.team
                     Match teamMatch = regex.Match(line);
                     if (teamMatch.Success)
                     {
-                        if(m_bWorkingOnHitters) { 
+                        /*
+                            Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)
+                            Hitters > 101 actual at bats are actual at bats + 50  (ie ab + 50)
+
+                            Pitchers >= 100 innings is innings + 30  
+                            Pitchers < 100 is 110% of actual   (99 * 1.1) = +29
+                          */
+
+                        if (m_bWorkingOnHitters) { 
                             player.Actual = Convert.ToInt32(teamMatch.Groups[1].Value.Trim());
                             player.Replay = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());
+                            if(player.Actual >=  500) {
+                                player.TargetUsage = Convert.ToInt32(player.Actual * 1.1);
+                            }
+                            else if( player.Actual > 100 )  {
+                                player.TargetUsage = Convert.ToInt32(player.Actual * 1.5);
+                            }
+                            else {
+                                player.TargetUsage = player.Actual + 50;
+                            }
+                         
                         }
                         else
                         {
                             player.Actual = Convert.ToInt32(teamMatch.Groups[1].Value.Trim());
                             player.Replay = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());
+                            if (player.Actual <= 60)
+                            {
+                                player.TargetUsage = Convert.ToInt32(player.Actual * 1.5);
+                            }
+                            else
+                            {
+                                player.TargetUsage   = player.Actual + 30;
+                            }
                         }
                         player.Team = team;
                     }

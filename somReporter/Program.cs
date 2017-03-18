@@ -30,8 +30,8 @@ namespace somReporter
         private SOMReportFile leagueReportFile;
         private SOMReportFile teamReportFile;
 
-        public static bool SHOW_WARNING = false;
-        public static bool SHOW_MORAL = false;
+        public static bool SHOW_WARNING = true;
+        public static bool SHOW_MORAL = true;
 
         IOutput output;
         public Program() {
@@ -50,7 +50,7 @@ namespace somReporter
 
             Console.WriteLine("Intializing...");
             program.initialize();
-       
+      
             string fileName = program.lookupPreviousSaveFile();
             if( fileName.Length > 0 ) {
                 PersistentDictionary<string, string> prevDictionaryFile = 
@@ -256,8 +256,8 @@ namespace somReporter
             int pickNum = 0;
             List<Team> tieBreakerList = new List<Team>();
             Team prevTeam = null;
-
-            Team[] picks = new Team[19];
+            Team lastTeam = null;
+            Team[] picks = new Team[18];
 
             foreach ( String division in Program.DIVISION_DRAFT_ORDER) {
                 List<Team> teams = draftOrder[division];
@@ -280,8 +280,8 @@ namespace somReporter
                         {
                             foreach (Team tbTeam in tieBreakerList)
                             {
-                                pickNum++;
-                                picks[pickNum] = tbTeam;
+                            //    pickNum++;
+                                picks[pickNum++] = tbTeam;
        //                         WriteOutTeamForDraftPicks(pickNum, tbTeam);
                             }
                             tieBreakerList.Clear();
@@ -289,17 +289,33 @@ namespace somReporter
                         }
                         else
                         {
-                            pickNum++;
-                            picks[pickNum] = prevTeam;
+                       //     pickNum++;
+                            picks[pickNum++] = prevTeam;
     //                        WriteOutTeamForDraftPicks(pickNum, prevTeam);
                             prevTeam = team;
                         }
                     }
                 }
             }
-            pickNum++;
-            picks[pickNum] = prevTeam;
-            Team[] actualPicks = new Team[19];
+
+            if (tieBreakerList.Count > 0)
+            {
+                foreach (Team tbTeam in tieBreakerList)
+                {
+                    //    pickNum++;
+                    picks[pickNum++] = tbTeam;
+                    //                         WriteOutTeamForDraftPicks(pickNum, tbTeam);
+                }
+                tieBreakerList.Clear();
+
+            }
+            else
+            {
+                picks[pickNum++] = prevTeam;
+                
+            }
+
+            Team[] actualPicks = new Team[18];
 
             // Re-organize the picks, Paren is by division draft order
             //    1-4 - Draft (1-4)
@@ -310,22 +326,22 @@ namespace somReporter
             //    9.A4  (9)    16.F3 (16)
             //    10.A3 (10)   17.F2 (17)
             //    11.F6 (12)   18.F1 (18)
-            for (int i=1; i< picks.Length; i++) {
-                if (i < 5 || i > 14) {
+            for (int i=0; i< picks.Length; i++) {
+                if (i < 4 || i > 13) {
                     actualPicks[i] = picks[i];
                     continue;
                 }
                 switch(i) {
-                    case 5: actualPicks[6] = picks[i]; break;
-                    case 6: actualPicks[8] = picks[i]; break;
-                    case 7: actualPicks[5] = picks[i]; break;
-                    case 8: actualPicks[7] = picks[i]; break;
+                    case 4: actualPicks[5] = picks[i]; break;
+                    case 5: actualPicks[7] = picks[i]; break;
+                    case 6: actualPicks[4] = picks[i]; break;
+                    case 7: actualPicks[6] = picks[i]; break;
+                    case 8: actualPicks[8] = picks[i]; break;
                     case 9: actualPicks[9] = picks[i]; break;
-                    case 10: actualPicks[10] = picks[i]; break;
-                    case 11: actualPicks[12] = picks[i]; break;
-                    case 12: actualPicks[14] = picks[i]; break;
-                    case 13: actualPicks[11] = picks[i]; break;
-                    case 14: actualPicks[13] = picks[i]; break;
+                    case 10: actualPicks[11] = picks[i]; break;
+                    case 11: actualPicks[13] = picks[i]; break;
+                    case 12: actualPicks[10] = picks[i]; break;
+                    case 13: actualPicks[12] = picks[i]; break;
                 }
             }
 

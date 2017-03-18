@@ -73,7 +73,7 @@ namespace somReporter
             if( abv.Equals("TBM")) return "166,195,225";
 
             if( abv.Equals("CXS")) return "40,41,36";
-            if( abv.Equals("KCJ")) return "7,42,101";
+            if( abv.Equals("KCM")) return "7,42,101";
             if( abv.Equals("ANS")) return "198,61,29";
             if( abv.Equals("MNB")) return "193,28,22";
             if( abv.Equals("OKM")) return "4,71,60";

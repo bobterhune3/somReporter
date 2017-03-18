@@ -33,7 +33,7 @@ namespace somReporter
             Report report = new Report("test");
             Assert.AreEqual(report.getReportType(), "UNKNOWN TYPE");
 
-            report = new LeagueStandingsReport("test");
+            report = new LeagueStandingsReport("test", true);
             Assert.AreEqual(report.getReportType(), "LEAGUE STANDINGS");
 
             report = new LeagueGrandTotalsReport("test");

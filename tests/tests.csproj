@@ -53,10 +53,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="reports\LineScoreReportTest.cs" />
-    <Compile Include="reports\TestLeagueStandingsReport.cs" />
+    <Compile Include="reports\TestLeagueStandingsReportDivisionOnly.cs" />
+    <Compile Include="reports\TestLeagueStandingsReportStandard.cs" />
     <Compile Include="reports\ReportTestReports.cs" />
     <Compile Include="reports\TestTeamGrandTotalReports.cs" />
     <Compile Include="reports\RecordBookReportTest.cs" />
+    <Compile Include="reports\TestDraftOrder.cs" />
     <Compile Include="TestFileParser.cs" />
     <Compile Include="TestSOMReportFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,6 +11,7 @@ namespace somReporter.team
         private string name = "";
         private int actual = 0;
         private int replay = 0;
+        private int targetUsage = 0;
         private string team = "";
         private bool hitter = false;
 
@@ -31,6 +32,12 @@ namespace somReporter.team
         {
             get { return replay; }
             set { replay = value; }
+        }
+
+        public int TargetUsage
+        {
+            get { return targetUsage; }
+            set { targetUsage = value; }
         }
 
         public string Team

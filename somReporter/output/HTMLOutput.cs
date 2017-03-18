@@ -400,14 +400,14 @@ namespace somReporter.output
                 addTableCell("TYPE", "#339966", "#FFFFFF", 60);
                 addTableCell("ACTUAL", "#339966", "#FFFFFF", 75);
                 addTableCell("REPLAY", "#339966", "#FFFFFF", 75);
-                addTableCell("USAGE", "#339966", "#FFFFFF", 75);
+                addTableCell("TARGET", "#339966", "#FFFFFF", 75);
 
             lines.Add("</tr></table>");
         }
 
         public bool usageReportItem(Player player, int counter )
         {
-            string bgColor = getBackgroundColor(player.Usage, player.IsHitter);
+            string bgColor = getBackgroundColor(player.Actual, player.TargetUsage, player.Replay, player.IsHitter);
 
             if (bgColor.Length == 0) //Skip line if player does not fall within boundry
                 return false;
@@ -423,7 +423,7 @@ namespace somReporter.output
                 addTableCell(player.IsHitter?"B":"P", bgColor, "#000000", 60);
                 addTableCell(player.Actual, bgColor, "#000000", 75);
                 addTableCell(player.Replay, bgColor, "#000000", 75);
-                addTableCell(player.Usage, 2, bgColor, "#000000", 75);
+                addTableCell(player.TargetUsage, bgColor, "#000000", 75);
 
             lines.Add("</tr></table>");
             return true;
@@ -445,52 +445,51 @@ namespace somReporter.output
 
         private string prettyTeamName(string teamName ) {
             if (teamName.Equals("Anaheim Ange")) return "ANS";
-            if (teamName.Equals("Arizona Diam")) return "AZB";
-            if (teamName.Equals("Atlanta Brav")) return "ATS";
-            if (teamName.Equals("Baltimore Or")) return "BLJ";
-            if (teamName.Equals("Boston Red S")) return "BSS";
-            if (teamName.Equals("Chicago (AL)")) return "CHS";
-            if (teamName.Equals("Chicago (NL)")) return "CHJ";
+            if (teamName.Equals("Chicago (NL)")) return "CHB";
             if (teamName.Equals("Cleveland In")) return "CLM";
-            if (teamName.Equals("Colorado Roc")) return "CRM";
             if (teamName.Equals("Detroit Tige")) return "DTB";
-            if (teamName.Equals("Houston Astr")) return "HOJ";
-            if (teamName.Equals("Kansas City")) return "KCJ";
+            if (teamName.Equals("Kansas City")) return "KCM";
             if (teamName.Equals("Los Angeles")) return "LAM";
             if (teamName.Equals("Miami Marlin")) return "MMS";
-            if (teamName.Equals("Milwaukee Br")) return "MLS";
-            if (teamName.Equals("Minnesota Tw")) return "MNB";
+            if (teamName.Equals("Milwaukee Br")) return "MLG";
             if (teamName.Equals("New York Yan")) return "NYB";
             if (teamName.Equals("Oakland Athl")) return "OKM";
             if (teamName.Equals("Philadelphia")) return "PHM";
-            if (teamName.Equals("Pittsburgh P")) return "PIS";
+            if (teamName.Equals("Pittsburgh P")) return "PTB";
             if (teamName.Equals("San Diego Pa")) return "SDG";
             if (teamName.Equals("San Francisc")) return "SFJ";
             if (teamName.Equals("Seattle Mari")) return "SEG";
-            if (teamName.Equals("St. Louis Ca")) return "STB";
+            if (teamName.Equals("St. Louis Ca")) return "SLB";
             if (teamName.Equals("Tampa Bay Ra")) return "TBM";
             if (teamName.Equals("Texas Ranger")) return "TXG";
             if (teamName.Equals("Toronto Blue")) return "TOG";
-            if (teamName.Equals("Washington N")) return "WAG";
+            if (teamName.Equals("Washington N")) return "WSG";
             return "UNK";
         }
-        private string getBackgroundColor( double usage, bool isHitter ) {
-            if( isHitter)
-            {
-                if (usage > 1.5)        // Penality For Hitters
+        private string getBackgroundColor( int actual, int target, int replay, bool isHitter ) {
+            /*
+                Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)
+                Hitters > 101 actual at bats are actual at bats + 50  (ie ab + 50)
+
+                Pitchers >= 100 innings is innings + 30  
+                Pitchers < 100 is 110% of actual   (99 * 1.1) = +29
+              */
+            if ( isHitter)
+            {   
+                if (replay > target)        // Penality For Hitters
                     return "#FF0000";
-                if (usage > 1.2 && Program.SHOW_MORAL)        // Moral Ceiling
+                if (replay > (actual * 1.1) && Program.SHOW_MORAL)        // Moral Ceiling
                     return "#FF6611";
-                if (usage > .8 && Program.SHOW_WARNING)         // Danger Level
+                if (replay > (actual * .8) && Program.SHOW_WARNING)         // Danger Level
                     return "#FFFF55";
                 return "";
             }
             else {
-                if (usage > 1.5)         // Penality For Pitchers
+                if (replay > target)         // Penality For Pitchers
                     return "#FF0000";
-                if (usage > 1.2 && Program.SHOW_MORAL)         // Moral Ceiling
+                if (replay > (actual * 1.1) && Program.SHOW_MORAL)         // Moral Ceiling
                     return "#FF6611";
-                if (usage > .8 && Program.SHOW_WARNING)          // Danger Level
+                if (replay > (actual * .8) && Program.SHOW_WARNING)          // Danger Level
                     return "#FFFF55";
                 return "";
             }

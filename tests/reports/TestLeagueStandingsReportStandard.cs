@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace somReporter
 {
     [TestClass()]
-    public class TestLeagueStandingsReport
+    public class TestLeagueStandingsReportStandard
     {
         private SOMReportFile file;
         private LeagueStandingsReport leagueStandingsReport;
@@ -15,6 +15,8 @@ namespace somReporter
         public void Initialize()
         {
             Report.DATABASE.reset();
+            string [] leagues = { "AL", "NL" };
+            Program.LEAGUES = leagues;
             file = new SOMReportFile("ALL_REPORTS.PRT");
             file.parseLeagueFile();
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
@@ -30,7 +32,7 @@ namespace somReporter
             Report report = new Report("test");
             Assert.AreEqual(report.getReportType(), "UNKNOWN TYPE");
 
-            report = new LeagueStandingsReport("test");
+            report = new LeagueStandingsReport("test", true);
             Assert.AreEqual(report.getReportType(), "LEAGUE STANDINGS");
         }
 

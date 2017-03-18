@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="data\DataStore.cs" />
     <Compile Include="data\Team.cs" />
+    <Compile Include="features\FeatureFactory.cs" />
     <Compile Include="graphing\LineGraph.cs" />
     <Compile Include="output\ConsoleOutput.cs" />
     <Compile Include="output\HTMLOutput.cs" />
