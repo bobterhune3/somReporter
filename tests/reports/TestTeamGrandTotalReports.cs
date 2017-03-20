@@ -15,6 +15,8 @@ namespace somReporter
         [TestInitialize()]
         public void Initialize()
         {
+            Config.PRT_FILE_LOCATION = "testData";
+            Config.LEAGUE_NAME = "";
             Report.DATABASE.reset();
             SOMReportFile file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
@@ -46,20 +48,20 @@ namespace somReporter
         public void checkTeamRunsScored()
         {
             Team team1 = leagueStandingsReport.getTeamDataByName("New York");
-            Team team2 = leagueStandingsReport.getTeamDataByName("Baltimore");
+            Team team2 = leagueStandingsReport.getTeamDataByName("Arizona");
 
-            Assert.AreEqual(714, team1.RunsScored);
-            Assert.AreEqual(882, team2.RunsScored);
+            Assert.AreEqual(704, team1.RunsScored);
+            Assert.AreEqual(749, team2.RunsScored);
         }
 
         [TestMethod()]
         public void checkTeamRunsAllowed()
         {
             Team team1 = leagueStandingsReport.getTeamDataByName("New York");
-            Team team2 = leagueStandingsReport.getTeamDataByName("Baltimore");
+            Team team2 = leagueStandingsReport.getTeamDataByName("Arizona");
 
-            Assert.AreEqual(675, team1.RunsAllowed);
-            Assert.AreEqual(605, team2.RunsAllowed);
+            Assert.AreEqual(596, team1.RunsAllowed);
+            Assert.AreEqual(753, team2.RunsAllowed);
         }
 
         [TestMethod()]

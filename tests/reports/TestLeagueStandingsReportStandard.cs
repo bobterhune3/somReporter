@@ -15,9 +15,11 @@ namespace somReporter
         [TestInitialize()]
         public void Initialize()
         {
+            Config.PRT_FILE_LOCATION = "testData";
+            Config.LEAGUE_NAME = "";
             Report.DATABASE.reset();
-            string [] leagues = { "AL", "NL" };
-            Program.LEAGUES = leagues;
+         //   string [] leagues = { "AL", "NL" };
+         //   Program.LEAGUES = leagues;
             file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
@@ -70,12 +72,12 @@ namespace somReporter
             Team team = leagueStandingsReport.getTeamDataByName("New York");
             Assert.AreEqual("New York", team.Name);
             Assert.AreEqual("NYB", team.Abrv);
-            Assert.AreEqual(82, team.Wins);
-            Assert.AreEqual(78, team.Loses);
-            Assert.AreEqual(25.0, team.Gb);
-            Assert.AreEqual("AL East", team.Full_div);
-            Assert.AreEqual("AL", team.League);
-            Assert.AreEqual("East", team.Division);
+            Assert.AreEqual(92, team.Wins);
+            Assert.AreEqual(70, team.Loses);
+            Assert.AreEqual(1.0, team.Gb);
+        //    Assert.AreEqual("AL East", team.Full_div);
+        //    Assert.AreEqual("AL", team.League);
+            Assert.AreEqual("Federal", team.Division);
 
             Assert.IsNull(leagueStandingsReport.getTeamDataByName("BAD NAME"));
         }
@@ -91,21 +93,21 @@ namespace somReporter
         public void getTeamsByDivision()
         {
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
-            scope.League = "AL";
-            scope.Division = "East";
+        //    scope.League = "X";
+            scope.Division = "Federal";
             
             List<Team> teams = leagueStandingsReport.getTeamsByWinPercentage(scope);
-            Assert.AreEqual(7, teams.Count);
+            Assert.AreEqual(6, teams.Count);
         }
 
         [TestMethod()]
         public void getTeamsByLeague()
         {
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
-            scope.League = "AL";
+            scope.League = "";
 
             List<Team> teams = leagueStandingsReport.getTeamsByWinPercentage(scope);
-            Assert.AreEqual(14, teams.Count);
+            Assert.AreEqual(18, teams.Count);
         }
 
         [TestMethod()]
@@ -122,12 +124,12 @@ namespace somReporter
         public void getSortedTeamsAscendingWPctByLeague()
         {
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
-            scope.League = "AL";
-            scope.Division = "East";
+        //    scope.League = "X";
+            scope.Division = "Federal";
             scope.OrderAscending = true;
 
             List<Team> teams = leagueStandingsReport.getTeamsByWinPercentage(scope);
-            Assert.AreEqual(7, teams.Count);
+            Assert.AreEqual(6, teams.Count);
 
             double lastWpct = -1;
             foreach( Team team in teams )
@@ -146,12 +148,12 @@ namespace somReporter
         public void getSortedTeamsDescendingWPctByLeague()
         {
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
-            scope.League = "AL";
-            scope.Division = "East";
+      //      scope.League = "X";
+            scope.Division = "Federal";
             scope.OrderAscending = false;
 
             List<Team> teams = leagueStandingsReport.getTeamsByWinPercentage(scope);
-            Assert.AreEqual(7, teams.Count);
+            Assert.AreEqual(6, teams.Count);
 
             double lastWpct = -1;
             foreach (Team team in teams)
@@ -175,12 +177,12 @@ namespace somReporter
             scope.OrderAscending = true;
 
             List<Team> teams = leagueStandingsReport.getTeamsByName(scope);
-            Assert.AreEqual(28, teams.Count);
+            Assert.AreEqual(18, teams.Count);
 
-            Assert.AreEqual("ANAHEIM", teams[0].Name.ToUpper());
-            Assert.AreEqual("ARIZONA", teams[1].Name.ToUpper());
-            Assert.AreEqual("ATLANTA", teams[2].Name.ToUpper());
-            Assert.AreEqual("BALTIMORE", teams[3].Name.ToUpper());
+            Assert.AreEqual("ARIZONA", teams[0].Name.ToUpper());
+            Assert.AreEqual("CHICAGO", teams[1].Name.ToUpper());
+            Assert.AreEqual("CLEVELAND", teams[2].Name.ToUpper());
+            Assert.AreEqual("DETROIT", teams[3].Name.ToUpper());
         }
 
         [TestMethod()]
@@ -189,10 +191,10 @@ namespace somReporter
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
             scope.AllTeams = true;
 
-            Assert.AreEqual(5, leagueStandingsReport.getTeamsByOwner("B").Count);
+            Assert.AreEqual(6, leagueStandingsReport.getTeamsByOwner("B").Count);
             Assert.AreEqual(6, leagueStandingsReport.getTeamsByOwner("M").Count);
-            Assert.AreEqual(5, leagueStandingsReport.getTeamsByOwner("J").Count);
-            Assert.AreEqual(6, leagueStandingsReport.getTeamsByOwner("S").Count);
+      //      Assert.AreEqual(5, leagueStandingsReport.getTeamsByOwner("J").Count);
+      //      Assert.AreEqual(6, leagueStandingsReport.getTeamsByOwner("S").Count);
             Assert.AreEqual(6, leagueStandingsReport.getTeamsByOwner("G").Count);
         }
 
@@ -203,7 +205,7 @@ namespace somReporter
             scope.AllTeams = true;
 
             Assert.IsNotNull(leagueStandingsReport.getTeamByAbbreviation("MNB"));
-            Assert.IsNotNull(leagueStandingsReport.getTeamByAbbreviation("CHJ"));
+            Assert.IsNotNull(leagueStandingsReport.getTeamByAbbreviation("CHB"));
             Assert.IsNull(leagueStandingsReport.getTeamByAbbreviation("XXX"));
         }
 
