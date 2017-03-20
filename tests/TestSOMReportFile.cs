@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Diagnostics;
+using somReporter.util;
 
 namespace somReporter
 {
@@ -15,7 +16,7 @@ namespace somReporter
             bool testFailed = false;
             try
             {
-                new SOMReportFile("BAD_FILE_NAME.PRT");
+                new SOMReportFile(Config.getConfigurationFile("BAD_FILE_NAME.PRT"));
             }
             catch (Exception ex)
             {

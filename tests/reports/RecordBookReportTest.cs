@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using somReporter.util;
 
 namespace somReporter
 {
@@ -10,7 +11,7 @@ namespace somReporter
         public void simpleTest()
         {
             Report.DATABASE.reset();
-            SOMReportFile file = new SOMReportFile("ALL_REPORTS.PRT");
+            SOMReportFile file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
             RecordBookReport recordBookReport = (RecordBookReport)file.FindReport("RECORD BOOK FOR FOR");
             recordBookReport.processReport();

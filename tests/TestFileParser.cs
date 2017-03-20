@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using somReporter.util;
 
 namespace somReporter
 {
@@ -14,8 +15,8 @@ namespace somReporter
         [TestInitialize()]
         public void Initialize()
         {
-            leagueReportFile = new SOMReportFile("ALL_REPORTS.PRT");
-            teamReportFile = new SOMReportFile("TEAM_ALL_REPORTS.PRT");
+            leagueReportFile = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
+            teamReportFile = new SOMReportFile(Config.getConfigurationFile("TEAM_ALL_REPORTS.PRT"));
         }
 
         [TestCleanup()]

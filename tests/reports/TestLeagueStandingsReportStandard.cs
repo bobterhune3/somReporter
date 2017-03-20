@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
+using somReporter.util;
 
 namespace somReporter
 {
@@ -17,7 +18,7 @@ namespace somReporter
             Report.DATABASE.reset();
             string [] leagues = { "AL", "NL" };
             Program.LEAGUES = leagues;
-            file = new SOMReportFile("ALL_REPORTS.PRT");
+            file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
             leagueStandingsReport.processReport();
@@ -60,7 +61,7 @@ namespace somReporter
             {
                 Debug.WriteLine(team.Name);
             }
-            Assert.AreEqual(28, Report.DATABASE.Teams().Count);
+            Assert.AreEqual(18, Report.DATABASE.Teams().Count);
         }
 
         [TestMethod()]

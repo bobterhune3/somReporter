@@ -61,7 +61,15 @@
   <ItemGroup>
     <Compile Include="data\DataStore.cs" />
     <Compile Include="data\Team.cs" />
+    <Compile Include="features\FeatureDraftOrder.cs" />
     <Compile Include="features\FeatureFactory.cs" />
+    <Compile Include="features\FeatureInjuries.cs" />
+    <Compile Include="features\FeatureNotes.cs" />
+    <Compile Include="features\FeatureRecordBook.cs" />
+    <Compile Include="features\FeatureStandings.cs" />
+    <Compile Include="features\FeatureUsage.cs" />
+    <Compile Include="features\FeatureWhosHot.cs" />
+    <Compile Include="features\IFeature.cs" />
     <Compile Include="graphing\LineGraph.cs" />
     <Compile Include="output\ConsoleOutput.cs" />
     <Compile Include="output\HTMLOutput.cs" />
@@ -79,6 +87,7 @@
     <Compile Include="reports\team\Player.cs" />
     <Compile Include="reports\team\TeamReport.cs" />
     <Compile Include="SOMReportFile.cs" />
+    <Compile Include="util\Config.cs" />
     <Compile Include="util\Pair.cs" />
   </ItemGroup>
   <ItemGroup>

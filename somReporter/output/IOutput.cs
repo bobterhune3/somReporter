@@ -7,7 +7,7 @@ using somReporter.team;
 
 namespace somReporter.output
 {
-    interface IOutput
+    public interface IOutput
     {
         void draftOrderHeader();
         void draftOrderTableHeader();

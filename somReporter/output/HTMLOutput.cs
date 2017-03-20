@@ -445,7 +445,8 @@ namespace somReporter.output
 
         private string prettyTeamName(string teamName ) {
             if (teamName.Equals("Anaheim Ange")) return "ANS";
-            if (teamName.Equals("Chicago (NL)")) return "CHB";
+            if (teamName.Equals("Arizona Diam")) return "AZB";
+            if (teamName.Equals("Chicago Cubs")) return "CHB";
             if (teamName.Equals("Cleveland In")) return "CLM";
             if (teamName.Equals("Detroit Tige")) return "DTB";
             if (teamName.Equals("Kansas City")) return "KCM";
@@ -478,18 +479,18 @@ namespace somReporter.output
             {   
                 if (replay > target)        // Penality For Hitters
                     return "#FF0000";
-                if (replay > (actual * 1.1) && Program.SHOW_MORAL)        // Moral Ceiling
+                if (replay > (actual * Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)        // Moral Ceiling
                     return "#FF6611";
-                if (replay > (actual * .8) && Program.SHOW_WARNING)         // Danger Level
+                if (replay > (actual * Config.WARNING_LEVEL) && Config.SHOW_WARNING)         // Danger Level
                     return "#FFFF55";
                 return "";
             }
             else {
                 if (replay > target)         // Penality For Pitchers
                     return "#FF0000";
-                if (replay > (actual * 1.1) && Program.SHOW_MORAL)         // Moral Ceiling
+                if (replay > (actual * Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
                     return "#FF6611";
-                if (replay > (actual * .8) && Program.SHOW_WARNING)          // Danger Level
+                if (replay > (actual * Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
                     return "#FFFF55";
                 return "";
             }
