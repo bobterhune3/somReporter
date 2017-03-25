@@ -21,12 +21,12 @@ namespace somReporter
 
         public static IFeature featureStandings = null;
         public static IFeature featureDraftOrder = null;
+        public static IFeature featureRecordBook = null;
 
         public static Config cfg = new Config("config.properties");
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
         private NewspaperStyleReport newspaperStyleReport;
-        private RecordBookReport recordBookReport;
         private ComparisonReport teamComparisonReport;
 
         private SOMReportFile leagueReportFile;
@@ -71,13 +71,9 @@ namespace somReporter
             featureDraftOrder = FeatureFactory.loadFeature(FeatureFactory.FEATURE.DRAFT_ORDER);
             featureDraftOrder.process(program.outputStream());
 
-
-    //            program.processDraftOrder();
-    //        else
-     //           program.processTierdDraftOrder();
-
             Console.WriteLine("Process Record Book...");
-            program.processRecordBook();
+            featureRecordBook = FeatureFactory.loadFeature(FeatureFactory.FEATURE.RECORD_BOOK);
+            featureRecordBook.process(program.outputStream());
 
             Console.WriteLine("Process Player Usage ...");
             program.processPlayerUsage();
@@ -162,8 +158,8 @@ namespace somReporter
             newspaperStyleReport.processReport();
 
             Console.WriteLine("    Building Record Book...");
-            recordBookReport = (RecordBookReport)leagueReportFile.FindReport("RECORD BOOK FOR FOR");
-            recordBookReport.processReport();
+            feature = FeatureFactory.loadFeature(FeatureFactory.FEATURE.RECORD_BOOK);
+            feature.initialize(leagueReportFile);
 
             output.setOutputHeader(leagueReportFile.SeasonTitle);
 
@@ -188,30 +184,6 @@ namespace somReporter
             return String.Format("{0}-{1}", leagueReportFile.SeasonTitle, Team.TOTAL_GAMES);
         }
 
-        private void processRecordBook()
-        {
-            int counter = 1;
-            List<SOMRecord> teamRecords = ((RecordBookReport)recordBookReport).getTeamRecords();
-            if(teamRecords.Count > 0) {
-                output.recordBookHeader(true);
-                foreach( SOMRecord rec in teamRecords) {
-                    output.recordBookItem(rec, counter++, true);
-                }
-            }
-
-            counter = 1;
-            List<SOMRecord> playerRecords = ((RecordBookReport)recordBookReport).getPlayerRecords();
-            if (playerRecords.Count > 0)
-            {
-                output.recordBookHeader(false);
-                foreach (SOMRecord rec in playerRecords)  {
-                    output.recordBookItem(rec, counter++, false);
-                }
-            }
-            output.spacer();
-        }
-
- 
         private void WriteOutLeadingTeamForWildCard(Team team, Team secondPlaceTeam)
         {
             double gb = secondPlaceTeam.calculateGamesBehind(team);

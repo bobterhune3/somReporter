@@ -79,7 +79,7 @@ namespace somReporter.output
                          48, true, returnRankDifToolTip(pickNum,team.DraftPickPositionPrevious));
             addTableCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
             addTableCell(team.Owner, bgColor, "#000000", 65);
-            addTableCell(team.Division+ divPick, bgColor, "#000000",75);
+            addTableCell(team.Division, bgColor, "#000000",75);
             addTableCell(team.Wins, bgColor, "#000000", 48);
             addTableCell(team.Loses, bgColor, "#000000", 48);
             addTableCell(team.Wpct, 3, bgColor, "#000000", 53);
@@ -355,22 +355,22 @@ namespace somReporter.output
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><br/><tr>");
 
             if(teamRecords) {
-                addTableCell("RECORD", "#339966", "#F8CBAD", 200);
-                addTableCell("VALUE", "#339966", "#F8CBAD", 60);
-                addTableCell("TEAM", "#339966", "#F8CBAD", 60);
-                addTableCell("VS", "#339966", "#F8CBAD", 60);
+                addTableCell("RECORD", "#5B9BD5", "#F8CBAD", 200);
+                addTableCell("VALUE", "#5B9BD5", "#F8CBAD", 60);
+                addTableCell("TEAM", "#5B9BD5", "#F8CBAD", 60);
+                addTableCell("VS", "#5B9BD5", "#F8CBAD", 60);
             }
             else {
-                addTableCell("RECORD", "#339966", "#F8CBAD", 200);
-                addTableCell("VALUE", "#339966", "#F8CBAD", 60);
-                addTableCell("DESCRIPTION", "#339966", "#F8CBAD", 300);
+                addTableCell("RECORD", "#5B9BD5", "#F8CBAD", 200);
+                addTableCell("VALUE", "#5B9BD5", "#F8CBAD", 60);
+                addTableCell("DESCRIPTION", "#5B9BD5", "#F8CBAD", 300);
             }
             lines.Add("</tr></table>");
         }
 
         public void recordBookItem(SOMRecord rec, int counter, bool teamRecord)
         {
-            string bgColor = getBackgroundColor(counter, true);
+            string bgColor = getBackgroundColor(counter, false);
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
 
             if(teamRecord) {
@@ -394,13 +394,13 @@ namespace somReporter.output
 
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><br/><tr>");
 
-                addTableCell("#", "#339966", "#FFFFFF", 30);
-                addTableCell("PLAYER", "#339966", "#FFFFFF", 100);
-                addTableCell("TEAM", "#339966", "#FFFFFF", 60);
-                addTableCell("TYPE", "#339966", "#FFFFFF", 60);
-                addTableCell("ACTUAL", "#339966", "#FFFFFF", 75);
-                addTableCell("REPLAY", "#339966", "#FFFFFF", 75);
-                addTableCell("TARGET", "#339966", "#FFFFFF", 75);
+                addTableCell("#", "#5B9BD5", "#F8CBAD", 30);
+                addTableCell("PLAYER", "#5B9BD5", "#F8CBAD", 100);
+                addTableCell("TEAM", "#5B9BD5", "#F8CBAD", 60);
+                addTableCell("TYPE", "#5B9BD5", "#F8CBAD", 60);
+                addTableCell("ACTUAL", "#5B9BD5", "#F8CBAD", 75);
+                addTableCell("REPLAY", "#5B9BD5", "#F8CBAD", 75);
+                addTableCell("TARGET", "#5B9BD5", "#F8CBAD", 75);
 
             lines.Add("</tr></table>");
         }
@@ -417,7 +417,7 @@ namespace somReporter.output
 
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
 
-                addTableCell(counter, "#339966", "#000000", 30, false);
+                addTableCell(counter, "#5B9BD5", "#F8CBAD", 30, false);
                 addTableCell(player.Name, bgColor, "#000000", 100, false);
                 addTableCell(prettyTeamName(player.Team), bgColor, "#000000", 60, false);
                 addTableCell(player.IsHitter?"B":"P", bgColor, "#000000", 60);
@@ -432,7 +432,7 @@ namespace somReporter.output
         private void emptyUsageRow() {
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
 
-            addTableCell("", "#FFFFFF", "#000000", 30);
+            addTableCell("", "#5B9BD5", "#F8CBAD", 30);
             addTableCell("", "#FFFFFF", "#000000", 100);
             addTableCell("", "#FFFFFF", "#000000", 60);
             addTableCell("", "#FFFFFF", "#000000", 60);

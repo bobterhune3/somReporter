@@ -9,19 +9,43 @@ namespace somReporter.features
 {
     class FeatureRecordBook : IFeature
     {
+        public RecordBookReport recordBookReport;
+
         public Report getReport()
         {
             throw new NotImplementedException();
         }
 
-        public void initialize(SOMReportFile file)
+        public void initialize(SOMReportFile leagueReportFile)
         {
-            throw new NotImplementedException();
+            recordBookReport = (RecordBookReport)leagueReportFile.FindReport("RECORD BOOK FOR FOR");
+            recordBookReport.processReport();
         }
 
         public void process(IOutput output)
         {
-            throw new NotImplementedException();
+            int counter = 1;
+            List<SOMRecord> teamRecords = ((RecordBookReport)recordBookReport).getTeamRecords();
+            if (teamRecords.Count > 0)
+            {
+                output.recordBookHeader(true);
+                foreach (SOMRecord rec in teamRecords)
+                {
+                    output.recordBookItem(rec, counter++, true);
+                }
+            }
+
+            counter = 1;
+            List<SOMRecord> playerRecords = ((RecordBookReport)recordBookReport).getPlayerRecords();
+            if (playerRecords.Count > 0)
+            {
+                output.recordBookHeader(false);
+                foreach (SOMRecord rec in playerRecords)
+                {
+                    output.recordBookItem(rec, counter++, false);
+                }
+            }
+            output.spacer();
         }
     }
 }
