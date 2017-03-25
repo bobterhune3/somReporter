@@ -20,7 +20,9 @@ namespace somReporter
         //      private readonly string[] DIVISIONS = { "East", "West" };
 
         public static IFeature featureStandings = null;
+        public static IFeature featureDraftOrder = null;
 
+        public static Config cfg = new Config("config.properties");
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
         private NewspaperStyleReport newspaperStyleReport;
@@ -48,7 +50,6 @@ namespace somReporter
         static void Main(string[] args)
         {
             Program program = new Program();
-            Config cfg = new Config("config.properties");
 
             Console.WriteLine("Intializing...");
             program.initialize();
@@ -66,12 +67,14 @@ namespace somReporter
             Console.WriteLine("Process Who Hot...");
             program.showWhosHot();
 
-
             Console.WriteLine("Process Draft Order...");
-            if (Config.STRAIGHT_DRAFT_ORDER)
-                program.processDraftOrder();
-            else
-                program.processTierdDraftOrder();
+            featureDraftOrder = FeatureFactory.loadFeature(FeatureFactory.FEATURE.DRAFT_ORDER);
+            featureDraftOrder.process(program.outputStream());
+
+
+    //            program.processDraftOrder();
+    //        else
+     //           program.processTierdDraftOrder();
 
             Console.WriteLine("Process Record Book...");
             program.processRecordBook();
@@ -185,179 +188,6 @@ namespace somReporter
             return String.Format("{0}-{1}", leagueReportFile.SeasonTitle, Team.TOTAL_GAMES);
         }
 
-        public void processDraftOrder()
-        {
-            output.draftOrderHeader();
-
-            LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
-            scope.OrderAscending = true;
-            scope.AllTeams = true;
-
-            output.draftOrderTableHeader();
-
-
-            List<Team> teams = ((LeagueStandingsReport)featureStandings.getReport()).
-                                    getTeamsByWinPercentage(scope);
-            int pickNum = 0;
-            List<Team> tieBreakerList = new List<Team>();
-            Team prevTeam = null;
-
-            foreach (Team team in teams)
-            {
-                if (prevTeam == null) {
-                    prevTeam = team;
-                }
-                else if(team.Wpct == prevTeam.Wpct)
-                {
-                    if(tieBreakerList.Count == 0)
-                        tieBreakerList.Add(prevTeam);
-                    tieBreakerList.Add(team);
-                }
-                else
-                {
-                    if (tieBreakerList.Count > 0)
-                    {
-                        foreach( Team tbTeam in tieBreakerList)
-                        {
-                            pickNum++;
-                            WriteOutTeamForDraftPicks(pickNum, 0, tbTeam);
-                        }
-                        tieBreakerList.Clear();
-                        prevTeam = team;
-                    }
-                    else {
-                        pickNum++;
-                        WriteOutTeamForDraftPicks(pickNum, 0, prevTeam);
-                        prevTeam = team;
-                    }
-                }
-            }
-            pickNum++;
-            WriteOutTeamForDraftPicks(pickNum, 0, prevTeam);
-            output.endOfTable();
-        }
-
-        public void processTierdDraftOrder() {
-            output.draftOrderHeader();
-
-            LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
-            scope.OrderAscending = true;
-            scope.League = "X";
-
-            // Get Team Draft order by division
-            Dictionary<String, List<Team>> draftOrder = new Dictionary<string, List<Team>>();
-            foreach (string division in DIVISIONS) {
-                scope.Division = division;
-                draftOrder[division] = ((LeagueStandingsReport)featureStandings.getReport()).getTeamsByWinPercentage(scope);
-            }
-
-            output.draftOrderTableHeader();
-
-            int pickNum = 0;
-            List<Team> tieBreakerList = new List<Team>();
-            Team prevTeam = null;
-            Team lastTeam = null;
-            Team[] picks = new Team[18];
-
-            foreach ( String division in Program.DIVISION_DRAFT_ORDER) {
-                List<Team> teams = draftOrder[division];
-                
-                foreach (Team team in teams)
-                {
-                    if (prevTeam == null)
-                    {
-                        prevTeam = team;
-                    }
-                    else if (team.Wpct == prevTeam.Wpct)
-                    {
-                        if (tieBreakerList.Count == 0)
-                            tieBreakerList.Add(prevTeam);
-                        tieBreakerList.Add(team);
-                    }
-                    else
-                    {
-                        if (tieBreakerList.Count > 0)
-                        {
-                            foreach (Team tbTeam in tieBreakerList)
-                            {
-                            //    pickNum++;
-                                picks[pickNum++] = tbTeam;
-       //                         WriteOutTeamForDraftPicks(pickNum, tbTeam);
-                            }
-                            tieBreakerList.Clear();
-                            prevTeam = team;
-                        }
-                        else
-                        {
-                       //     pickNum++;
-                            picks[pickNum++] = prevTeam;
-    //                        WriteOutTeamForDraftPicks(pickNum, prevTeam);
-                            prevTeam = team;
-                        }
-                    }
-                }
-            }
-
-            if (tieBreakerList.Count > 0)
-            {
-                foreach (Team tbTeam in tieBreakerList)
-                {
-                    //    pickNum++;
-                    picks[pickNum++] = tbTeam;
-                    //                         WriteOutTeamForDraftPicks(pickNum, tbTeam);
-                }
-                tieBreakerList.Clear();
-
-            }
-            else
-            {
-                picks[pickNum++] = prevTeam;
-                
-            }
-
-            Team[] actualPicks = new Team[18];
-
-            // Re-organize the picks, Paren is by division draft order
-            //    1-4 - Draft (1-4)
-            //    5.A6  (6)    12.A2 (14)
-            //    6.N2  (8)    13.F5 (11)
-            //    7.A5  (5)    14.A1 (13)
-            //    8.N1  (7)    15.F4 (15)
-            //    9.A4  (9)    16.F3 (16)
-            //    10.A3 (10)   17.F2 (17)
-            //    11.F6 (12)   18.F1 (18)
-            for (int i=0; i< picks.Length; i++) {
-                if (i < 4 || i > 13) {
-                    actualPicks[i] = picks[i];
-                    continue;
-                }
-                switch(i) {
-                    case 4: actualPicks[5] = picks[i]; break;
-                    case 5: actualPicks[7] = picks[i]; break;
-                    case 6: actualPicks[4] = picks[i]; break;
-                    case 7: actualPicks[6] = picks[i]; break;
-                    case 8: actualPicks[8] = picks[i]; break;
-                    case 9: actualPicks[9] = picks[i]; break;
-                    case 10: actualPicks[11] = picks[i]; break;
-                    case 11: actualPicks[13] = picks[i]; break;
-                    case 12: actualPicks[10] = picks[i]; break;
-                    case 13: actualPicks[12] = picks[i]; break;
-                }
-            }
-
-            for (int i = 1; i < actualPicks.Length; i++)
-            {
-                WriteOutTeamForDraftPicks(i, 1, actualPicks[i]);
-            }
-            output.endOfTable();
-        }
-
- 
-
- 
- 
-
-
         private void processRecordBook()
         {
             int counter = 1;
@@ -382,11 +212,6 @@ namespace somReporter
         }
 
  
-        private void WriteOutTeamForDraftPicks(int pickNum, int divPick, Team team ) {
-            output.draftOrderTeamLine(pickNum, divPick, team);
-            team.DraftPickPositionCurrent = pickNum;
-         }
-
         private void WriteOutLeadingTeamForWildCard(Team team, Team secondPlaceTeam)
         {
             double gb = secondPlaceTeam.calculateGamesBehind(team);

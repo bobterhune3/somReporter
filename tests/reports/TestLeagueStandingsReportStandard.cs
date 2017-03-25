@@ -204,7 +204,7 @@ namespace somReporter
             LeagueStandingsReport.ReportScope scope = new LeagueStandingsReport.ReportScope();
             scope.AllTeams = true;
 
-            Assert.IsNotNull(leagueStandingsReport.getTeamByAbbreviation("MNB"));
+            Assert.IsNotNull(leagueStandingsReport.getTeamByAbbreviation("PTB"));
             Assert.IsNotNull(leagueStandingsReport.getTeamByAbbreviation("CHB"));
             Assert.IsNull(leagueStandingsReport.getTeamByAbbreviation("XXX"));
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using somReporter.util;
 
 namespace somReporter.features
 {
@@ -22,7 +23,8 @@ namespace somReporter.features
         private static IFeature featureStandings = new FeatureStandings();
         private static IFeature featureWhosHot = new FeatureWhosHot();
         private static IFeature featureInjuries = new FeatureInjuries();
-        private static IFeature featureDraftOrder = new FeatureDraftOrder();
+        private static IFeature featureDraftOrderTierd = new FeatureDraftOrderTierd();
+        private static IFeature featureDraftOrderStraight = new FeatureDraftOrderStraight();
         private static IFeature featureRecordBook = new FeatureRecordBook();
         private static IFeature featureUsage = new FeatureUsage();
 
@@ -37,7 +39,10 @@ namespace somReporter.features
                 case FEATURE.INJURY_REPORT:
                     return featureInjuries;
                 case FEATURE.DRAFT_ORDER:
-                    return featureDraftOrder;
+                    if (Config.STRAIGHT_DRAFT_ORDER)
+                       return featureDraftOrderStraight;
+                    else
+                        return featureDraftOrderTierd;
                 case FEATURE.RECORD_BOOK:
                     return featureRecordBook;
                 case FEATURE.USAGE:
