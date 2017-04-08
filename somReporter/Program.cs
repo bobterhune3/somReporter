@@ -106,14 +106,18 @@ namespace somReporter
         public String lookupPreviousSaveFile()
         {
             string[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory(), leagueReportFile.SeasonTitle+"*");
-            if (directories.Length == 0)
+            if (directories.Length == 0) {
+                // If there is no database, reset the wpct history file
+                if (File.Exists("wpct.csv"))
+                    File.Delete("wpct.csv");
                 return "";
+            }
 
             int highestValue = 0;
             foreach (string dir in directories)
             {
                 string value = dir.Substring(dir.IndexOf('-')+1);
-                if( value.Length > 1)
+                if (value.Length > 0)
                 {
                     long theValue = 0;
                     Int64.TryParse(value, out theValue);

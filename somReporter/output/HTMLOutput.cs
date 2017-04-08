@@ -12,7 +12,7 @@ namespace somReporter.output
     {
         private const string S_DOC_HTML_TITLE = "<html><head><title>{0} Strat-O-Matic League</title></head><style>{1}</style><body>\r\n";
         private const string S_DOC_HEADER = "<h1 align = center style='text-align:center'>{0} - Strat-O-Matic League</h1>\r\n";
-        private const string S_LINK_TO_SOM_PAGE = "<p><a href = \"../../../../../../2015ND/index.html\" > Click HERE for full details</a></p>\r\n";
+        private const string S_LINK_TO_SOM_PAGE = "<p><a href = \"../../../../../../{0}/index.html\" > Click HERE for full details</a></p>\r\n";
         private const string S_HTML_EXTRA_TEXT = "<pre>{0}</pre>";
         private const string S_TABLE_HEADER_CELL         = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span style='color:{3}'>&nbsp;{4}</span></p></td>";
         private const string S_TABLE_HEADER_CELL_TOOLTIP = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span class='tooltip' style='color:{3}'>&nbsp;{4}<span class='tooltiptext'>{5}</span></span></p></td>";
@@ -27,7 +27,7 @@ namespace somReporter.output
         {
             lines.Add(String.Format(S_DOC_HTML_TITLE, title, getToolTipScript()));
             lines.Add(String.Format(S_DOC_HEADER, title));
-            lines.Add(String.Format(S_LINK_TO_SOM_PAGE, title));
+            lines.Add(String.Format(S_LINK_TO_SOM_PAGE, Config.LEAGUE_NAME));
 
             String extraText = checkForExtraText();
             if (extraText.Length > 0)
@@ -195,7 +195,7 @@ namespace somReporter.output
         public void divisionStandingsHeader(string division)
         {
             string name = division.Replace(" ", "");
-            lines.Add(String.Format("<h3>{0} STANDINGS <a href=\"winpct_{1}.html\">Trend Chart!</a></h3>", division, name)); 
+            lines.Add(String.Format("<h3>{0} STANDINGS <a href=\"winpct_{1}.html\">Trend Chart!</a></h3>", division, name.ToUpper())); 
         }
 
         public void divisionStandingsTableHeader()
@@ -477,20 +477,21 @@ namespace somReporter.output
               */
             if ( isHitter)
             {   
+
                 if (replay > target)        // Penality For Hitters
                     return "#FF0000";
-                if (replay > (actual * Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)        // Moral Ceiling
+                if (replay > (((float)actual) * ((float)Config.SUGGESTION_LEVEL_PERCENT)) && Config.SHOW_MORAL)        // Moral Ceiling
                     return "#FF6611";
-                if (replay > (actual * Config.WARNING_LEVEL) && Config.SHOW_WARNING)         // Danger Level
+                if (replay > (((float)actual) * ((float)Config.WARNING_LEVEL)) && Config.SHOW_WARNING)         // Danger Level
                     return "#FFFF55";
                 return "";
             }
             else {
                 if (replay > target)         // Penality For Pitchers
                     return "#FF0000";
-                if (replay > (actual * Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
+                if (replay > ((float)actual * (float)Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
                     return "#FF6611";
-                if (replay > (actual * Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
+                if (replay > ((float)actual * (float)Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
                     return "#FFFF55";
                 return "";
             }

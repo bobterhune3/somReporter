@@ -24,6 +24,7 @@ namespace somReporter
         private double era = .0;
         private double ip = .0;
         private double homeruns = 0;
+        private double homerunsAllowed = 0;
         private int runsAllowed = 0;
         private double pythagoreanTheorem = .0;
         private int divisionPositionCurrent = -1;
@@ -320,6 +321,12 @@ namespace somReporter
                                        set { this.average = value; } }
         public double HomeRuns { get { return homeruns; }
                                  set { this.homeruns = value; }}
+        public double HomeRunsAllowed
+        {
+            get { return homerunsAllowed; }
+            set { this.homerunsAllowed = value; }
+        }
+        
         public double EarnedRunAvg { get { return era; }
                                      set { this.era = value; } }
 

@@ -74,12 +74,14 @@ namespace somReporter.team
 
                         if (m_bWorkingOnHitters) { 
                             player.Actual = Convert.ToInt32(teamMatch.Groups[1].Value.Trim());
+                            if (player.Actual < 25)
+                                return;
                             player.Replay = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());
                             if(player.Actual >=  500) {
-                                player.TargetUsage = Convert.ToInt32(player.Actual * 1.1);
+                                player.TargetUsage = Convert.ToInt32(((float)player.Actual) * 1.1f);
                             }
                             else if( player.Actual > 100 )  {
-                                player.TargetUsage = Convert.ToInt32(player.Actual * 1.5);
+                                player.TargetUsage = Convert.ToInt32(((float)player.Actual) * 1.5f);
                             }
                             else {
                                 player.TargetUsage = player.Actual + 50;
@@ -89,6 +91,8 @@ namespace somReporter.team
                         else
                         {
                             player.Actual = Convert.ToInt32(teamMatch.Groups[1].Value.Trim());
+                            if (player.Actual < 25)
+                                return;
                             player.Replay = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());
                             if (player.Actual <= 60)
                             {

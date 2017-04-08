@@ -146,7 +146,7 @@ namespace somReporter.features
                 }
             }
 
-            for (int i = 1; i < actualPicks.Length; i++)
+            for (int i = 0; i < actualPicks.Length; i++)
             {
                 WriteOutTeamForDraftPicks(output, i, 1, actualPicks[i]);
             }

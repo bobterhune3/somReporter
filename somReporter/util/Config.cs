@@ -14,8 +14,8 @@ namespace somReporter.util
         public static bool STRAIGHT_DRAFT_ORDER = false;
         public static bool SHOW_WARNING = false;
         public static bool SHOW_MORAL = false;
-        public static double WARNING_LEVEL = 0.8;
-        public static double SUGGESTION_LEVEL_PERCENT = 1.1;
+        public static float WARNING_LEVEL = 0.8f;
+        public static float SUGGESTION_LEVEL_PERCENT = 1.1f;
         public static String PRT_FILE_LOCATION = "C:\\cdrombb\\print";
         public static String LEAGUE_NAME = "2016NP";
 
@@ -106,12 +106,12 @@ namespace somReporter.util
                         else if (key.Equals("WARNING_LEVEL_PERCENT"))
                         {
                             System.Int32.TryParse(value, out tmpNValue);
-                            WARNING_LEVEL = (double)(tmpNValue / 100);
+                            WARNING_LEVEL = (((float)tmpNValue) / 100f);
                         }
                         else if (key.Equals("SUGGESTION_LEVEL_PERCENT"))
                         {
                             System.Int32.TryParse(value, out tmpNValue);
-                            SUGGESTION_LEVEL_PERCENT = (double)(tmpNValue / 100);
+                            SUGGESTION_LEVEL_PERCENT = (((float)tmpNValue) / 100f);
                         }
                         else if (key.Equals("WARNING_LEVEL_PERCENT"))
                         {

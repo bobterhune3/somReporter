@@ -129,6 +129,8 @@ namespace somReporter
         {
             List<Team> matches = getTeamsByScope(scope);
 
+            //TODO:
+           // Tie Breakers: 1.Head to head W - L / 2.H to H run differential / 3.League wide Pythagorean
             matches.Sort(delegate (Team x, Team y)
             {
                 if (scope.OrderAscending) {
