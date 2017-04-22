@@ -25,7 +25,8 @@ namespace somReporter.output
         void ShowWhosHotData(string v);
         void recordBookHeader(bool teamRecord);
         void recordBookItem(SOMRecord rec, int counter, bool teamRecord);
-        void usageHeader();
+        void usageHeader(int playerCount);
+        void usageFooter();
         bool usageReportItem(Player player, int counter);
     }
 }

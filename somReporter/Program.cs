@@ -22,12 +22,12 @@ namespace somReporter
         public static IFeature featureStandings = null;
         public static IFeature featureDraftOrder = null;
         public static IFeature featureRecordBook = null;
+        public static IFeature featureUsage = null;
 
         public static Config cfg = new Config("config.properties");
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
         private NewspaperStyleReport newspaperStyleReport;
-        private ComparisonReport teamComparisonReport;
 
         private SOMReportFile leagueReportFile;
         private SOMReportFile teamReportFile;
@@ -76,7 +76,7 @@ namespace somReporter
             featureRecordBook.process(program.outputStream());
 
             Console.WriteLine("Process Player Usage ...");
-            program.processPlayerUsage();
+            featureUsage.process(program.outputStream());
 
             Console.WriteLine("Create Win Pct History Charts ...");
             ((FeatureStandings)featureStandings).buildCharts();
@@ -171,11 +171,8 @@ namespace somReporter
             teamReportFile = new SOMReportFile(Config.getConfigurationFile("TEAM_ALL_REPORTS.PRT"));
             teamReportFile.parseTeamFile();
 
-            Console.WriteLine("    Building Comparison...");
-            Console.WriteLine("      Showing Moral="+ Config.SHOW_MORAL+", Showing Warnings="+ Config.SHOW_WARNING);
-
-            teamComparisonReport = (ComparisonReport)teamReportFile.FindReport("Comparison Report");
-            teamComparisonReport.processReport();
+            featureUsage = FeatureFactory.loadFeature(FeatureFactory.FEATURE.USAGE);
+            featureUsage.initialize(teamReportFile);
         }
 
         public void saveReportInformation()
@@ -206,20 +203,5 @@ namespace somReporter
             output.wildCardTeamLine(rank, team, gamesBehind);
         }
 
-        public void processPlayerUsage()
-        {
-            output.usageHeader();
-            int counter = 1;
-            List<Player> players = teamComparisonReport.getPlayers();
-            string currentTeam = "";
-            foreach (Player player in players)
-            {
-                if( !currentTeam.Equals(player.Team))
-                    counter = 1;
-                currentTeam = player.Team;
-                if (output.usageReportItem(player, counter))
-                    counter++;
-            }
-        }
     }
 }

@@ -151,11 +151,15 @@ namespace somReporter.output
         {
         }
 
-        public void usageHeader()
+        public void usageHeader(int playerCount)
         {
             throw new NotImplementedException();
         }
 
+        public void usageFooter()
+        {
+            throw new NotImplementedException();
+        }
         public bool usageReportItem(Player player, int counter)
         {
             throw new NotImplementedException();

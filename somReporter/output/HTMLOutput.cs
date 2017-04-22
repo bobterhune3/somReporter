@@ -15,7 +15,7 @@ namespace somReporter.output
         private const string S_LINK_TO_SOM_PAGE = "<p><a href = \"../../../../../../{0}/index.html\" > Click HERE for full details</a></p>\r\n";
         private const string S_HTML_EXTRA_TEXT = "<pre>{0}</pre>";
         private const string S_TABLE_HEADER_CELL         = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span style='color:{3}'>&nbsp;{4}</span></p></td>";
-        private const string S_TABLE_HEADER_CELL_TOOLTIP = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span class='tooltip' style='color:{3}'>&nbsp;{4}<span class='tooltiptext'>{5}</span></span></p></td>";
+        private const string S_TABLE_HEADER_CELL_TOOLTIP = "<td width={0} style='border:solid windowtext 1.0pt; border-right:solid windowtext 1.0pt;background:{1};height:13.8pt'><p align={2}><span class='tooltip'    >&nbsp;{4}<span class='tooltiptext'>{5}</span></span></p></td>";
 
         List<String> lines = new List<String>();
 
@@ -54,6 +54,7 @@ namespace somReporter.output
         public void draftOrderHeader()
         {
             lines.Add(String.Format("<h3>DRAFT PICK ORDER <a href=\"winpct_draftorder.html\">Trend Chart!</a></h3>"));
+            lines.Add(String.Format("<p>First 4 teams subject to lottery</p>"));
         }
 
         public void draftOrderTableHeader()
@@ -75,7 +76,7 @@ namespace somReporter.output
             string bgColor = getBackgroundColor(pickNum);
             lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><tr>");
  
-            addTableCell(pickNum, "#5B9BD5", returnRankDifColor(pickNum, team.DraftPickPositionPrevious), 
+            addTableCell(pickNum+1, "#5B9BD5", returnRankDifColor(pickNum, team.DraftPickPositionPrevious), 
                          48, true, returnRankDifToolTip(pickNum,team.DraftPickPositionPrevious));
             addTableCell(team.Name, "#5B9BD5", "#FFFFFF", 149, false);
             addTableCell(team.Owner, bgColor, "#000000", 65);
@@ -388,11 +389,13 @@ namespace somReporter.output
             lines.Add("</tr></table>");
         }
 
-        public void usageHeader()
+        public void usageHeader(int playerCount)
         {
             lines.Add(String.Format("<h3>OVER USAGE REPORT</h3>"));
-
-            lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><br/><tr>");
+            if(playerCount == 0 )
+                lines.Add("No players currently meets report.");
+            else {
+                lines.Add("<table style='margin-left:50px;' border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;border:none'><br/><tr>");
 
                 addTableCell("#", "#5B9BD5", "#F8CBAD", 30);
                 addTableCell("PLAYER", "#5B9BD5", "#F8CBAD", 100);
@@ -401,8 +404,8 @@ namespace somReporter.output
                 addTableCell("ACTUAL", "#5B9BD5", "#F8CBAD", 75);
                 addTableCell("REPLAY", "#5B9BD5", "#F8CBAD", 75);
                 addTableCell("TARGET", "#5B9BD5", "#F8CBAD", 75);
-
-            lines.Add("</tr></table>");
+                lines.Add("</tr></table>");
+            }
         }
 
         public bool usageReportItem(Player player, int counter )
@@ -427,6 +430,22 @@ namespace somReporter.output
 
             lines.Add("</tr></table>");
             return true;
+        }
+
+        public void usageFooter() {
+            lines.Add("Key: ");
+
+            if (Config.SHOW_WARNING)
+                lines.Add(String.Format("   <h4 style=\"color:#FFFF55;\">Above Usage Warning Level {0}%</h4>", Config.WARNING_LEVEL* 100));
+            else
+                lines.Add("   <h4>Warning Level not shown");
+
+            if (Config.SHOW_MORAL)
+                lines.Add(String.Format("   <h4 style=\"color:#FF6611;\">Over Suggested Usage Level {0}%</h4>", Config.SUGGESTION_LEVEL_PERCENT* 100));
+            else
+                lines.Add("   <h4>Suggestion Level not shown");
+
+            lines.Add(String.Format("   <h4 style=\"color:#FF0000;\">Drop Dead Level Hit</h4>", Config.WARNING_LEVEL));
         }
 
         private void emptyUsageRow() {
