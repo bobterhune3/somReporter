@@ -46,6 +46,7 @@ namespace somReporter.features
                 }
             }
             output.spacer();
+            output.endOfTable();
         }
     }
 }

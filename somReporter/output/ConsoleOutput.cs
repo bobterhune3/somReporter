@@ -164,5 +164,10 @@ namespace somReporter.output
         {
             throw new NotImplementedException();
         }
+
+        public void ShowInjuryData(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -350,6 +350,11 @@ namespace somReporter.output
             lines.Add("<br/><pre>"+v+"</pre>");
         }
 
+        public void ShowInjuryData(string v)
+        {
+            lines.Add("<br/><pre>" + v + "</pre>");
+        }
+
         public void recordBookHeader(bool teamRecords)
         {
             lines.Add(String.Format("<h3>{0} RECORD BOOK</h3>", teamRecords?"TEAM":"PLAYER"));

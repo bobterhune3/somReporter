@@ -115,7 +115,7 @@ namespace somReporter
                 return record > 5;
             }
             else if (currentTitle.ToLower().StartsWith("home runs")) {
-                return record > 3;
+                return record > 4;
             }
             else if (currentTitle.ToLower().StartsWith("runs scored")) {
                 return record > 4;

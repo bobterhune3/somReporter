@@ -36,7 +36,8 @@ namespace somReporter
 
         public Program() {
         //    output = new ConsoleOutput();
-            output = new HTMLOutput();
+     //       output = new HTMLOutput();
+            output = new BootstrapHTMLOutput();
         }
 
         public void cleanup() {
@@ -101,6 +102,7 @@ namespace somReporter
         private void showWhosHot()
         {
             output.ShowWhosHotData(newspaperStyleReport.getWhosHotData());
+            output.ShowInjuryData(newspaperStyleReport.getInjuryData());
         }
 
         public String lookupPreviousSaveFile()

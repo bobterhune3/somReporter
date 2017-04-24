@@ -9,13 +9,17 @@ namespace somReporter
     class NewspaperStyleReport : Report
     {
         String whosHotData = "NO DATA";
+        String injuryData = "NO DATA";
+
         public NewspaperStyleReport(string title) : base(title) {
         }
 
         public override void processReport()
         {
             bool inFirstSection = true;
-            List<String> data = new List<String>();
+            List<String> dataWhoHot = new List<String>();
+            List<String> dataInjury = new List<String>();
+            Boolean bDoingWhosHot = true;
             foreach (String line in m_lines)
             {
                 if (line.Length > 0)
@@ -23,33 +27,51 @@ namespace somReporter
                     string cleanLine = line.Replace("[4]", "");
                     cleanLine = cleanLine.Replace("[0]", "");
                     if (cleanLine.StartsWith("WHO'S HOT")) {
-                        data.Add("<b>"+ cleanLine + "</b><br/>");
+                        dataWhoHot.Add("<b>"+ cleanLine + "</b><br/>");
                         inFirstSection = false;
+                        bDoingWhosHot = true;
                     }
                     else if (cleanLine.StartsWith("WHO'S NOT")) {
-                        data.Add("<br/><b>" + cleanLine + "</b><br/>");
+                        dataWhoHot.Add("<br/><b>" + cleanLine + "</b><br/>");
+                        bDoingWhosHot = true;
                     }
                     else if (cleanLine.StartsWith("INJURY REPORT"))
                     {
-                        data.Add("<br/><b>" + cleanLine + "</b><br/>");
+                        dataInjury.Add("<br/><b>" + cleanLine + "</b><br/>");
+                        bDoingWhosHot = false;
                     }
                     else if (!inFirstSection)
                     {
-                        data.Add(cleanLine + "<br/>");
+                        if (bDoingWhosHot)
+                            dataWhoHot.Add(cleanLine + "<br/>");
+                        else
+                            dataInjury.Add(cleanLine + "<br/>");
+
                     }
                 }
             }
 
             StringBuilder sb = new StringBuilder();
-            foreach(string s in data) {
+            foreach(string s in dataWhoHot) {
                 sb.Append(s);
             }
             whosHotData = sb.ToString();
+
+            StringBuilder sbInjury = new StringBuilder();
+            foreach (string s in dataInjury)
+            {
+                sbInjury.Append(s);
+            }
+            injuryData = sbInjury.ToString();
         }
            
         public string getWhosHotData() {
             return whosHotData;
         } 
+
+        public string getInjuryData() {
+            return injuryData;
+        }
     }
 }
 
