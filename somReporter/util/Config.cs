@@ -17,7 +17,7 @@ namespace somReporter.util
         public static float WARNING_LEVEL = 0.8f;
         public static float SUGGESTION_LEVEL_PERCENT = 1.1f;
         public static String PRT_FILE_LOCATION = "C:\\cdrombb\\print";
-        public static String LEAGUE_NAME = "2016NP";
+        public static String LEAGUE_NAME = "2016ND";
 
         public static bool SHOW_STANDINGS = true;
         public static bool SHOW_NOTES = true;

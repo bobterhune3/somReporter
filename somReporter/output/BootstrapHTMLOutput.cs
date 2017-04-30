@@ -77,7 +77,7 @@ namespace somReporter.output
         {
             setBookmark("standings");
             string name = division.Replace(" ", "");
-            lines.Add(String.Format("<h2 class=\"sub-header\">{0} League Standings <a href=\"winpct_{1}.html\">Trend Chart!</a></h2>", division, name.ToUpper()));
+            lines.Add(String.Format("<h2 class=\"sub-header\">{0} League Standings</h2> <a href=\"winpct_{1}.html\">Trend Chart!</a>", division, name.ToUpper()));
         }
 
         public void divisionStandingsTableHeader()
@@ -128,7 +128,7 @@ namespace somReporter.output
         public void draftOrderHeader()
         {
             setBookmark("picks");
-            lines.Add("<h2 class=\"sub-header\">Draft Pick Order <a href=\"winpct_draftorder.html\">Trend Chart!</a></h2>");
+            lines.Add("<h2 class=\"sub-header\">Draft Pick Order</h2> <a href=\"winpct_draftorder.html\">Trend Chart!</a>");
             lines.Add(String.Format("<p>First 4 picks subject to lottery</p>"));
         }
 
@@ -382,9 +382,9 @@ namespace somReporter.output
         private string returnRankDifColor(int rank, int previous)
         {
             int rankDif = rank - previous;
-            if (rankDif < 0)
+            if (rankDif > 0)
                 return "#FF0000";
-            else if (rankDif > 0)
+            else if (rankDif < 0)
                 return "#00FF00";
             else
                 return "#000000";
@@ -394,13 +394,13 @@ namespace somReporter.output
         {
             int rankDif = rank - previous;
             if (rankDif == -1)
-                return String.Format("Dropped 1 spot", rankDif);
-            else if (rankDif < 0)
-                return String.Format("Dropped {0} spots", rankDif * -1);
-            else if (rankDif == 1)
                 return String.Format("Gained 1 spot", rankDif);
+            else if (rankDif < 0)
+                return String.Format("Gained {0} spots", rankDif * -1);
+            else if (rankDif == 1)
+                return String.Format("Dropped 1 spot", rankDif);
             else if (rankDif > 0)
-                return String.Format("Gained {0} spots", rankDif);
+                return String.Format("Dropped {0} spots", rankDif);
             return "No Change";
         }
 
