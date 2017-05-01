@@ -120,7 +120,8 @@ namespace somReporter.features
                 teamWinPctHistory.csvSaveTeamParser(@"wpct.csv");
             }
 
-            buildDraftOrderChart(teams);
+            ((DraftOrderFeatureBase)Program.featureDraftOrder).buildDraftOrderChart();
+
 
             if (Config.HAS_WILDCARD)
             {
@@ -132,12 +133,6 @@ namespace somReporter.features
             }
         }
 
-        private void buildDraftOrderChart(List<Team> teams)
-        {
-            LineGraph lg = new LineGraph();
-            lg.setGraphData("Trend Report for Draft Order", teams, true);
-            lg.save("winpct_draftorder.html");
-        }
 
         private void buildDivisionChart(String league, String division)
         {

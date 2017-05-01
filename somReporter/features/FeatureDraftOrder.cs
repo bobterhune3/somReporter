@@ -12,16 +12,28 @@ namespace somReporter.features
         public abstract Report getReport();
         public abstract void initialize(SOMReportFile file);
         public abstract void process(IOutput output);
+        public Team[] actualDraftPicks;
 
         protected void WriteOutTeamForDraftPicks(IOutput output, int pickNum, int divPick, Team team)
         {
             output.draftOrderTeamLine(pickNum, divPick, team);
             team.DraftPickPositionCurrent = pickNum;
         }
+
+
+        public void buildDraftOrderChart()
+        {
+            LineGraph lg = new LineGraph();
+            List<Team> teams = actualDraftPicks.OfType<Team>().ToList(); // this isn't going to be fast.
+            lg.setGraphData("Trend Report for Draft Order", teams, true);
+            lg.save("winpct_draftorder.html");
+        }
     }
 
     class FeatureDraftOrderTierd : DraftOrderFeatureBase
     {
+
+
         public override Report getReport()
         {
             throw new NotImplementedException();
@@ -113,7 +125,7 @@ namespace somReporter.features
 
             }
 
-            Team[] actualPicks = new Team[18];
+            actualDraftPicks = new Team[18];
 
             // Re-organize the picks, Paren is by division draft order
             //    1-4 - Draft (1-4)
@@ -128,27 +140,27 @@ namespace somReporter.features
             {
                 if (i < 4 || i > 13)
                 {
-                    actualPicks[i] = picks[i];
+                    actualDraftPicks[i] = picks[i];
                     continue;
                 }
                 switch (i)
                 {
-                    case 4: actualPicks[5] = picks[i]; break;
-                    case 5: actualPicks[7] = picks[i]; break;
-                    case 6: actualPicks[4] = picks[i]; break;
-                    case 7: actualPicks[6] = picks[i]; break;
-                    case 8: actualPicks[8] = picks[i]; break;
-                    case 9: actualPicks[9] = picks[i]; break;
-                    case 10: actualPicks[11] = picks[i]; break;
-                    case 11: actualPicks[13] = picks[i]; break;
-                    case 12: actualPicks[10] = picks[i]; break;
-                    case 13: actualPicks[12] = picks[i]; break;
+                    case 4: actualDraftPicks[5] = picks[i]; break;
+                    case 5: actualDraftPicks[7] = picks[i]; break;
+                    case 6: actualDraftPicks[4] = picks[i]; break;
+                    case 7: actualDraftPicks[6] = picks[i]; break;
+                    case 8: actualDraftPicks[8] = picks[i]; break;
+                    case 9: actualDraftPicks[9] = picks[i]; break;
+                    case 10: actualDraftPicks[11] = picks[i]; break;
+                    case 11: actualDraftPicks[13] = picks[i]; break;
+                    case 12: actualDraftPicks[10] = picks[i]; break;
+                    case 13: actualDraftPicks[12] = picks[i]; break;
                 }
             }
 
-            for (int i = 0; i < actualPicks.Length; i++)
+            for (int i = 0; i < actualDraftPicks.Length; i++)
             {
-                WriteOutTeamForDraftPicks(output, i, 1, actualPicks[i]);
+                WriteOutTeamForDraftPicks(output, i, 1, actualDraftPicks[i]);
             }
             output.endOfTable();
         }

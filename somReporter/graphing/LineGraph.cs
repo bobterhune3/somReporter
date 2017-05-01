@@ -41,15 +41,19 @@ namespace somReporter
             Data data = new Data();
             List<DataSets> datasets = new List<DataSets>();
 
+            const int draftPickCountMax = 5;
+            int draftPickCount = 0;
+
             data.setLabels(teams[0]);
             foreach( Team team in teams ) {
                 if( !draftOrderReport || 
-                    (draftOrderReport && team.Wpct < .450 )) {
+                    (draftOrderReport && draftPickCount < draftPickCountMax)) {
                         DataSets ds = new DataSets();
                         ds.label = team.Abrv;
                         ds.borderColor = getTeamColor(team.Abrv);
                         ds.setData(team);
                         datasets.Add(ds);
+                        draftPickCount++;
                 }
 
             }
