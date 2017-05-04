@@ -52,8 +52,14 @@ namespace somReporter
         {
             Program program = new Program();
 
+            int daysPlayed = 0;
+            Console.Write("Number of Days Played?");
+            String daysPlayedText = Console.ReadLine();
+            if (daysPlayedText.Length > 0)
+                daysPlayed = int.Parse(daysPlayedText);
+
             Console.WriteLine("Intializing...");
-            program.initialize();
+            program.initialize(daysPlayed);
       
             string fileName = program.lookupPreviousSaveFile();
             if( fileName.Length > 0 ) {
@@ -140,7 +146,7 @@ namespace somReporter
             this.leaguePrimaryStatReport.loadPreviousStorageInfo(prevDictionaryFile);
         }
 
-        public void initialize() {
+        public void initialize(int daysPlayed) {
             Report.DATABASE.reset();
 
             Console.WriteLine("  Loading League Report File ...");
@@ -167,7 +173,7 @@ namespace somReporter
             feature = FeatureFactory.loadFeature(FeatureFactory.FEATURE.RECORD_BOOK);
             feature.initialize(leagueReportFile);
 
-            output.setOutputHeader(leagueReportFile.SeasonTitle);
+            output.setOutputHeader(leagueReportFile.SeasonTitle, daysPlayed);
 
             Console.WriteLine("  Loading Team Report File...");
             teamReportFile = new SOMReportFile(Config.getConfigurationFile("TEAM_ALL_REPORTS.PRT"));

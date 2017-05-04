@@ -31,7 +31,8 @@ namespace somReporter.team
         }
 
         private const String REGEX_USAGE_HITTER = @".[0-9]+ +.[0-9]+ +([0-9]+) +([0-9]+) +[\S]+";
-        private const String REGEX_USAGE_PITCHER = @"[ .0-9].[0-9]+ +[ 0-9].[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +([0-9]+) +([0-9]+) +[\S]+";
+        // private const String REGEX_USAGE_PITCHER = @"[ .0-9].[0-9]+ +[ 0-9].[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +([0-9]+) +([0-9]+) +[\S]+";
+        private const String REGEX_USAGE_PITCHER = @"[0-9]+.[0-9]+[ ]+[0-9]+.[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+([0-9]+)+[ ]+([0-9]+).+";
         private const String REGEX_USAGE_PITCHER_NOT_USED = @"[.0-9].[0-9]+ +--- +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +([0-9]+) +([0-9]+) +[\S]+";
         private bool m_bWorkingOnHitters = true;
 

@@ -16,7 +16,7 @@ namespace somReporter.output
         void wildCardTableHeader();
         void wildCardTeamLine(int rank, Team team, string gamesBehind);
         void spacer();
-        void setOutputHeader(string title);
+        void setOutputHeader(string title, int daysPlayed);
         void setOutputFooter();
         void endOfTable();
         void divisionStandingsHeader(string division);

@@ -135,7 +135,7 @@ namespace somReporter.output
             return diff;
         }
 
-        public void setOutputHeader(string title) { }
+        public void setOutputHeader(string title, int daysPlayed) { }
         public void setOutputFooter() { }
         public void endOfTable() { }
 

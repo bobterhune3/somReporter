@@ -37,7 +37,7 @@ namespace somReporter.util
         public string MetaData() { return metadata; }
 
         public override string ToString() {
-            return String.Format("{0} {1}-{2}", metadata, win, lost);
+            return String.Format("{0} {1}-{2}  ", metadata, win, lost);
         }
     }
 }

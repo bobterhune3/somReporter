@@ -23,7 +23,7 @@ namespace somReporter.output
         }
 
 
-        public void setOutputHeader(string title)
+        public void setOutputHeader(string title, int daysPlayed)
         {
             lines.Add(String.Format(S_DOC_HTML_TITLE, title, getToolTipScript()));
             lines.Add(String.Format(S_DOC_HEADER, title));

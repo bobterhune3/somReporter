@@ -17,8 +17,11 @@ namespace somReporter.output
         {
         }
 
-        public void setOutputHeader(string title)
+        public void setOutputHeader(string title, int daysPlayed)
         {
+            String daysPlayedText = String.Format("{0} days played", daysPlayed);
+
+
             System.IO.StreamReader file = null;
             try
             {
@@ -37,8 +40,9 @@ namespace somReporter.output
                     file.Close();
             }
 
+            lines.Add(string.Format(S_HTML_EXTRA_TEXT, daysPlayedText));
 
-            String extraText = checkForExtraText();
+            String extraText = checkForExtraText().Trim();
             if (extraText.Length > 0)
                 lines.Add(string.Format(S_HTML_EXTRA_TEXT, extraText));
         }
@@ -251,6 +255,7 @@ namespace somReporter.output
                 addTableHeaderCell("Team",   60);
                 addTableHeaderCell("Type",   60);
                 addTableHeaderCell("Actual", 75, "The actual number of AB/IP on the card.");
+                addTableHeaderCell("Target", 75, "'Moral' number 110% of Actual.");
                 addTableHeaderCell("Replay", 75, "The number of AB/IP so far in the replay.");
                 addTableHeaderCell("Drop Dead", 75, "The Maximum AB/IP available.  Going past this will cause a penalty.");
                 lines.Add("</tr></thead><tbody>");
@@ -272,6 +277,7 @@ namespace somReporter.output
             addTableCell(prettyTeamName(player.Team), "#000000", 60);
             addTableCell(player.IsHitter ? "B" : "P", "#000000", 60);
             addTableCell(player.Actual, "#000000", 75);
+            addTableCell((int)(((float)player.Actual) *1.1), "#000000", 75);
             addTableCell(player.Replay, "#000000", 75);
             addTableCell(player.TargetUsage, "#000000", 75);
 
@@ -286,7 +292,7 @@ namespace somReporter.output
 
 
             lines.Add("<div class=\"panel panel-default\"><div class=\"panel-body\">");
-            lines.Add("<b>Key:</b></br>");
+            lines.Add("<b>Key:</b>");
             if (Config.SHOW_WARNING)
                 lines.Add(String.Format("<span class=\"label label-info\">Warning</span>Above Usage Level of {0}%</br>", Config.WARNING_LEVEL * 100));
             else
@@ -316,9 +322,9 @@ namespace somReporter.output
 
                 if (replay > target)        // Penality For Hitters
                     return "<span class=\"label label-danger\">Violation</span>";
-                if (replay > (((float)actual) * ((float)Config.SUGGESTION_LEVEL_PERCENT)) && Config.SHOW_MORAL)        // Moral Ceiling
+                if (replay > (((float)actual* 1.1) * ((float)Config.SUGGESTION_LEVEL_PERCENT)) && Config.SHOW_MORAL)        // Moral Ceiling
                     return "<span class=\"label label-warning\">Danger</span>";
-                if (replay > (((float)actual) * ((float)Config.WARNING_LEVEL)) && Config.SHOW_WARNING)         // Danger Level
+                if (replay > (((float)actual* 1.1) * ((float)Config.WARNING_LEVEL)) && Config.SHOW_WARNING)         // Danger Level
                     return "<span class=\"label label-info\">Warning</span>";
                 return "";
             }
@@ -326,9 +332,9 @@ namespace somReporter.output
             {
                 if (replay > target)         // Penality For Pitchers
                     return "<span class=\"label label-danger\">Violation</span>";
-                if (replay > ((float)actual * (float)Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
+                if (replay > (((float)actual * 1.1) * (float)Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
                     return "<span class=\"label label-warning\">Danger</span>";
-                if (replay > ((float)actual * (float)Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
+                if (replay > (((float)actual * 1.1) * (float)Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
                     return "<span class=\"label label-info\">Warning</span>";
                 return "";
             }
@@ -445,7 +451,7 @@ namespace somReporter.output
             {
                 //      foreach(Pair series in allSeries) {
                 sb.Append(allSeries[i].ToString());
-                sb.Append("<br>");
+                sb.Append("\r\n");
             }
 
             return sb.ToString();
