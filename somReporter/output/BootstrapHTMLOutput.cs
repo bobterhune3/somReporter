@@ -257,7 +257,13 @@ namespace somReporter.output
                 addTableHeaderCell("Actual", 75, "The actual number of AB/IP on the card.");
                 addTableHeaderCell("Target", 75, "'Moral' number 110% of Actual.");
                 addTableHeaderCell("Replay", 75, "The number of AB/IP so far in the replay.");
-                addTableHeaderCell("Drop Dead", 75, "The Maximum AB/IP available.  Going past this will cause a penalty.");
+                addTableHeaderCell("Drop Dead", 75, "<b>The Maximum AB/IP available.</b>  Going past this will cause a penalty.<br>" +
+                    "Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)<br>" +
+                    "Hitters > 101 actual at bats are actual at bats + 50(ie ab + 50)<br>" +
+                    "Pitchers >= 100 innings is innings + 30<br>" +
+                    "Pitchers < 100 is 110 % of actual(99 * 1.1) = +29"
+                    );
+                addTableHeaderCell("Prediction", 75, "Use % of games played as a multiplier to predict final usage.");
                 lines.Add("</tr></thead><tbody>");
             }
         }
@@ -274,12 +280,18 @@ namespace somReporter.output
             addTableCell(counter, "#000000", 30);
             lines.Add(String.Format("<td>{0}</td>", usageLevel));
             addTableCell(player.Name, "#000000", 100);
-            addTableCell(prettyTeamName(player.Team), "#000000", 60);
+            addTableCell(player.Team.Abrv, "#000000", 60);
             addTableCell(player.IsHitter ? "B" : "P", "#000000", 60);
             addTableCell(player.Actual, "#000000", 75);
             addTableCell((int)(((float)player.Actual) *1.1), "#000000", 75);
             addTableCell(player.Replay, "#000000", 75);
             addTableCell(player.TargetUsage, "#000000", 75);
+
+
+            float gp = (float)player.Team.GamesPlayed;
+            float gpPct = gp / 162f;
+            float explodedUsage = ((float)player.Replay) / gpPct;
+            addTableCell((int)explodedUsage, "#000000", 75);
 
             lines.Add("</tr>");
             return true;
@@ -451,7 +463,7 @@ namespace somReporter.output
             {
                 //      foreach(Pair series in allSeries) {
                 sb.Append(allSeries[i].ToString());
-                sb.Append("\r\n");
+                sb.Append("<br>");
             }
 
             return sb.ToString();
@@ -529,7 +541,7 @@ namespace somReporter.output
         private void addTableCell(string text, string textColor, int width, string tooltip = "", bool center = true)
         {
             if (tooltip.Length > 0)
-                lines.Add(String.Format("<td><span style='color:{0}' width='{1}' class=\"tooltip-bottom\" title=\"{2}\"/>{3}</td>",
+                lines.Add(String.Format("<td><span style='color:{0}' width='{1}' html='true' class=\"tooltip-bottom\" title=\"{2}\"/>{3}</td>",
                     textColor, width, tooltip, text));
             else
                 lines.Add(String.Format("<td><span style='color:{0}' width='{1}'/>{2}</td>",
@@ -560,30 +572,5 @@ namespace somReporter.output
             addTableCell(number.ToString(), textColor, width, tooltip);
         }
 
-        private string prettyTeamName(string teamName)
-        {
-            if (teamName.Equals("Anaheim Ange")) return "ANS";
-            if (teamName.Equals("Arizona Diam")) return "AZB";
-            if (teamName.Equals("Chicago Cubs")) return "CHB";
-            if (teamName.Equals("Cleveland In")) return "CLM";
-            if (teamName.Equals("Detroit Tige")) return "DTB";
-            if (teamName.Equals("Kansas City")) return "KCM";
-            if (teamName.Equals("Los Angeles")) return "LAM";
-            if (teamName.Equals("Miami Marlin")) return "MMS";
-            if (teamName.Equals("Milwaukee Br")) return "MLG";
-            if (teamName.Equals("New York Yan")) return "NYB";
-            if (teamName.Equals("Oakland Athl")) return "OKM";
-            if (teamName.Equals("Philadelphia")) return "PHM";
-            if (teamName.Equals("Pittsburgh P")) return "PTB";
-            if (teamName.Equals("San Diego Pa")) return "SDG";
-            if (teamName.Equals("San Francisc")) return "SFJ";
-            if (teamName.Equals("Seattle Mari")) return "SEG";
-            if (teamName.Equals("St. Louis Ca")) return "SLB";
-            if (teamName.Equals("Tampa Bay Ra")) return "TBM";
-            if (teamName.Equals("Texas Ranger")) return "TXG";
-            if (teamName.Equals("Toronto Blue")) return "TOG";
-            if (teamName.Equals("Washington N")) return "WSG";
-            return "UNK";
-        }
     }
 }

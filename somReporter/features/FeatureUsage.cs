@@ -33,10 +33,10 @@ namespace somReporter.features
             output.usageHeader(players.Count);
             int counter = 1;
 
-            string currentTeam = "";
+            Team currentTeam = null;
             foreach (Player player in players)
             {
-                if (!currentTeam.Equals(player.Team))
+                if (currentTeam == null || !currentTeam.Equals(player.Team))
                     counter = 1;
                 currentTeam = player.Team;
                 if (output.usageReportItem(player, counter))

@@ -427,7 +427,7 @@ namespace somReporter.output
 
                 addTableCell(counter, "#5B9BD5", "#F8CBAD", 30, false);
                 addTableCell(player.Name, bgColor, "#000000", 100, false);
-                addTableCell(prettyTeamName(player.Team), bgColor, "#000000", 60, false);
+                addTableCell(Team.prettyTeamName(player.Team.Abrv), bgColor, "#000000", 60, false);
                 addTableCell(player.IsHitter?"B":"P", bgColor, "#000000", 60);
                 addTableCell(player.Actual, bgColor, "#000000", 75);
                 addTableCell(player.Replay, bgColor, "#000000", 75);
@@ -467,30 +467,7 @@ namespace somReporter.output
             lines.Add("</tr></table>");
         }
 
-        private string prettyTeamName(string teamName ) {
-            if (teamName.Equals("Anaheim Ange")) return "ANS";
-            if (teamName.Equals("Arizona Diam")) return "AZB";
-            if (teamName.Equals("Chicago Cubs")) return "CHB";
-            if (teamName.Equals("Cleveland In")) return "CLM";
-            if (teamName.Equals("Detroit Tige")) return "DTB";
-            if (teamName.Equals("Kansas City")) return "KCM";
-            if (teamName.Equals("Los Angeles")) return "LAM";
-            if (teamName.Equals("Miami Marlin")) return "MMS";
-            if (teamName.Equals("Milwaukee Br")) return "MLG";
-            if (teamName.Equals("New York Yan")) return "NYB";
-            if (teamName.Equals("Oakland Athl")) return "OKM";
-            if (teamName.Equals("Philadelphia")) return "PHM";
-            if (teamName.Equals("Pittsburgh P")) return "PTB";
-            if (teamName.Equals("San Diego Pa")) return "SDG";
-            if (teamName.Equals("San Francisc")) return "SFJ";
-            if (teamName.Equals("Seattle Mari")) return "SEG";
-            if (teamName.Equals("St. Louis Ca")) return "SLB";
-            if (teamName.Equals("Tampa Bay Ra")) return "TBM";
-            if (teamName.Equals("Texas Ranger")) return "TXG";
-            if (teamName.Equals("Toronto Blue")) return "TOG";
-            if (teamName.Equals("Washington N")) return "WSG";
-            return "UNK";
-        }
+ 
         private string getBackgroundColor( int actual, int target, int replay, bool isHitter ) {
             /*
                 Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)

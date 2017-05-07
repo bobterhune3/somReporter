@@ -60,6 +60,11 @@ namespace somReporter
             }
         }
 
+
+        public override bool Equals(Object obj) {
+            return ((Team)obj).Abrv.Equals(Abrv);
+        }
+
         internal void addLineScore(int teama_score, string teamb_abv, int teamb_score, bool homeTeam)
         {
            linescores.Insert(0, new Game(teama_score, teamb_abv, teamb_score, homeTeam));
@@ -78,6 +83,10 @@ namespace somReporter
             {
                 owner = value;
             }
+        }
+
+        public int GamesPlayed {
+            get { return Wins + Loses; }
         }
 
         public int Wins {
@@ -364,6 +373,32 @@ namespace somReporter
             if(wpctHistory == null )
                 wpctHistory = new List<double>();
             wpctHistory.Add(value);
+        }
+
+        public static string prettyTeamName(string teamName)
+        {
+            if (teamName.Equals("Anaheim Ange")) return "ANS";
+            if (teamName.Equals("Arizona Diam")) return "AZB";
+            if (teamName.Equals("Chicago Cubs")) return "CHB";
+            if (teamName.Equals("Cleveland In")) return "CLM";
+            if (teamName.Equals("Detroit Tige")) return "DTB";
+            if (teamName.Equals("Kansas City")) return "KCM";
+            if (teamName.Equals("Los Angeles")) return "LAM";
+            if (teamName.Equals("Miami Marlin")) return "MMS";
+            if (teamName.Equals("Milwaukee Br")) return "MLG";
+            if (teamName.Equals("New York Yan")) return "NYB";
+            if (teamName.Equals("Oakland Athl")) return "OKM";
+            if (teamName.Equals("Philadelphia")) return "PHM";
+            if (teamName.Equals("Pittsburgh P")) return "PTB";
+            if (teamName.Equals("San Diego Pa")) return "SDG";
+            if (teamName.Equals("San Francisc")) return "SFJ";
+            if (teamName.Equals("Seattle Mari")) return "SEG";
+            if (teamName.Equals("St. Louis Ca")) return "SLB";
+            if (teamName.Equals("Tampa Bay Ra")) return "TBM";
+            if (teamName.Equals("Texas Ranger")) return "TXG";
+            if (teamName.Equals("Toronto Blue")) return "TOG";
+            if (teamName.Equals("Washington N")) return "WSG";
+            return "UNK";
         }
     }
 

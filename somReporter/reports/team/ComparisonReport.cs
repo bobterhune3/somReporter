@@ -32,11 +32,11 @@ namespace somReporter.team
 
         private const String REGEX_USAGE_HITTER = @".[0-9]+ +.[0-9]+ +([0-9]+) +([0-9]+) +[\S]+";
         // private const String REGEX_USAGE_PITCHER = @"[ .0-9].[0-9]+ +[ 0-9].[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +([0-9]+) +([0-9]+) +[\S]+";
-        private const String REGEX_USAGE_PITCHER = @"[0-9]+.[0-9]+[ ]+[0-9]+.[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+([0-9]+)+[ ]+([0-9]+).+";
+        private const String REGEX_USAGE_PITCHER = @"[0-9]?[0-9]?.[0-9]+[ ]+[0-9]?[0-9]?.[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+([0-9]+)+[ ]+([0-9]+).+";
         private const String REGEX_USAGE_PITCHER_NOT_USED = @"[.0-9].[0-9]+ +--- +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +[0-9]+ +([0-9]+) +([0-9]+) +[\S]+";
         private bool m_bWorkingOnHitters = true;
 
-        public void collectData(string team, string line)
+        public void collectData(string teamName, string line)
         {
             if (line.StartsWith("--AVERAGE"))
                 m_bWorkingOnHitters = true;
@@ -103,6 +103,12 @@ namespace somReporter.team
                             {
                                 player.TargetUsage   = player.Actual + 30;
                             }
+                        }
+
+                        Team team = Report.DATABASE.getTeam(Team.prettyTeamName(teamName));
+                        if( team == null) {
+                            team = new Team("XX");
+                            team.Abrv = teamName;
                         }
                         player.Team = team;
                     }

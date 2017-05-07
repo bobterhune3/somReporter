@@ -20,6 +20,14 @@ namespace somReporter
             return teams;
         }
 
+        public Team getTeam(String abbrv) {
+            foreach(Team team in teams ) {
+                if (team.Abrv.Equals(abbrv))
+                    return team;
+            }
+            return null;
+        }
+
         public void reset()
         {
             teams.Clear();
