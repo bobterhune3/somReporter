@@ -114,6 +114,9 @@ namespace somReporter
             else if(currentTitle.ToLower().StartsWith("hits")) {
                 return record > 5;
             }
+            else if (currentTitle.ToLower().StartsWith("home runs allowed")) {
+                return record > 5;
+            }
             else if (currentTitle.ToLower().StartsWith("home runs")) {
                 return record > 4;
             }
@@ -135,9 +138,7 @@ namespace somReporter
             else if (currentTitle.ToLower().StartsWith("strikeouts")) {
                 return record > 17;
             }
-            else if (currentTitle.ToLower().StartsWith("home runs allowed")) {
-                return record > 5;
-            }
+
             return false;
         }
 

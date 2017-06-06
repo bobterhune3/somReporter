@@ -78,16 +78,9 @@ namespace somReporter.team
                             if (player.Actual < 25)
                                 return;
                             player.Replay = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());
-                            if(player.Actual >=  500) {
-                                player.TargetUsage = Convert.ToInt32(((float)player.Actual) * 1.1f);
-                            }
-                            else if( player.Actual > 100 )  {
-                                player.TargetUsage = Convert.ToInt32(((float)player.Actual) * 1.5f);
-                            }
-                            else {
-                                player.TargetUsage = player.Actual + 50;
-                            }
-                         
+
+                            player.TargetUsage = getPlayerTargetUsage(player.Actual);
+
                         }
                         else
                         {
@@ -95,14 +88,8 @@ namespace somReporter.team
                             if (player.Actual < 25)
                                 return;
                             player.Replay = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());
-                            if (player.Actual <= 60)
-                            {
-                                player.TargetUsage = Convert.ToInt32(player.Actual * 1.5);
-                            }
-                            else
-                            {
-                                player.TargetUsage   = player.Actual + 30;
-                            }
+
+                            player.TargetUsage = getPitcherTargetUsage(player.Actual);
                         }
 
                         Team team = Report.DATABASE.getTeam(Team.prettyTeamName(teamName));
@@ -114,6 +101,31 @@ namespace somReporter.team
                     }
                     listOfPlayers.Add(player);
                 }
+            }
+        }
+
+        public static int getPlayerTargetUsage(int actual)
+        {
+            if (actual <= 101)
+            {
+                return Convert.ToInt32(((float)actual) * 1.5f);
+            }
+            else
+            {
+                return actual + 50;
+            }
+            return 0;
+        }
+
+        public static int getPitcherTargetUsage(int actual)
+        {
+            if (actual <= 100)
+            {
+               return Convert.ToInt32(((float)actual) * 1.1f);
+            }
+            else
+            {
+                return actual + 30;
             }
         }
     }
