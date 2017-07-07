@@ -119,9 +119,9 @@ namespace somReporter.team
 
         public static int getPitcherTargetUsage(int actual)
         {
-            if (actual <= 100)
+            if (actual < 60)
             {
-               return Convert.ToInt32(((float)actual) * 1.1f);
+               return Convert.ToInt32(((float)actual) * 1.5f);
             }
             else
             {

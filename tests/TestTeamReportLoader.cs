@@ -63,7 +63,7 @@ namespace somReporter.team
             Assert.AreEqual(267, p.Actual);
             Assert.AreEqual(307, p.Replay);
             Assert.AreEqual(1.15, p.Usage);
-            Assert.AreEqual("TEAM", p.Team);
+            Assert.AreEqual("TEAM", p.Team.Abrv);
    
             /*
             teamComparisonReport.collectData("TEAM", "P.Goldschmi[4] .321  .303 567 580  38  33   2   3  33  21 110  80 118  91 151 171");
@@ -89,7 +89,7 @@ namespace somReporter.team
             Assert.AreEqual(130, p.Actual);
             Assert.AreEqual(158, p.Replay);
             Assert.AreEqual(1.22, p.Usage);
-            Assert.AreEqual("TEAM", p.Team);
+            Assert.AreEqual("TEAM", p.Team.Abrv);
          }
 
         [TestMethod]
@@ -108,7 +108,7 @@ namespace somReporter.team
             Assert.AreEqual(59, p.Actual);
             Assert.AreEqual(0, p.Replay);
             Assert.AreEqual(0, p.Usage);
-            Assert.AreEqual("TEAM", p.Team);
+            Assert.AreEqual("TEAM", p.Team.Abrv);
         }
 
         [TestMethod]
@@ -127,8 +127,29 @@ namespace somReporter.team
             Assert.AreEqual(39, p.Actual);
             Assert.AreEqual(52, p.Replay);
             Assert.AreEqual(1.33, p.Usage);
-            Assert.AreEqual("TEAM", p.Team);
+            Assert.AreEqual("TEAM", p.Team.Abrv);
         }
+
+        [TestMethod]
+        public void testPitcherHighERA()
+        {
+            ComparisonReport teamComparisonReport = new ComparisonReport("COMPANION");
+            teamComparisonReport.collectData("TEAM", "----ERA---- -WINS-- -LOSS-- -SAVES- INNINGS -HITS-- -WALKS- --Ks---");
+            teamComparisonReport.collectData("TEAM", "H.Santiago[4] 4.70 10.12  13   0  10   7   0   0 182  35 169  46  79  20 144  28");
+            List<Player> player = teamComparisonReport.getPlayers();
+
+            Assert.IsNotNull(player);
+            Assert.IsTrue(player.Count == 1);
+
+            Player p = player[0];
+            Assert.AreEqual("H.Santiago", p.Name);
+            Assert.AreEqual(182, p.Actual);
+            Assert.AreEqual(35, p.Replay);
+       //     Assert.AreEqual(1.33, p.Usage);
+            Assert.AreEqual("TEAM", p.Team.Abrv);
+        }
+
+        
         
     }
 }

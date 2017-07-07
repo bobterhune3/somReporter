@@ -124,6 +124,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="resources\config.properties" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\brand\bootstrap-outline.svg">

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using somReporter.team;
 
 namespace somReporter
 {
@@ -103,6 +104,13 @@ namespace somReporter
                 dictionary[team.Abrv] = team.buildStorageData();
             }
 
+            List<Player> players = Report.DATABASE.Players();
+            foreach( Player player in players)
+            {
+                String key = "Usage_" + player.Name + ":" + player.Team;
+                dictionary[key] = player.buildStorageData();
+            }
+
             return dictionary;
         }
 
@@ -115,14 +123,16 @@ namespace somReporter
                 string data = dictionary[teamAbrv];
 
                 Team team = this.getTeamByAbbreviation(teamAbrv);
-                Dictionary<string, string> teamData = loadStorageString(data);
+                if (team != null ) {
+                    Dictionary<string, string> teamData = loadStorageString(data);
 
-                team.WinsPrevious = Int32.Parse(teamData["Wins"]);
-                team.LosesPrevious = Int32.Parse(teamData["Loses"]);
-                team.GbPrevious = Double.Parse(teamData["GB"]);
-                team.DivisionPositionPrevious = Int32.Parse(teamData["DIVPos"]);
-                team.DraftPickPositionPrevious = Int32.Parse(teamData["DPickPos"]);
-                team.WildCardPositionPrevious = Int32.Parse(teamData["WCardPos"]);
+                    team.WinsPrevious = Int32.Parse(teamData["Wins"]);
+                    team.LosesPrevious = Int32.Parse(teamData["Loses"]);
+                    team.GbPrevious = Double.Parse(teamData["GB"]);
+                    team.DivisionPositionPrevious = Int32.Parse(teamData["DIVPos"]);
+                    team.DraftPickPositionPrevious = Int32.Parse(teamData["DPickPos"]);
+                    team.WildCardPositionPrevious = Int32.Parse(teamData["WCardPos"]);
+                }
             }
         }
 

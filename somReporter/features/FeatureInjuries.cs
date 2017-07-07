@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
 
 namespace somReporter.features
@@ -20,6 +21,11 @@ namespace somReporter.features
         }
 
         public void process(IOutput output)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setDateStore(PersistentDictionary<string, string> dictionary)
         {
             throw new NotImplementedException();
         }

@@ -60,11 +60,11 @@ namespace somReporter
 
             Console.WriteLine("Intializing...");
             program.initialize(daysPlayed);
-      
+
+
             string fileName = program.lookupPreviousSaveFile();
-            if( fileName.Length > 0 ) {
-                PersistentDictionary<string, string> prevDictionaryFile = 
-                    new PersistentDictionary<string, string>(fileName);
+            PersistentDictionary<string, string> prevDictionaryFile = new PersistentDictionary<string, string>(fileName); ;
+            if ( fileName.Length > 0 ) {
                 program.loadPreviousStorageInfo(prevDictionaryFile);
             }
 
@@ -83,6 +83,7 @@ namespace somReporter
             featureRecordBook.process(program.outputStream());
 
             Console.WriteLine("Process Player Usage ...");
+            featureUsage.setDateStore(prevDictionaryFile);
             featureUsage.process(program.outputStream());
 
             Console.WriteLine("Create Win Pct History Charts ...");

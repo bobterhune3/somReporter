@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using somReporter.output;
 using somReporter.team;
 using somReporter.util;
+using Microsoft.Isam.Esent.Collections.Generic;
 
 namespace somReporter.features
 {
     class FeatureUsage : IFeature
     {
         private ComparisonReport teamComparisonReport;
+        private PersistentDictionary<string, string> database;
 
         public Report getReport()
         {
@@ -27,6 +29,10 @@ namespace somReporter.features
             teamComparisonReport.processReport();
         }
 
+        public void setDateStore(PersistentDictionary<string, string> dictionary) {
+            this.database = dictionary;
+        }
+
         public void process(IOutput output) {
             List<Player> players = teamComparisonReport.getPlayers();
          
@@ -39,11 +45,39 @@ namespace somReporter.features
                 if (currentTeam == null || !currentTeam.Equals(player.Team))
                     counter = 1;
                 currentTeam = player.Team;
-                if (output.usageReportItem(player, counter))
+                int previousActual = checkForPreviousStorageInfo(player);
+                if (previousActual > 0)
+                    player.PreviousActual = previousActual;
+                if (output.usageReportItem(player, counter)) {
+                    Report.DATABASE.addPlayerUsage(player);
                     counter++;
+                }
             }
 
             output.usageFooter();
+        }
+
+        public int checkForPreviousStorageInfo( Player player)
+        {
+            foreach (string key in database.Keys)
+            {
+                if( key.Equals("Usage_"+player.Name+":"+player.Team)) {
+                    Dictionary<string, string> playerData = loadStorageString(database[key]);
+                    int actual = int.Parse(playerData["Actual"]);
+                    return actual;
+                }
+            }
+            return 0;
+        }
+
+
+        private Dictionary<string, string> loadStorageString(String s)
+        {
+            var data = new Dictionary<string, string>();
+            foreach (var row in s.Split('|'))
+                data.Add(row.Split('=')[0], string.Join("=", row.Split('=').Skip(1).ToArray()));
+
+            return data;
         }
     }
 }

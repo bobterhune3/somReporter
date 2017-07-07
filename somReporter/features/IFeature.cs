@@ -1,9 +1,5 @@
 ﻿using somReporter.output;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Isam.Esent.Collections.Generic;
 
 namespace somReporter.features
 {
@@ -12,5 +8,6 @@ namespace somReporter.features
         void process(IOutput output);
         void initialize(SOMReportFile file);
         Report getReport();
+        void setDateStore(PersistentDictionary<string, string> dictionary);
     }
 }

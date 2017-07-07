@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
 
 namespace somReporter.features
@@ -27,6 +28,11 @@ namespace somReporter.features
             List<Team> teams = actualDraftPicks.OfType<Team>().ToList(); // this isn't going to be fast.
             lg.setGraphData("Trend Report for Draft Order", teams, true);
             lg.save("winpct_draftorder.html");
+        }
+
+        public void setDateStore(PersistentDictionary<string, string> dictionary)
+        {
+            throw new NotImplementedException();
         }
     }
 

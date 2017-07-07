@@ -14,6 +14,7 @@ namespace somReporter.team
         private int targetUsage = 0;
         private Team team;
         private bool hitter = false;
+        private int previousActual = 0;
 
         public Player( ) { }
 
@@ -26,6 +27,12 @@ namespace somReporter.team
         {
             get { return actual; }
             set { actual = value; }
+        }
+
+        public int PreviousActual
+        {
+            get { return previousActual; }
+            set { previousActual = value; }
         }
 
         public int Replay
@@ -60,6 +67,13 @@ namespace somReporter.team
                     Actual = 1;
                 return Report.RoundToSignificantDigits((double)Replay / (double)Actual, 3);
             }
+        }
+
+        public string buildStorageData()
+        {
+
+            String data = String.Format("Actual={0}",this.Actual);
+            return data;
         }
     }
 }

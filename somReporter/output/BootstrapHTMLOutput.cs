@@ -255,13 +255,14 @@ namespace somReporter.output
                 addTableHeaderCell("Team",   60);
                 addTableHeaderCell("Type",   60);
                 addTableHeaderCell("Actual", 75, "The actual number of AB/IP on the card.");
+                addTableHeaderCell("Change", 75, "The number of AB/IP added since the previous run.");
                 addTableHeaderCell("Target", 75, "'Moral' number 110% of Actual.");
                 addTableHeaderCell("Replay", 75, "The number of AB/IP so far in the replay.");
                 addTableHeaderCell("Drop Dead", 75, "<b>The Maximum AB/IP available.</b>  Going past this will cause a penalty.<br>" +
                     "Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)<br>" +
                     "Hitters > 101 actual at bats are actual at bats + 50(ie ab + 50)<br>" +
-                    "Pitchers >= 100 innings is innings + 30<br>" +
-                    "Pitchers < 100 is 110 % of actual(99 * 1.1) = +29"
+                    "Pitchers >= 60 innings is innings + 30<br>" +
+                    "Pitchers < 60 is 150 % of actual(60 * 1.5)"
                     );
                 addTableHeaderCell("Prediction", 75, "Use % of games played as a multiplier to predict final usage.");
                 lines.Add("</tr></thead><tbody>");
@@ -283,6 +284,7 @@ namespace somReporter.output
             addTableCell(player.Team.Abrv, "#000000", 60);
             addTableCell(player.IsHitter ? "B" : "P", "#000000", 60);
             addTableCell(player.Actual, "#000000", 75);
+            addTableCell(player.PreviousActual, "#000000", 75);
             addTableCell((int)(((float)player.Actual) *1.1), "#000000", 75);
             addTableCell(player.Replay, "#000000", 75);
             addTableCell(player.TargetUsage, "#000000", 75);
@@ -326,7 +328,7 @@ namespace somReporter.output
                 Hitters > 101 actual at bats are actual at bats + 50  (ie ab + 50)
 
                 Pitchers >= 100 innings is innings + 30  
-                Pitchers < 100 is 110% of actual   (99 * 1.1) = +29
+                Pitchers < 60 is 150% of actual   (59 * 1.5) = +29
               */
 
             if (isHitter)
