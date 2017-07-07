@@ -45,9 +45,9 @@ namespace somReporter.features
                 if (currentTeam == null || !currentTeam.Equals(player.Team))
                     counter = 1;
                 currentTeam = player.Team;
-                int previousActual = checkForPreviousStorageInfo(player);
-                if (previousActual > 0)
-                    player.PreviousActual = previousActual;
+                int previousReplay = checkForPreviousStorageInfo(player);
+                if (previousReplay > 0)
+                    player.PreviousActual = previousReplay;
                 if (output.usageReportItem(player, counter)) {
                     Report.DATABASE.addPlayerUsage(player);
                     counter++;
@@ -63,8 +63,15 @@ namespace somReporter.features
             {
                 if( key.Equals("Usage_"+player.Name+":"+player.Team)) {
                     Dictionary<string, string> playerData = loadStorageString(database[key]);
-                    int actual = int.Parse(playerData["Actual"]);
-                    return actual;
+                    try
+                    {
+                        int actual = int.Parse(playerData["PreviousReplay"]);
+                        return actual;
+                    }
+                    catch(Exception ex)
+                    {
+                        return 0;
+                    }
                 }
             }
             return 0;

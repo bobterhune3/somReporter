@@ -284,7 +284,7 @@ namespace somReporter.output
             addTableCell(player.Team.Abrv, "#000000", 60);
             addTableCell(player.IsHitter ? "B" : "P", "#000000", 60);
             addTableCell(player.Actual, "#000000", 75);
-            addTableCell(player.PreviousActual, "#000000", 75);
+            addTableCell(getRunDeltaChange(player), "#000000", 75);
             addTableCell((int)(((float)player.Actual) *1.1), "#000000", 75);
             addTableCell(player.Replay, "#000000", 75);
             addTableCell(player.TargetUsage, "#000000", 75);
@@ -299,6 +299,15 @@ namespace somReporter.output
             return true;
         }
 
+        private String getRunDeltaChange(Player player) {
+            if (player.PreviousActual == 0)
+                return "--";
+
+            if (player.Actual == player.PreviousActual)
+                return "no change";
+
+            return "+" + (player.Actual - player.PreviousActual);
+        }
 
         public void usageFooter()
         {

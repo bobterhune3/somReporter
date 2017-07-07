@@ -53,7 +53,7 @@ namespace somReporter
             Program program = new Program();
 
             int daysPlayed = 0;
-            Console.Write("Number of Days Played?");
+            Console.Write("Number of Days Played? ");
             String daysPlayedText = Console.ReadLine();
             if (daysPlayedText.Length > 0)
                 daysPlayed = int.Parse(daysPlayedText);

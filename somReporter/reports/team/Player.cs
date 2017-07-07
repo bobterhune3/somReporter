@@ -72,7 +72,7 @@ namespace somReporter.team
         public string buildStorageData()
         {
 
-            String data = String.Format("Actual={0}",this.Actual);
+            String data = String.Format("PreviousReplay={0}",this.Replay);
             return data;
         }
     }
