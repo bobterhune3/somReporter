@@ -59,6 +59,7 @@
     <Compile Include="reports\TestTeamGrandTotalReports.cs" />
     <Compile Include="reports\RecordBookReportTest.cs" />
     <Compile Include="reports\TestDraftOrder.cs" />
+    <Compile Include="reports\InjuryReportTest.cs" />
     <Compile Include="TestFileParser.cs" />
     <Compile Include="TestSOMReportFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

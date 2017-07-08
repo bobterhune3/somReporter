@@ -226,12 +226,23 @@ namespace somReporter.output
             lines.Add("<pre>" + v + "</pre>");
         }
 
-        public void ShowInjuryData(string v)
+        public void ShowInjuryData(List<string> injuredPlayers, List<string> returningPlayers)
         {
             setBookmark("injury");
-            lines.Add("<h2 class=\"sub-header\">Current Injuries</h2>");
+            lines.Add("<h2 class=\"sub-header\">Injury Report</h2>");
 
-            lines.Add("<pre>" + v + "</pre>");
+            lines.Add("<h4>Currently Injured Players</h4>");
+            lines.Add("<pre>" );
+            foreach (String hurtPlayer in injuredPlayers)
+                lines.Add( hurtPlayer );
+            lines.Add("</pre>");
+
+            lines.Add("<h4>Returning Players</h4>");
+
+            lines.Add("<pre>");
+            foreach (String returningPlayer in returningPlayers)
+                lines.Add(returningPlayer);
+            lines.Add("</pre>");
         }
 
         /// 

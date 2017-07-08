@@ -165,7 +165,7 @@ namespace somReporter.output
             throw new NotImplementedException();
         }
 
-        public void ShowInjuryData(string v)
+        public void ShowInjuryData(List<string> v1, List<string> v2)
         {
             throw new NotImplementedException();
         }

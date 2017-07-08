@@ -350,9 +350,19 @@ namespace somReporter.output
             lines.Add("<br/><pre>"+v+"</pre>");
         }
 
-        public void ShowInjuryData(string v)
+        public void ShowInjuryData(List<string> injuredPlayers, List<string> returningPlayers)
         {
-            lines.Add("<br/><pre>" + v + "</pre>");
+            lines.Add("<h3>INJURIES</h3>");
+
+            lines.Add("<h4>Currently Injured Players</h4>");
+
+            foreach ( String hurtPlayer in injuredPlayers)
+                lines.Add("<br/><pre>" + hurtPlayer + "</pre>");
+
+            lines.Add("<h4>Returning Players</h4>");
+
+            foreach (String returningPlayer in returningPlayers)
+                lines.Add("<br/><pre>" + returningPlayer + "</pre>");
         }
 
         public void recordBookHeader(bool teamRecords)

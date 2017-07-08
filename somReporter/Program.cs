@@ -23,6 +23,7 @@ namespace somReporter
         public static IFeature featureDraftOrder = null;
         public static IFeature featureRecordBook = null;
         public static IFeature featureUsage = null;
+        public static IFeature featureInjuries = new FeatureInjuries();
 
         public static Config cfg = new Config("config.properties");
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
@@ -109,8 +110,9 @@ namespace somReporter
         private void showWhosHot()
         {
             output.ShowWhosHotData(newspaperStyleReport.getWhosHotData());
-            output.ShowInjuryData(newspaperStyleReport.getInjuryData());
-        }
+            ((FeatureInjuries)featureInjuries).setData(newspaperStyleReport.getInjuryData());
+            featureInjuries.process(output);
+         }
 
         public String lookupPreviousSaveFile()
         {

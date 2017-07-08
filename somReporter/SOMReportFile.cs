@@ -216,6 +216,31 @@ namespace somReporter
             return lines;
          }
 
+        public List<String> readFileLinesOnly()
+        {
+            List<String> lines = new List<String>();
+            System.IO.StreamReader file = null;
+            try
+            {
+                string line;
+
+                file = new System.IO.StreamReader(m_fileName);
+                while ((line = file.ReadLine()) != null)
+                {
+                    line = cleanUpLine(line);
+                    if (line.Trim().Length == 0)
+                        continue;
+                    lines.Add(line);
+                }
+            }
+            finally
+            {
+                if (file != null)
+                    file.Close();
+            }
+            return lines;
+        }
+
         public void parseLeagueFirstLineOfReport(string line)
         {
             Regex regex = new Regex(@"\.* ([0-9]+) (.*)");

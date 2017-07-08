@@ -23,7 +23,7 @@ namespace somReporter.output
         void divisionStandingsTableHeader();
         void divisionStandingsTeamLine(int rank, Team team);
         void ShowWhosHotData(string v);
-        void ShowInjuryData(string v);
+        void ShowInjuryData(List<string> injuredPlayers , List<string> returningPlayers);
         void recordBookHeader(bool teamRecord);
         void recordBookItem(SOMRecord rec, int counter, bool teamRecord);
         void usageHeader(int playerCount);

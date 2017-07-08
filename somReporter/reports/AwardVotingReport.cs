@@ -37,7 +37,7 @@ namespace somReporter
                     }
                     else if (cleanLine.StartsWith("INJURY REPORT"))
                     {
-                        dataInjury.Add("<br/><b>" + cleanLine + "</b><br/>");
+              //          dataInjury.Add(cleanLine + "\r\n");
                         bDoingWhosHot = false;
                     }
                     else if (!inFirstSection)
@@ -45,7 +45,7 @@ namespace somReporter
                         if (bDoingWhosHot)
                             dataWhoHot.Add(cleanLine + "<br/>");
                         else
-                            dataInjury.Add(cleanLine + "<br/>");
+                            dataInjury.Add(cleanLine + "\r\n");
 
                     }
                 }
