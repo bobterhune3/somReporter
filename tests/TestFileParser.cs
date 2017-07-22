@@ -88,7 +88,7 @@ namespace somReporter
             {
                 leagueReportFile.parseLeagueFirstLineOfReport("THIS IS NOT A VALID FIRST LINE");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 testFailed = true;
             }
@@ -103,7 +103,7 @@ namespace somReporter
             {
                 teamReportFile.parseLeagueFirstLineOfReport("THIS IS NOT A VALID FIRST LINE");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 testFailed = true;
             }

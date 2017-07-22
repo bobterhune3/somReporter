@@ -1,0 +1,12 @@
+﻿/*!
+ * Custom utility java script
+ */
+
+.dotted {
+    border-bottom: 1px dashed #999;
+    text-decoration: none;
+}
+
+.dottedUnderline {
+    border-bottom: 1px dotted;
+}

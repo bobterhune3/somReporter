@@ -12,7 +12,6 @@ namespace somReporter
         private int loses = 0;
         private int winsPrevious = 0;
         private int losesPrevious = 0;
-        private double wpct = .0;
         private double gb = .0;
         private double gbPrevious = .0;
         private String league = "";
@@ -63,6 +62,11 @@ namespace somReporter
 
         public override bool Equals(Object obj) {
             return ((Team)obj).Abrv.Equals(Abrv);
+        }
+
+        public override int GetHashCode( )
+        {
+            return 808;
         }
 
         internal void addLineScore(int teama_score, string teamb_abv, int teamb_score, bool homeTeam)

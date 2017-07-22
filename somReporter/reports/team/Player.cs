@@ -14,7 +14,7 @@ namespace somReporter.team
         private int targetUsage = 0;
         private Team team;
         private bool hitter = false;
-        private int previousActual = 0;
+        private int previousReplay = 0;
 
         public Player( ) { }
 
@@ -29,10 +29,10 @@ namespace somReporter.team
             set { actual = value; }
         }
 
-        public int PreviousActual
+        public int PreviousReplay
         {
-            get { return previousActual; }
-            set { previousActual = value; }
+            get { return previousReplay; }
+            set { previousReplay = value; }
         }
 
         public int Replay

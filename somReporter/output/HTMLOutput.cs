@@ -40,7 +40,7 @@ namespace somReporter.output
             try {
                 result = System.IO.File.ReadAllText(@"updatedText.txt");
             }
-            catch(Exception ex) { }
+            catch(Exception ) { }
 
             return result;
         }

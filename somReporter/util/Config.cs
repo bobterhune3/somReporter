@@ -27,10 +27,6 @@ namespace somReporter.util
         public static bool SHOW_RECORD_BOOK = true;
         public static bool SHOW_USAGE = true;
 
-
-
-        private int m_year = 2015;
-
         public Config(String configFileName)
         {
             if (File.Exists(configFileName))

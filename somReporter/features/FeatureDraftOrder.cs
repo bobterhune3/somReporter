@@ -71,7 +71,6 @@ namespace somReporter.features
             int pickNum = 0;
             List<Team> tieBreakerList = new List<Team>();
             Team prevTeam = null;
-            Team lastTeam = null;
             Team[] picks = new Team[18];
 
             foreach (String division in Program.DIVISION_DRAFT_ORDER)

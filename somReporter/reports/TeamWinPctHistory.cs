@@ -21,7 +21,7 @@ namespace somReporter.reports
                 }
 
             }
-            catch( Exception ex) { return false; }
+            catch( Exception) { return false; }
             return true;
         }
 

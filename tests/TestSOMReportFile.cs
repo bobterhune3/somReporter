@@ -18,7 +18,7 @@ namespace somReporter
             {
                 new SOMReportFile(Config.getConfigurationFile("BAD_FILE_NAME.PRT"));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 testFailed = true;
             }

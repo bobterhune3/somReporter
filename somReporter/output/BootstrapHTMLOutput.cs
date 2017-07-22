@@ -266,16 +266,15 @@ namespace somReporter.output
                 addTableHeaderCell("Team",   60);
                 addTableHeaderCell("Type",   60);
                 addTableHeaderCell("Actual", 75, "The actual number of AB/IP on the card.");
-                addTableHeaderCell("Change", 75, "The number of AB/IP added since the previous run.");
-                addTableHeaderCell("Target", 75, "'Moral' number 110% of Actual.");
-                addTableHeaderCell("Replay", 75, "The number of AB/IP so far in the replay.");
-                addTableHeaderCell("Drop Dead", 75, "<b>The Maximum AB/IP available.</b>  Going past this will cause a penalty.<br>" +
+                addTableHeaderCell("Replay", 75, "The number of AB/IP so far in the replay.<br><br>Hover over number to view prediction of final usage.");
+                addTableHeaderCell("Drop Dead", 75, "<b>The Maximum AB/IP available.</b><br>Going past this will cause a penalty.<br>" +
                     "Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)<br>" +
                     "Hitters > 101 actual at bats are actual at bats + 50(ie ab + 50)<br>" +
                     "Pitchers >= 60 innings is innings + 30<br>" +
-                    "Pitchers < 60 is 150 % of actual(60 * 1.5)"
+                    "Pitchers < 60 is 150 % of actual(60 * 1.5)" +
+                    "<br><br>" +
+                    "Hover over number to view The change in AB/IP added since the previous run."
                     );
-                addTableHeaderCell("Prediction", 75, "Use % of games played as a multiplier to predict final usage.");
                 lines.Add("</tr></thead><tbody>");
             }
         }
@@ -295,29 +294,28 @@ namespace somReporter.output
             addTableCell(player.Team.Abrv, "#000000", 60);
             addTableCell(player.IsHitter ? "B" : "P", "#000000", 60);
             addTableCell(player.Actual, "#000000", 75);
-            addTableCell(getRunDeltaChange(player), "#000000", 75);
-            addTableCell((int)(((float)player.Actual) *1.1), "#000000", 75);
-            addTableCell(player.Replay, "#000000", 75);
-            addTableCell(player.TargetUsage, "#000000", 75);
-
 
             float gp = (float)player.Team.GamesPlayed;
             float gpPct = gp / 162f;
             float explodedUsage = ((float)player.Replay) / gpPct;
-            addTableCell((int)explodedUsage, "#000000", 75);
+            addTableCell(player.Replay, "#000000", 75, String.Format("predicted final usage is {0}", (int)explodedUsage));
+        
+            addTableCell(player.TargetUsage, "#000000", 75, String.Format("{0} new {1} last run.", 
+                getRunDeltaChange(player), 
+                player.IsHitter?"AB":"IP"));
 
             lines.Add("</tr>");
             return true;
         }
 
         private String getRunDeltaChange(Player player) {
-            if (player.PreviousActual == 0)
+            if (player.PreviousReplay == 0)
                 return "--";
 
-            if (player.Actual == player.PreviousActual)
+            if (player.Replay == player.PreviousReplay)
                 return "no change";
 
-            return "+" + (player.Actual - player.PreviousActual);
+            return Convert.ToString(player.Replay - player.PreviousReplay);
         }
 
         public void usageFooter()
@@ -333,9 +331,9 @@ namespace somReporter.output
                 lines.Add("<span class=\"label label-info\">Warning</span>Not Shown In the Report</br>");
 
             if (Config.SHOW_MORAL)
-                lines.Add(String.Format("<span class=\"label label-warning\">Danger</span>Above Suggested Usage Warning Level {0}%</br>", Config.SUGGESTION_LEVEL_PERCENT * 100));
+                lines.Add(String.Format("<span class=\"label label-warning\">Danger</span>Getting close to Target Usage Level {0}%</br>", Config.SUGGESTION_LEVEL_PERCENT * 100));
             else
-                lines.Add("<span class=\"label label-warning\">Danger</span>Above Suggested Usage Not Shown</br>");
+                lines.Add("<span class=\"label label-warning\">Danger</span>Above Actual Usage Not Shown</br>");
 
             lines.Add("<span class=\"label label-danger\">Violation</span>Above Drop Dead Level</br>");
             lines.Add("</div></div>");
@@ -356,8 +354,14 @@ namespace somReporter.output
 
                 if (replay > target)        // Penality For Hitters
                     return "<span class=\"label label-danger\">Violation</span>";
-                if (replay > (((float)actual* 1.1) * ((float)Config.SUGGESTION_LEVEL_PERCENT)) && Config.SHOW_MORAL)        // Moral Ceiling
-                    return "<span class=\"label label-warning\">Danger</span>";
+
+                if (replay > actual)
+                {
+                    float midpoint = (target - actual)/2;
+                    if( replay > actual+(int)midpoint)
+                        return "<span class=\"label label-warning\">Danger</span>";
+                }
+
                 if (replay > (((float)actual* 1.1) * ((float)Config.WARNING_LEVEL)) && Config.SHOW_WARNING)         // Danger Level
                     return "<span class=\"label label-info\">Warning</span>";
                 return "";
@@ -366,8 +370,12 @@ namespace somReporter.output
             {
                 if (replay > target)         // Penality For Pitchers
                     return "<span class=\"label label-danger\">Violation</span>";
-                if (replay > (((float)actual * 1.1) * (float)Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
-                    return "<span class=\"label label-warning\">Danger</span>";
+                if (replay > actual)
+                {
+                    float midpoint = (target - actual) / 2;
+                    if (replay > actual + (int)midpoint)
+                        return "<span class=\"label label-warning\">Danger</span>";
+                }
                 if (replay > (((float)actual * 1.1) * (float)Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
                     return "<span class=\"label label-info\">Warning</span>";
                 return "";
@@ -414,7 +422,7 @@ namespace somReporter.output
             {
                 result = System.IO.File.ReadAllText(@"updatedText.txt");
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
             return result;
         }
@@ -563,7 +571,7 @@ namespace somReporter.output
         private void addTableCell(string text, string textColor, int width, string tooltip = "", bool center = true)
         {
             if (tooltip.Length > 0)
-                lines.Add(String.Format("<td><span style='color:{0}' width='{1}' html='true' class=\"tooltip-bottom\" title=\"{2}\"/>{3}</td>",
+                lines.Add(String.Format("<td><span style='color:{0}' width='{1}' html='true' class=\"tooltip-bottom\" title=\"{2}\"/><i>{3}</i></td>",
                     textColor, width, tooltip, text));
             else
                 lines.Add(String.Format("<td><span style='color:{0}' width='{1}'/>{2}</td>",

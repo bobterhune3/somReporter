@@ -114,7 +114,6 @@ namespace somReporter.team
             {
                 return actual + 50;
             }
-            return 0;
         }
 
         public static int getPitcherTargetUsage(int actual)

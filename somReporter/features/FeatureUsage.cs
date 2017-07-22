@@ -47,7 +47,7 @@ namespace somReporter.features
                 currentTeam = player.Team;
                 int previousReplay = checkForPreviousStorageInfo(player);
                 if (previousReplay > 0)
-                    player.PreviousActual = previousReplay;
+                    player.PreviousReplay = previousReplay;
                 if (output.usageReportItem(player, counter)) {
                     Report.DATABASE.addPlayerUsage(player);
                     counter++;
@@ -68,7 +68,7 @@ namespace somReporter.features
                         int actual = int.Parse(playerData["PreviousReplay"]);
                         return actual;
                     }
-                    catch(Exception ex)
+                    catch(Exception)
                     {
                         return 0;
                     }

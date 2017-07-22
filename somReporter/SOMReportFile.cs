@@ -88,7 +88,7 @@ namespace somReporter
                         reportTitle = reportTitle.Substring(0, x);
                     try {
                         currentTeam = match.Groups[2].Value.Substring(0, 12).Trim();
-                    }catch(Exception ex ) { }
+                    }catch(Exception) { }
 
                     if (currentReport != null)
                     {
