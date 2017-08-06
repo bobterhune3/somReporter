@@ -103,11 +103,11 @@ namespace somReporter.output
         {
             int rankDif = rank - previous;
             if (rankDif == -1)
-                return String.Format("Dropped 1 spot", rankDif);
+                return "Dropped 1 spot";
             else if( rankDif < 0)
                 return String.Format("Dropped {0} spots", rankDif*-1);
             else if (rankDif == 1)
-                return String.Format("Gained 1 spot", rankDif);
+                return "Gained 1 spot";
             else if (rankDif > 0)
                 return String.Format("Gained {0} spots", rankDif);
             return "No Change";
@@ -460,7 +460,7 @@ namespace somReporter.output
             else
                 lines.Add("   <h4>Suggestion Level not shown");
 
-            lines.Add(String.Format("   <h4 style=\"color:#FF0000;\">Drop Dead Level Hit</h4>", Config.WARNING_LEVEL));
+            lines.Add("   <h4 style=\"color:#FF0000;\">Drop Dead Level Hit</h4>");
         }
 
         private void emptyUsageRow() {

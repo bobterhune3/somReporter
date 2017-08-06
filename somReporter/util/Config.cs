@@ -26,6 +26,9 @@ namespace somReporter.util
         public static bool SHOW_DRAFT_ORDER = true;
         public static bool SHOW_RECORD_BOOK = true;
         public static bool SHOW_USAGE = true;
+        public static bool SHOW_SCHEDULE = true;
+
+        public static int SCHEDULE_NUMBER_OF_DAYS = 5;
 
         public Config(String configFileName)
         {
@@ -50,6 +53,8 @@ namespace somReporter.util
             Console.Out.WriteLine("SHOW_DRAFT_ORDER = " + SHOW_DRAFT_ORDER);
             Console.Out.WriteLine("SHOW_RECORD_BOOK = " + SHOW_RECORD_BOOK);
             Console.Out.WriteLine("SHOW_USAGE = " + SHOW_USAGE);
+            Console.Out.WriteLine("SHOW_SCHEDULE = " + SHOW_SCHEDULE);
+            Console.Out.WriteLine("SCHEDULE_NUMBER_OF_DAYS = " + SCHEDULE_NUMBER_OF_DAYS);
         }
 
         public void readConfiguration(String configFileName)
@@ -74,7 +79,8 @@ namespace somReporter.util
                         int tmpNValue;
                         //        Console.WriteLine(key + "=" + value);
 
-                        if(key.Equals("HAS_WILDCARD")) {
+                        if (key.Equals("HAS_WILDCARD"))
+                        {
                             Boolean.TryParse(value, out tmpValue);
                             HAS_WILDCARD = tmpValue;
                         }
@@ -88,7 +94,7 @@ namespace somReporter.util
                             Boolean.TryParse(value, out tmpValue);
                             STRAIGHT_DRAFT_ORDER = tmpValue;
                         }
-                        
+
                         else if (key.Equals("SHOW_USAGE_WARNINGS"))
                         {
                             Boolean.TryParse(value, out tmpValue);
@@ -152,8 +158,17 @@ namespace somReporter.util
                             Boolean.TryParse(value, out tmpValue);
                             SHOW_USAGE = tmpValue;
                         }
+                        else if (key.Equals("SHOW_SCHEDULE"))
+                        {
+                            Boolean.TryParse(value, out tmpValue);
+                            SHOW_SCHEDULE = tmpValue;
+                        }
+                        else if (key.Equals("SCHEDULE_NUMBER_OF_DAYS"))
+                        {
+                            SCHEDULE_NUMBER_OF_DAYS = Int32.Parse(value);
+                        }
                     }
-                }
+                 }
             }
             finally
             {

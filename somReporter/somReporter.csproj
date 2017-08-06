@@ -66,6 +66,7 @@
     <Compile Include="features\FeatureInjuries.cs" />
     <Compile Include="features\FeatureNotes.cs" />
     <Compile Include="features\FeatureRecordBook.cs" />
+    <Compile Include="features\FeatureSchedule.cs" />
     <Compile Include="features\FeatureStandings.cs" />
     <Compile Include="features\FeatureUsage.cs" />
     <Compile Include="features\FeatureWhosHot.cs" />
@@ -83,9 +84,11 @@
     <Compile Include="reports\Report.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reports\ScheduleReport.cs" />
     <Compile Include="reports\TeamWinPctHistory.cs" />
     <Compile Include="reports\team\ComparisonReport.cs" />
     <Compile Include="reports\team\Player.cs" />
+    <Compile Include="reports\team\ScheduleDay.cs" />
     <Compile Include="reports\team\TeamReport.cs" />
     <Compile Include="SOMReportFile.cs" />
     <Compile Include="util\Config.cs" />

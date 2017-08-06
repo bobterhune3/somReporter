@@ -216,7 +216,7 @@ namespace somReporter
             return lines;
          }
 
-        public List<String> readFileLinesOnly()
+        public List<String> readFileLinesOnly(Boolean cleanup)
         {
             List<String> lines = new List<String>();
             System.IO.StreamReader file = null;
@@ -227,7 +227,8 @@ namespace somReporter
                 file = new System.IO.StreamReader(m_fileName);
                 while ((line = file.ReadLine()) != null)
                 {
-                    line = cleanUpLine(line);
+                    if(cleanup)
+                        line = cleanUpLine(line);
                     if (line.Trim().Length == 0)
                         continue;
                     lines.Add(line);

@@ -16,7 +16,8 @@ namespace somReporter.features
             INJURY_REPORT,
             DRAFT_ORDER,
             RECORD_BOOK,
-            USAGE
+            USAGE,
+            SCHEDULE
         }
 
         private static IFeature featureNotes = new FeatureNotes();
@@ -27,6 +28,7 @@ namespace somReporter.features
         private static IFeature featureDraftOrderStraight = new FeatureDraftOrderStraight();
         private static IFeature featureRecordBook = new FeatureRecordBook();
         private static IFeature featureUsage = new FeatureUsage();
+        private static IFeature FeatureSchedule = new FeatureSchedule();
 
         public static IFeature loadFeature( FEATURE feature ) {
             switch(feature) {
@@ -47,17 +49,10 @@ namespace somReporter.features
                     return featureRecordBook;
                 case FEATURE.USAGE:
                     return featureUsage;
+                case FEATURE.SCHEDULE:
+                    return FeatureSchedule;
             }
             return null;
         }
-
-/*                    private LeagueStandingsReport leagueStandingsReport;
-        private LeagueGrandTotalsReport leaguePrimaryStatReport;
-        private LineScoreReport lineScoreReport;
-        private NewspaperStyleReport newspaperStyleReport;
-        private RecordBookReport recordBookReport;
-        private ComparisonReport teamComparisonReport;
-        */
-    
     }
 }

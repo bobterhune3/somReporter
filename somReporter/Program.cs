@@ -24,6 +24,8 @@ namespace somReporter
         public static IFeature featureRecordBook = null;
         public static IFeature featureUsage = null;
         public static IFeature featureInjuries = new FeatureInjuries();
+        public static IFeature featureSchedule = null;
+        
 
         public static Config cfg = new Config("config.properties");
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
@@ -32,6 +34,9 @@ namespace somReporter
 
         private SOMReportFile leagueReportFile;
         private SOMReportFile teamReportFile;
+        private const string SCHEDULE_FILE = "SCHEDULE.PRT";
+
+        public static int daysPlayed = 0;
 
         private IOutput output;
 
@@ -62,6 +67,12 @@ namespace somReporter
             Console.WriteLine("Intializing...");
             program.initialize(daysPlayed);
 
+            if (Config.SHOW_SCHEDULE)
+            {
+                Console.WriteLine("Process Schedule..");
+                featureSchedule = FeatureFactory.loadFeature(FeatureFactory.FEATURE.SCHEDULE);
+                featureSchedule.initialize(new SOMReportFile(Config.getConfigurationFile(SCHEDULE_FILE)));
+            }
 
             string fileName = program.lookupPreviousSaveFile();
             PersistentDictionary<string, string> prevDictionaryFile = new PersistentDictionary<string, string>(fileName); ;
@@ -150,6 +161,7 @@ namespace somReporter
         }
 
         public void initialize(int daysPlayed) {
+            Program.daysPlayed = daysPlayed;
             Report.DATABASE.reset();
 
             Console.WriteLine("  Loading League Report File ...");

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
 using System.IO;
@@ -28,7 +25,7 @@ namespace somReporter.features
             if (File.Exists(injuryFile))
             {
                 SOMReportFile somFile = new SOMReportFile(injuryFile);
-                prevDataLines = somFile.readFileLinesOnly();
+                prevDataLines = somFile.readFileLinesOnly(true);
             }
 
             currentDataLines = parseStringIntoLines(injuryData);

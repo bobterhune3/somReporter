@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using somReporter.team;
+using somReporter.features;
 
 namespace somReporter.output
 {
@@ -12,9 +13,11 @@ namespace somReporter.output
     {
         List<String> lines = new List<String>();
         private const string S_HTML_EXTRA_TEXT = "<div class=\"alert alert-info\" role=\"alert\"><a class=\"alert-link\">{0}</a></div>";
-                  
+        private FeatureSchedule featureSchedule = null;
+
         public BootstrapHTMLOutput()
         {
+            featureSchedule = (FeatureSchedule)FeatureFactory.loadFeature(FeatureFactory.FEATURE.SCHEDULE);
         }
 
         public void setOutputHeader(string title, int daysPlayed)
@@ -108,7 +111,7 @@ namespace somReporter.output
             lines.Add("<tr>");
             addTableCell(rank, returnRankDifColor(rank, team.DivisionPositionPrevious),
                          15, returnRankDifToolTip(rank, team.DivisionPositionPrevious));
-            addTableCell(team.Name, "#000000", 149, "", false);
+            addTableCell(team.Name, "#000000", 149, returnNextScheduleToolTip(team), false);
             addTableCell(team.Wins, "#000000", 48);
             addTableCell(team.Loses, "#000000", 48);
             addTableCell(team.Wpct, 3, "#000000", 53);
@@ -157,7 +160,7 @@ namespace somReporter.output
 
             addTableCell(pickNum + 1, returnRankDifColor(pickNum, team.DraftPickPositionPrevious),
                          48, returnRankDifToolTip(pickNum, team.DraftPickPositionPrevious));
-            addTableCell(team.Name, "#000000", 149, "", false);
+            addTableCell(team.Name, "#000000", 149, returnNextScheduleToolTip(team), false);
             addTableCell(team.Owner, "#000000", 65);
             addTableCell(team.Division, "#000000", 75);
             addTableCell(team.Wins, "#000000", 48);
@@ -442,11 +445,11 @@ namespace somReporter.output
         {
             int rankDif = rank - previous;
             if (rankDif == -1)
-                return String.Format("Gained 1 spot", rankDif);
+                return "Gained 1 spot";
             else if (rankDif < 0)
                 return String.Format("Gained {0} spots", rankDif * -1);
             else if (rankDif == 1)
-                return String.Format("Dropped 1 spot", rankDif);
+                return "Dropped 1 spot";
             else if (rankDif > 0)
                 return String.Format("Dropped {0} spots", rankDif);
             return "No Change";
@@ -462,6 +465,12 @@ namespace somReporter.output
             return "No Change";
         }
 
+        private string returnNextScheduleToolTip(Team team)
+        {
+            return featureSchedule.getTeamSchedulesForDays(team.Abrv,
+                Program.daysPlayed,
+                Config.SCHEDULE_NUMBER_OF_DAYS);
+        }
 
         private string returnRecentRecordsTip(Team team)
         {
