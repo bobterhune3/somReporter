@@ -115,7 +115,7 @@ namespace somReporter.output
             addTableCell(team.Wins, "#000000", 48);
             addTableCell(team.Loses, "#000000", 48);
             addTableCell(team.Wpct, 3, "#000000", 53);
-            if (team.Gb == 0 && rank == 1)
+            if (Config.SHOW_DIV_MAGIC_NUM && team.Gb == 0 && rank == 1)
                 addTableCell(calcMagicNumber(team), "#000000", 53, "Magic Number");
             else if (team.Gb == 0)
                 addTableCell("--", "#000000", 53, returnGBDifToolTip(team));

@@ -27,6 +27,7 @@ namespace somReporter.util
         public static bool SHOW_RECORD_BOOK = true;
         public static bool SHOW_USAGE = true;
         public static bool SHOW_SCHEDULE = true;
+        public static bool SHOW_DIV_MAGIC_NUM = false;
 
         public static int SCHEDULE_NUMBER_OF_DAYS = 5;
 
@@ -55,6 +56,7 @@ namespace somReporter.util
             Console.Out.WriteLine("SHOW_USAGE = " + SHOW_USAGE);
             Console.Out.WriteLine("SHOW_SCHEDULE = " + SHOW_SCHEDULE);
             Console.Out.WriteLine("SCHEDULE_NUMBER_OF_DAYS = " + SCHEDULE_NUMBER_OF_DAYS);
+            Console.Out.WriteLine("SHOW_DIV_MAGIC_NUM = " + SHOW_DIV_MAGIC_NUM);
         }
 
         public void readConfiguration(String configFileName)
@@ -167,6 +169,12 @@ namespace somReporter.util
                         {
                             SCHEDULE_NUMBER_OF_DAYS = Int32.Parse(value);
                         }
+                        else if( key.Equals("SHOW_DIV_MAGIC_NUM"))
+                        {
+                            Boolean.TryParse(value, out tmpValue);
+                            SHOW_DIV_MAGIC_NUM = tmpValue;
+                        }
+
                     }
                  }
             }
