@@ -34,6 +34,7 @@ namespace somReporter
         private int wildCardPositionPrevious = -1;
         private List<double> wpctHistory;
         private int winPctHistoryGameCount = 0;
+        private int secondPlaceTeamLosses = -1;
 
         public static int TOTAL_GAMES = 0;
 
@@ -243,6 +244,12 @@ namespace somReporter
                 runsAllowed = value;
                 calculatePythagoreanTheorem();
             }
+        }
+
+        public int SecondPlaceTeamLosses
+        {
+            get { return secondPlaceTeamLosses; }
+            set { secondPlaceTeamLosses = value;  }
         }
 
         public int DivisionPositionCurrent

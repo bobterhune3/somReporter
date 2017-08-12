@@ -115,7 +115,9 @@ namespace somReporter.output
             addTableCell(team.Wins, "#000000", 48);
             addTableCell(team.Loses, "#000000", 48);
             addTableCell(team.Wpct, 3, "#000000", 53);
-            if (team.Gb == 0)
+            if (team.Gb == 0 && rank == 1)
+                addTableCell(calcMagicNumber(team), "#000000", 53, "Magic Number");
+            else if (team.Gb == 0)
                 addTableCell("--", "#000000", 53, returnGBDifToolTip(team));
             else
                 addTableCell(team.Gb, 1, "#000000", 53, returnGBDifToolTip(team));
@@ -302,18 +304,25 @@ namespace somReporter.output
             float gpPct = gp / 162f;
             float explodedUsage = ((float)player.Replay) / gpPct;
             addTableCell(player.Replay, "#000000", 75, String.Format("predicted final usage is {0}", (int)explodedUsage));
-        
-            addTableCell(player.TargetUsage, "#000000", 75, String.Format("{0} new {1} last run.", 
-                getRunDeltaChange(player), 
-                player.IsHitter?"AB":"IP"));
 
+            String change = getRunDeltaChange(player);
+            if (change.Equals("X"))
+            {
+                addTableCell(player.TargetUsage, "#000000", 75, "New addition to list");
+            }
+            else
+            {
+                addTableCell(player.TargetUsage, "#000000", 75, String.Format("{0} new {1} last run.",
+                    getRunDeltaChange(player),
+                    player.IsHitter ? "AB" : "IP"));
+            }
             lines.Add("</tr>");
             return true;
         }
 
         private String getRunDeltaChange(Player player) {
             if (player.PreviousReplay == 0)
-                return "--";
+                return "X";
 
             if (player.Replay == player.PreviousReplay)
                 return "no change";
@@ -468,7 +477,7 @@ namespace somReporter.output
         private string returnNextScheduleToolTip(Team team)
         {
             return featureSchedule.getTeamSchedulesForDays(team.Abrv,
-                Program.daysPlayed,
+                Program.daysPlayed+1, //Want tomorrows game!
                 Config.SCHEDULE_NUMBER_OF_DAYS);
         }
 
@@ -611,5 +620,10 @@ namespace somReporter.output
             addTableCell(number.ToString(), textColor, width, tooltip);
         }
 
+        private string calcMagicNumber(Team team)
+        {
+            int value = 163 - team.Wins - team.SecondPlaceTeamLosses;
+            return "[" + value + "]";
+        }
     }
 }
