@@ -66,11 +66,13 @@ namespace somReporter.team
                     if (teamMatch.Success)
                     {
                         /*
-                            Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)
-                            Hitters > 101 actual at bats are actual at bats + 50  (ie ab + 50)
+                            Hitters < 120 actual at bats are allowed at 150%      (ie ab * 1.5)
+                            Hitters > 120 actual at bats are actual at bats + 60  (ie ab + 60)
+                            Hitters > 600 actual at bats are allowed at 110%      (ie ab * 1.1)
 
-                            Pitchers >= 100 innings is innings + 30  
-                            Pitchers < 100 is 110% of actual   (99 * 1.1) = +29
+                            Pitchers < 60 is 150% of actual   (59 * 1.5) = +29
+                            Pitchers > 118 innings is innings + 30  
+                            Pitchers > 199 is 115% of actual (199 * 1.15) = +29
                           */
 
                         if (m_bWorkingOnHitters) { 
@@ -104,23 +106,41 @@ namespace somReporter.team
             }
         }
 
+        /*
+            Hitters < 120 actual at bats are allowed at 150%      (ie ab * 1.5)
+            Hitters > 120 actual at bats are actual at bats + 60  (ie ab + 60)
+            Hitters > 600 actual at bats are allowed at 110%      (ie ab * 1.1)
+          */
         public static int getPlayerTargetUsage(int actual)
         {
-            if (actual <= 101)
+            if (actual < 120)
             {
-                return Convert.ToInt32(((float)actual) * 1.5f);
+                return (int)Math.Round(((float)actual) * 1.5f);
+            }
+            else if (actual > 600)
+            {
+                return (int)Math.Round(((float)actual) * 1.1f);
             }
             else
             {
-                return actual + 50;
+                return actual + 60;
             }
         }
 
+        /*
+            Pitchers < 60 is 150% of actual   (59 * 1.5) = +29
+            Pitchers > 118 innings is innings + 30  
+            Pitchers > 199 is 115% of actual (199 * 1.15) = +29
+          */
         public static int getPitcherTargetUsage(int actual)
         {
             if (actual < 60)
             {
-               return Convert.ToInt32(((float)actual) * 1.5f);
+               return (int)Math.Round(((float)actual) * 1.5f);
+            }
+            else if (actual > 199)
+            {
+                return (int)Math.Round(((float)actual) * 1.15f);
             }
             else
             {

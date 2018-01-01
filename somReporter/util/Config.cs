@@ -9,6 +9,10 @@ namespace somReporter.util
 {
     public class Config
     {
+        private static Config config = null;
+
+        private const String CONFIG_FILE_NAME = "config.properties";
+
         public static bool HAS_WILDCARD = false;
         public static bool RANK_STATS_BY_DIVISION = true;
         public static bool STRAIGHT_DRAFT_ORDER = false;
@@ -31,10 +35,10 @@ namespace somReporter.util
 
         public static int SCHEDULE_NUMBER_OF_DAYS = 5;
 
-        public Config(String configFileName)
+        public Config()
         {
-            if (File.Exists(configFileName))
-                readConfiguration(configFileName);
+            if (File.Exists(CONFIG_FILE_NAME))
+                readConfiguration(CONFIG_FILE_NAME);
             dumpValues();
         }
 
@@ -117,7 +121,7 @@ namespace somReporter.util
                             System.Int32.TryParse(value, out tmpNValue);
                             SUGGESTION_LEVEL_PERCENT = (((float)tmpNValue) / 100f);
                         }
-                        else if (key.Equals("WARNING_LEVEL_PERCENT"))
+                        else if (key.Equals("PRT_FILE_LOCATION"))
                         {
                             PRT_FILE_LOCATION = value;
                         }
@@ -187,6 +191,9 @@ namespace somReporter.util
 
 
         public static String getConfigurationFile(String filename) {
+            if(config == null )
+                config = new Config();
+
             return Path.Combine(PRT_FILE_LOCATION, LEAGUE_NAME, filename);
         }
     }

@@ -26,6 +26,10 @@ namespace somReporter.features
             Console.WriteLine("      Showing Moral=" + Config.SHOW_MORAL + ", Showing Warnings=" + Config.SHOW_WARNING);
 
             teamComparisonReport = (ComparisonReport)teamReportFile.FindReport("Comparison Report");
+            if (teamComparisonReport == null) {
+                System.Console.WriteLine("Are you sure you selected 'ALL REPORTS' for the Team Reports?");
+                throw new Exception("Unable to find Comparison Report in the Team Report File");
+             }
             teamComparisonReport.processReport();
         }
 

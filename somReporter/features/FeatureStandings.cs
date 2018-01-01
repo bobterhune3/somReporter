@@ -170,7 +170,7 @@ namespace somReporter.features
             int rank = 1;
             foreach (Team team in teams)
             {
-                int nextTeamLosses = -1;
+        //        int nextTeamLosses = -1;
                 team.DivisionPositionCurrent = rank;
                 if( rank == 1 )
                 {

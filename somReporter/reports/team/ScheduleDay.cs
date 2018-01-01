@@ -8,7 +8,7 @@ namespace somReporter.reports.team
 {
     public class ScheduleDay
     {
-        private DateTime date;
+ //       private DateTime date;
         public int dayNumber;
         Dictionary<String, List<String>> teamSchedules = new Dictionary<String, List<String>>();
 

@@ -26,8 +26,6 @@ namespace somReporter
         public static IFeature featureInjuries = new FeatureInjuries();
         public static IFeature featureSchedule = null;
         
-
-        public static Config cfg = new Config("config.properties");
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
         private NewspaperStyleReport newspaperStyleReport;

@@ -354,11 +354,13 @@ namespace somReporter.output
         private string getUsageLevel(int actual, int target, int replay, bool isHitter)
         {
             /*
-                Hitters <= 101 actual at bats are allowed at 150%    (ie ab * 1.5)
-                Hitters > 101 actual at bats are actual at bats + 50  (ie ab + 50)
+                Hitters < 120 actual at bats are allowed at 150%      (ie ab * 1.5)
+                Hitters > 120 actual at bats are actual at bats + 60  (ie ab + 60)
+                Hitters > 600 actual at bats are allowed at 110%      (ie ab * 1.1)
 
-                Pitchers >= 100 innings is innings + 30  
                 Pitchers < 60 is 150% of actual   (59 * 1.5) = +29
+                Pitchers > 118 innings is innings + 30  
+                Pitchers > 199 is 115% of actual (199 * 1.15) = +29
               */
 
             if (isHitter)
