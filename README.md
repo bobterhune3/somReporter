@@ -5,7 +5,7 @@
 **WHAT DOES THIS DO**
 This project will take complet Strat-O-Matic Computer game baseball reports (Team and League) and build a static HTML page that can be posted.   The web page will display trend charts and focuses on rules specific to the "NoDice league""
 
-(EXAMPLE output)[http://www.ndbaseball.xyz/baseball/2018/]
+[EXAMPLE output](http://www.ndbaseball.xyz/baseball/2018/)
 
 **ABOUT**
 Program is written in C# and produces HTML/JSP static pages.
