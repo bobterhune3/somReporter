@@ -419,6 +419,7 @@ namespace somReporter.output
                 addTableCell("ACTUAL", "#5B9BD5", "#F8CBAD", 75);
                 addTableCell("REPLAY", "#5B9BD5", "#F8CBAD", 75);
                 addTableCell("TARGET", "#5B9BD5", "#F8CBAD", 75);
+                addTableCell("REMAINING", "#5B9BD5", "#F8CBAD", 30);
                 lines.Add("</tr></table>");
             }
         }
@@ -442,6 +443,7 @@ namespace somReporter.output
                 addTableCell(player.Actual, bgColor, "#000000", 75);
                 addTableCell(player.Replay, bgColor, "#000000", 75);
                 addTableCell(player.TargetUsage, bgColor, "#000000", 75);
+                addTableCell(player.TargetUsage- player.Replay, bgColor, "#000000", 30);
 
             lines.Add("</tr></table>");
             return true;
@@ -491,18 +493,18 @@ namespace somReporter.output
 
                 if (replay > target)        // Penality For Hitters
                     return "#FF0000";
-                if (replay > (((float)actual) * ((float)Config.SUGGESTION_LEVEL_PERCENT)) && Config.SHOW_MORAL)        // Moral Ceiling
+                if (replay > (((float)target) * ((float)Config.SUGGESTION_LEVEL_PERCENT)) && Config.SHOW_MORAL)        // Moral Ceiling
                     return "#FF6611";
-                if (replay > (((float)actual) * ((float)Config.WARNING_LEVEL)) && Config.SHOW_WARNING)         // Danger Level
+                if (replay > (((float)target) * ((float)Config.WARNING_LEVEL)) && Config.SHOW_WARNING)         // Danger Level
                     return "#FFFF55";
                 return "";
             }
             else {
                 if (replay > target)         // Penality For Pitchers
                     return "#FF0000";
-                if (replay > ((float)actual * (float)Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
+                if (replay > ((float)target * (float)Config.SUGGESTION_LEVEL_PERCENT) && Config.SHOW_MORAL)         // Moral Ceiling
                     return "#FF6611";
-                if (replay > ((float)actual * (float)Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
+                if (replay > ((float)target * (float)Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
                     return "#FFFF55";
                 return "";
             }

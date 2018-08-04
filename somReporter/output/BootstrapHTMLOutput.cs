@@ -14,6 +14,7 @@ namespace somReporter.output
         List<String> lines = new List<String>();
         private const string S_HTML_EXTRA_TEXT = "<div class=\"alert alert-info\" role=\"alert\"><a class=\"alert-link\">{0}</a></div>";
         private FeatureSchedule featureSchedule = null;
+        private static String REPLACE_LEAGUE_NAME = "#{LEAGUE_NAME}";
 
         public BootstrapHTMLOutput()
         {
@@ -34,6 +35,8 @@ namespace somReporter.output
                 file = new System.IO.StreamReader(".\\resources\\bootstrapHTMLHeader.txt");
                 while ((line = file.ReadLine()) != null)
                 {
+                    if (line.Contains(REPLACE_LEAGUE_NAME))
+                        line = line.Replace(REPLACE_LEAGUE_NAME, Config.LEAGUE_NAME);
                     lines.Add(line);
                 }
             }
@@ -280,6 +283,8 @@ namespace somReporter.output
                     "<br><br>" +
                     "Hover over number to view The change in AB/IP added since the previous run."
                     );
+                addTableHeaderCell("REMAINING", 30, "Number of AB/IP left until penality is reached");
+                addTableHeaderCell("DIFF", 30, "Number of AB/IP since the previous run");
                 lines.Add("</tr></thead><tbody>");
             }
         }
@@ -316,6 +321,12 @@ namespace somReporter.output
                     getRunDeltaChange(player),
                     player.IsHitter ? "AB" : "IP"));
             }
+            addTableCell(player.TargetUsage - player.Replay, "#000000", 30);
+
+            if(player.PreviousReplay == 0)
+                addTableCell("NEW", "#000000", 30);
+            else
+                addTableCell(player.Replay-player.PreviousReplay, "#000000", 30);
             lines.Add("</tr>");
             return true;
         }
@@ -376,7 +387,8 @@ namespace somReporter.output
                         return "<span class=\"label label-warning\">Danger</span>";
                 }
 
-                if (replay > (((float)actual* 1.1) * ((float)Config.WARNING_LEVEL)) && Config.SHOW_WARNING)         // Danger Level
+                float calc = ((float)actual) * ((float)Config.WARNING_LEVEL);
+                if (replay > calc && Config.SHOW_WARNING)         // Danger Level
                     return "<span class=\"label label-info\">Warning</span>";
                 return "";
             }
@@ -390,7 +402,8 @@ namespace somReporter.output
                     if (replay > actual + (int)midpoint)
                         return "<span class=\"label label-warning\">Danger</span>";
                 }
-                if (replay > (((float)actual * 1.1) * (float)Config.WARNING_LEVEL) && Config.SHOW_WARNING)          // Danger Level
+                float calc = ((float)actual) * ((float)Config.WARNING_LEVEL);
+                if (replay > calc && Config.SHOW_WARNING)          // Danger Level
                     return "<span class=\"label label-info\">Warning</span>";
                 return "";
             }

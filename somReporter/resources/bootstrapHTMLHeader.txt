@@ -60,7 +60,7 @@
             <li><a href="#standings">Standings<span class="sr-only">(current)</span></a></li>
 		  </ul>
 		  <ul class="nav nav-sidebar">
-            <li><a href="..\..\2016ND\index.html"><b>Strat-O Page</b></a></li>
+            <li><a href="..\..\#{LEAGUE_NAME}\index.html"><b>Strat-O Page</b></a></li>
           </ul>
           <ul class="nav nav-sidebar">
             <li><a href="#hot">Who's Hot</a></li>

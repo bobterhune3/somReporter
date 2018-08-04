@@ -69,8 +69,8 @@ namespace somReporter.features
                     Dictionary<string, string> playerData = loadStorageString(database[key]);
                     try
                     {
-                        int actual = int.Parse(playerData["PreviousReplay"]);
-                        return actual;
+                        int storedValue = int.Parse(playerData["PreviousReplay"]);
+                        return storedValue;
                     }
                     catch(Exception)
                     {
