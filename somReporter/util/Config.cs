@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace somReporter.util
+namespace somReporter.util.somReporter
 {
     public class Config
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using somReporter.util;
+using somReporter.util.somReporter;
 
 namespace somReporter
 {
@@ -21,10 +21,10 @@ namespace somReporter
             SOMReportFile file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
-            leagueStandingsReport.processReport();
+            leagueStandingsReport.processReport(Program.LEAGUES[0].Length);
 
             leaguePrimaryStatReport = (LeagueGrandTotalsReport)file.FindReport("LEAGUE GRAND TOTALS (primary report) FOR");
-            leaguePrimaryStatReport.processReport();
+            leaguePrimaryStatReport.processReport(Program.LEAGUES[0].Length);
         }
 
         [TestCleanup()]
@@ -82,7 +82,7 @@ namespace somReporter
         [TestMethod()]
         public void testPythagoreanTheorem()
         {
-            Team team = new Team("AL TEST");
+            Team team = new Team("AL TEST", Program.LEAGUES[0].Length);
             team.RunsScored = 533;
             team.RunsAllowed = 788;
 
@@ -108,7 +108,7 @@ namespace somReporter
 
         private Team createTestTeam(int w, int l)
         {
-            Team Team = new Team("XXX");
+            Team Team = new Team("XXX", Program.LEAGUES[0].Length);
             Team.Wins = w;
             Team.Loses = l;
             return Team;

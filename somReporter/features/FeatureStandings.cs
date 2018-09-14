@@ -1,6 +1,6 @@
 ﻿using somReporter.output;
 using somReporter.reports;
-using somReporter.util;
+using somReporter.util.somReporter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,7 +88,7 @@ namespace somReporter.features
         public void initialize(SOMReportFile leagueReportFile) { 
             Console.WriteLine("    Building Standings...");
             leagueStandingsReport = (LeagueStandingsReport)leagueReportFile.FindReport("LEAGUE STANDINGS FOR");
-            leagueStandingsReport.processReport();
+            leagueStandingsReport.processReport(Program.LEAGUES[0].Length);
         }
 
 

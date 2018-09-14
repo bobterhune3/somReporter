@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using somReporter.output;
 using somReporter.team;
-using somReporter.util;
+using somReporter.util.somReporter;
 using Microsoft.Isam.Esent.Collections.Generic;
 
 namespace somReporter.features
@@ -30,7 +30,7 @@ namespace somReporter.features
                 System.Console.WriteLine("Are you sure you selected 'ALL REPORTS' for the Team Reports?");
                 throw new Exception("Unable to find Comparison Report in the Team Report File");
              }
-            teamComparisonReport.processReport();
+            teamComparisonReport.processReport(Program.LEAGUES[0].Length);
         }
 
         public void setDateStore(PersistentDictionary<string, string> dictionary) {

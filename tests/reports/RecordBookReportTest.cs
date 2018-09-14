@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using somReporter.util;
+using somReporter.util.somReporter;
 
 namespace somReporter
 {
@@ -14,7 +14,7 @@ namespace somReporter
             SOMReportFile file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
             RecordBookReport recordBookReport = (RecordBookReport)file.FindReport("RECORD BOOK FOR FOR");
-            recordBookReport.processReport();
+            recordBookReport.processReport(Program.LEAGUES[0].Length);
         }
     }
 }

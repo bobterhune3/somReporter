@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
-using somReporter.util;
+using somReporter.util.somReporter;
 
 namespace somReporter
 {

@@ -15,7 +15,7 @@ namespace somReporter
         public LineScoreReport(string title) : base(title) {
         }
 
-        public override void processReport() {
+        public override void processReport(int n) {
             bool inFirstSection = true;
 
             foreach (String line in m_lines)

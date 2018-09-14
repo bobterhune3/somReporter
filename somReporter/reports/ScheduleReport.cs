@@ -14,7 +14,7 @@ namespace somReporter.reports
         {
         }
 
-        public override void processReport()
+        public override void processReport(int n)
         {
 
         }

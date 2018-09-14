@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using somReporter.util;
+using somReporter.util.somReporter;
 
 namespace somReporter
 {
@@ -29,10 +29,10 @@ namespace somReporter
             SOMReportFile file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
-            leagueStandingsReport.processReport();
+            leagueStandingsReport.processReport(Program.LEAGUES[0].Length);
 
             lineScoreReport = (LineScoreReport)file.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
-            lineScoreReport.processReport();
+            lineScoreReport.processReport(Program.LEAGUES[0].Length);
         }
 
         [TestMethod]

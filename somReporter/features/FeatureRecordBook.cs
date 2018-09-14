@@ -20,7 +20,7 @@ namespace somReporter.features
         public void initialize(SOMReportFile leagueReportFile)
         {
             recordBookReport = (RecordBookReport)leagueReportFile.FindReport("RECORD BOOK FOR FOR");
-            recordBookReport.processReport();
+            recordBookReport.processReport(Program.LEAGUES[0].Length);
         }
 
         public void process(IOutput output)

@@ -26,7 +26,7 @@ namespace somReporter
 
         private bool bProcessHitters = true;
 
-        public override void processReport()
+        public override void processReport(int n)
         {
             foreach (String line in m_lines)
             {

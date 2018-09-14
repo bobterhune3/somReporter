@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using somReporter.reports;
-using somReporter.util;
+using somReporter.util.somReporter;
 using somReporter.features;
 
 namespace somReporter
@@ -172,15 +172,15 @@ namespace somReporter
 
             Console.WriteLine("    Building Grand Totals...");
             leaguePrimaryStatReport = (LeagueGrandTotalsReport)leagueReportFile.FindReport("LEAGUE GRAND TOTALS (primary report) FOR");
-            leaguePrimaryStatReport.processReport();
+            leaguePrimaryStatReport.processReport(Program.LEAGUES[0].Length);
 
             Console.WriteLine("    Building League Report ...");
             lineScoreReport = (LineScoreReport)leagueReportFile.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
-            lineScoreReport.processReport();
+            lineScoreReport.processReport(Program.LEAGUES[0].Length);
 
             Console.WriteLine("    Building Awards...");
             newspaperStyleReport = (NewspaperStyleReport)leagueReportFile.FindReport("AWARDS VOTING FOR");
-            newspaperStyleReport.processReport();
+            newspaperStyleReport.processReport(Program.LEAGUES[0].Length);
 
             Console.WriteLine("    Building Record Book...");
             feature = FeatureFactory.loadFeature(FeatureFactory.FEATURE.RECORD_BOOK);

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using somReporter.features;
-using somReporter.util;
+using somReporter.util.somReporter;
 using somReporter;
 using somReporter.reports.team;
 using System.Text.RegularExpressions;

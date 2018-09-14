@@ -26,7 +26,7 @@ namespace somReporter
             return player_records;
         }
 
-        public override void processReport()
+        public override void processReport(int n)
         {
             string currentTitle = "";
             foreach (String line in m_lines)

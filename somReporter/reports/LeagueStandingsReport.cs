@@ -28,7 +28,7 @@ namespace somReporter
 
         public override String getReportType() { return REPORT_TYPE; }
 
-        public override void processReport() {
+        public override void processReport(int n) {
             foreach( String line in m_lines)  {
                 string fixedLine = line.Replace("[0]", "");
                 collectData(fixedLine);
@@ -69,7 +69,7 @@ namespace somReporter
                         {
                             name = name.Substring(0, name.Length - 3);
 
-                            Team team = new Team(m_CurrentDivision);
+                            Team team = new Team(m_CurrentDivision, Program.LEAGUES[0].Length);
                             team.Name = name.Trim();
                             team.Abrv = abv;
                             team.Wins = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());

@@ -14,7 +14,7 @@ namespace somReporter
         public NewspaperStyleReport(string title) : base(title) {
         }
 
-        public override void processReport()
+        public override void processReport(int n)
         {
             bool inFirstSection = true;
             List<String> dataWhoHot = new List<String>();
