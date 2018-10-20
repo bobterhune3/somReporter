@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -67,17 +68,18 @@
     <Compile Include="TestSOMReportFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestTeamReportLoader.cs" />
+    <Compile Include="TestingLineupRangeTool.cs" />
     <Compile Include="util\UsageCheckTests.cs" />
     <Compile Include="util\PairTestReports.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\LIneupUsageEstimator\LIneupUsageEstimator.csproj">
+      <Project>{f0417f15-67c0-4609-ab76-fd8d551cbff5}</Project>
+      <Name>LIneupUsageEstimator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\somReportUtils\somReportUtils\somReportUtils.csproj">
       <Project>{910bb531-1f6d-437e-9d4b-31c78e1ad771}</Project>
       <Name>somReportUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\somUsageAnalysis\somUsageAnalysis.csproj">
-      <Project>{19142902-60ac-4e9f-90e1-c249cd644be7}</Project>
-      <Name>somUsageAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\somReporter\somReporter.csproj">
       <Project>{ab628c89-8143-4cf8-abd7-ce34de707640}</Project>
