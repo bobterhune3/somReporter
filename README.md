@@ -5,13 +5,15 @@
 **WHAT DOES THIS DO**
 This project will take complet Strat-O-Matic Computer game baseball reports (Team and League) and build a static HTML page that can be posted.   The web page will display trend charts and focuses on rules specific to the "NoDice league""
 
+[EXAMPLE output](http://www.ndbaseball.xyz/baseball/2018/)
+
 **ABOUT**
 Program is written in C# and produces HTML/JSP static pages.
 
 Reports that can be written, are custome Draft Order, Wild Card, Standings, Records with last 10 games, Usage alerts, etc.
 
 
-** INSTRUCTIONS **
+**INSTRUCTIONS**
 Print out Strat-O-Matic baseball Team and League reports with ALL REPORTS/ALL TEAMS selected and print as a file.
 Save the file into the bin\debug directory and run the program.
 A config.properties contains settings to be used to drive the application.  (See Below for explanation)
@@ -19,28 +21,27 @@ A config.properties contains settings to be used to drive the application.  (See
 Adding an additional text file named "updatedText.txt" will include pre-formatted text for custom content
 
 
-** SETTINGS **
+**SETTINGS**
 A sample config.properties can be found in the resources folder.  It is a set of key-value pairs.
 
-
-
-  SHOW_SUGGESTION_USAGE_WARNINGS=true  (Show a alert for players who passes the suggested max usage as defined below)
-  SUGGESTION_LEVEL_PERCENT=110         (This value represents the amount over actual usage to trigger a suggested warning)
-  SHOW_USAGE_WARNINGS=true			   (Show a warning for players who pass the below warning threshold)
-  WARNING_LEVEL_PERCENT=95             (The % of actual vs real usage)
-  LEAGUE_NAME=2016ND				   (The name of the league as named in the SOM game, used to parse reports)
-  PRT_FILE_LOCATION=C:\cdrombb\print   (Where to look for the SOM Team and League reports to collect data from)
-  HAS_WILDCARD=false				   (Does the league have wildcards)
-  RANK_STATS_BY_DIVISION=true		   (When calculating stats do it per division, or per league)
-  STRAIGHT_DRAFT_ORDER=false		   (When showing draft, true=standard worst to best, false is a custom format)
-  SHOW_STANDINGS=true                  (Show Team Standings on the page)
-  SHOW_NOTES=true                      (Show Notes from a file (ipdatedText.txt) at the top of a page)
-  SHOW_WHOS_HOT=true				   (Show a formatted Who's Hot Who's not from the stock reports')
-  SHOW_INJURY_REPORT=true			   (Show a formatted injury report from the stock report)
-  SHOW_DRAFT_ORDER=true				   (Show calculated Draft Orver)
-  SHOW_RECORD_BOOK=true				   (Show highlights from from the stock Record Book report)
-  SHOW_USAGE=true					   (Show player usage section)
-
+```
+SHOW_SUGGESTION_USAGE_WARNINGS=true  (Show a alert for players who passes the suggested max usage as defined below)
+SUGGESTION_LEVEL_PERCENT=110         (This value represents the amount over actual usage to trigger a suggested warning)
+SHOW_USAGE_WARNINGS=true			   (Show a warning for players who pass the below warning threshold)
+WARNING_LEVEL_PERCENT=95             (The % of actual vs real usage)
+LEAGUE_NAME=2016ND				   (The name of the league as named in the SOM game, used to parse reports)
+PRT_FILE_LOCATION=C:\cdrombb\print   (Where to look for the SOM Team and League reports to collect data from)
+HAS_WILDCARD=false				   (Does the league have wildcards)
+RANK_STATS_BY_DIVISION=true		   (When calculating stats do it per division, or per league)
+STRAIGHT_DRAFT_ORDER=false		   (When showing draft, true=standard worst to best, false is a custom format)
+SHOW_STANDINGS=true                  (Show Team Standings on the page)
+SHOW_NOTES=true                      (Show Notes from a file (ipdatedText.txt) at the top of a page)
+SHOW_WHOS_HOT=true				   (Show a formatted Who's Hot Who's not from the stock reports')
+SHOW_INJURY_REPORT=true			   (Show a formatted injury report from the stock report)
+SHOW_DRAFT_ORDER=true				   (Show calculated Draft Orver)
+SHOW_RECORD_BOOK=true				   (Show highlights from from the stock Record Book report)
+SHOW_USAGE=true					   (Show player usage section)
+```
 
 
 
