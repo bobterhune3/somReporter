@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -54,6 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TestBasicPersistence.cs" />
     <Compile Include="reports\LineScoreReportTest.cs" />
     <Compile Include="reports\TestLeagueStandingsReportDivisionOnly.cs" />
     <Compile Include="reports\TestLeagueStandingsReportStandard.cs" />
@@ -63,10 +65,13 @@
     <Compile Include="reports\TestDraftOrder.cs" />
     <Compile Include="reports\InjuryReportTest.cs" />
     <Compile Include="reports\TestScheduleReport.cs" />
+    <Compile Include="TestPlayerSorting.cs" />
+    <Compile Include="TestTeamProfileBalancer.cs" />
     <Compile Include="TestTeamReportFileParser.cs" />
     <Compile Include="TestFileParser.cs" />
     <Compile Include="TestSOMReportFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestTeamReportBalanceFinder.cs" />
     <Compile Include="TestTeamReportLoader.cs" />
     <Compile Include="TestingLineupRangeTool.cs" />
     <Compile Include="util\UsageCheckTests.cs" />
