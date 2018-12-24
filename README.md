@@ -45,7 +45,7 @@ SHOW_USAGE=true					   (Show player usage section)
 
 
 
-** CREDITS **
+**CREDITS**
 
  * Chart.js
  * http://chartjs.org/
@@ -56,7 +56,7 @@ SHOW_USAGE=true					   (Show player usage section)
  * https://github.com/chartjs/Chart.js/blob/master/LICENSE.md
 
 
- /*!
+ /
  * JavaScript for Bootstrap's docs (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under the Creative Commons Attribution 3.0 Unported License. For

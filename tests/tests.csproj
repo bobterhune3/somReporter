@@ -62,7 +62,6 @@
     <Compile Include="reports\ReportTestReports.cs" />
     <Compile Include="reports\TestTeamGrandTotalReports.cs" />
     <Compile Include="reports\RecordBookReportTest.cs" />
-    <Compile Include="reports\TestDraftOrder.cs" />
     <Compile Include="reports\InjuryReportTest.cs" />
     <Compile Include="reports\TestScheduleReport.cs" />
     <Compile Include="TestPlayerSorting.cs" />

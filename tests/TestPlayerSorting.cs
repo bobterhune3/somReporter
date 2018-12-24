@@ -7,8 +7,6 @@ namespace somReporter.team
     [TestClass()]
     public class TestPlayerSorting
     {
-
-
         [TestInitialize()]
         public void Initialize()
         {
@@ -60,12 +58,11 @@ namespace somReporter.team
             String[] expectedOrder = { "StartP3", "StartP2", "StartP1", "StartP4", "StartP6", "StartP7", "StartP8" };
 
             pitchers.Sort();
-   //         pitchers.Sort();
-
-            System.Console.WriteLine("AFTER SORT");
+/*
+           System.Console.WriteLine("AFTER SORT");
             foreach (Player p in pitchers)
                 Console.WriteLine(p.Name+", "+p.primaryPos);
-
+                */
             for (int i = 0; i < 6; i++)
             {
                 Assert.AreEqual(expectedOrder[i], pitchers[i].Name);
@@ -76,7 +73,6 @@ namespace somReporter.team
         private List<Player> processTestData(String[,] testData)
         {
             List<Player> pitchers = new List<Player>();
-
 
             for (int i = 0; i < testData.GetLength(0); i++) { 
                 Player player = new Player();

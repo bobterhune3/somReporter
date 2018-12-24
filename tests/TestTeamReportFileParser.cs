@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
-using somReporter.util.somUsageAnalysis;
-using somReporter;
 using somReporter.team;
+using somReporter.util.somReporter;
 
 namespace somReporter
 {

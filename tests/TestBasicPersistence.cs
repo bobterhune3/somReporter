@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using somReporter.team;
 
 namespace LIneupUsageEstimator.storage
 {
@@ -39,6 +38,9 @@ namespace LIneupUsageEstimator.storage
             Assert.IsTrue(lineup2.ContainsKey(TEST_TEAM_NAME+"1"));
             TeamLineup lineup = teamLineups[TEST_TEAM_NAME + "1"];
             Assert.IsTrue(lineup.Lineups.Count == 2);
+
+            Assert.AreEqual(18, lineup2[TEST_TEAM_NAME + "1"].playerByGRID.Count);
+            Assert.AreEqual(18, lineup2[TEST_TEAM_NAME + "2"].playerByGRID.Count);
         }
 
 
@@ -52,12 +54,29 @@ namespace LIneupUsageEstimator.storage
 
                 LineupData lupLeft = new LineupData("L", new LineupBalanceItem(0, 9, "L"), new LineupBalanceItem(18, 9, "R"), 77, Guid.NewGuid());
                 lineup.Lineups.Add(lupLeft);
+                List<Player> players = new List<Player>();
+                String[] names =  { "CatcherL1","FirstL1","SecondL1","ThirdL1","ShortstopL1","LeftL1","CenterL1","RightL1","DesignatedL1"};
+                foreach(String name in names)
+                    players.Add(createTestPlayer(name));
 
                 LineupData lupRight = new LineupData("R", new LineupBalanceItem(0, 9, "L"), new LineupBalanceItem(18, 9, "R"), 888, Guid.NewGuid());
                 lineup.Lineups.Add(lupRight);
+                String[] namesR = { "CatcherR1", "FirstR1", "SecondR1", "ThirdR1", "ShortstopR1", "LeftR1", "CenterR1", "RightR1", "DesignatedR1" };
+                foreach (String name in namesR)
+                    players.Add(createTestPlayer(name));
+
+                lineup.playerByGRID = players;
 
                 lineups.Add(teamName, lineup);
             }
+        }
+
+        private Player createTestPlayer(String name)
+        {
+            Player player = new Player();
+            player.Name = name;
+            player.Throws = "S";
+            return player;
         }
     }
 }

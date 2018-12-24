@@ -1,11 +1,10 @@
 ﻿using somReporter.util;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using somReporter.team;
 using somReporter.util.somReporter;
+using somReportUtils;
 
 namespace somReporter.output
 {
@@ -439,7 +438,7 @@ namespace somReporter.output
 
                 addTableCell(counter, "#5B9BD5", "#F8CBAD", 30, false);
                 addTableCell(player.Name, bgColor, "#000000", 100, false);
-                addTableCell(Team.prettyTeamName(player.Team.Abrv), bgColor, "#000000", 60, false);
+                addTableCell(TeamUtils.prettyTeamName(player.Team.Abrv), bgColor, "#000000", 60, false);
                 addTableCell(player.IsHitter?"B":"P", bgColor, "#000000", 60);
                 addTableCell(player.Actual, bgColor, "#000000", 75);
                 addTableCell(player.Replay, bgColor, "#000000", 75);
