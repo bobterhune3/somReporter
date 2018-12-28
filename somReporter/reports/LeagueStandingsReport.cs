@@ -69,7 +69,7 @@ namespace somReporter
                         {
                             name = name.Substring(0, name.Length - 3);
 
-                            Team team = new Team(m_CurrentDivision, Program.LEAGUES[0].Length);
+                            Team team = new Team(RecordIndex.getNextId(RecordIndex.INDEX.TeamId), m_CurrentDivision, Program.LEAGUES[0].Length);
                             team.Name = name.Trim();
                             team.Abrv = abv;
                             team.Wins = Convert.ToInt32(teamMatch.Groups[2].Value.Trim());

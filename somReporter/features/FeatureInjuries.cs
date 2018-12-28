@@ -74,7 +74,7 @@ namespace somReporter.features
 
             if (output == null)
             {
-                System.Console.WriteLine("INJURIES");
+                  System.Console.WriteLine("INJURIES");
 
                 foreach (String line in formattedInjuryLines)
                     System.Console.WriteLine(line);
