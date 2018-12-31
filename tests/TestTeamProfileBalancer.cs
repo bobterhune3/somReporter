@@ -1,8 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using somReporter.util.somReporter;
-using LIneupUsageEstimator;
+using LineupEngine;
 
 namespace somReporter.team
 {
@@ -15,6 +14,7 @@ namespace somReporter.team
         public void Initialize()
         {
             balanceItems = LineupTools.buildDefaultLineupTypes();
+            RecordIndex.resetIndex(RecordIndex.INDEX.TestTeamId);
         }
 
         [TestCleanup()]
@@ -67,7 +67,7 @@ namespace somReporter.team
                 player.BB = Int32.Parse(testData[i, 5]);
                 player.GS = Int32.Parse(testData[i, 6]);
                 player.SAVE = Int32.Parse(testData[i, 7]);
-                player.Team = new Team("ABV", 3);
+                player.Team = new Team(RecordIndex.getNextId(RecordIndex.INDEX.TestTeamId),"ABV", 3);
                 player.IsHitter = false;
                 player.Throws = testData[i, 1];
                 players.Add(player);

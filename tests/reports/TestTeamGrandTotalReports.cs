@@ -18,6 +18,8 @@ namespace somReporter
             Config.PRT_FILE_LOCATION = "testData";
             Config.LEAGUE_NAME = "";
             Report.DATABASE.reset();
+            RecordIndex.resetIndex(RecordIndex.INDEX.TestTeamId);
+
             SOMReportFile file = new SOMReportFile(Config.getConfigurationFile("ALL_REPORTS.PRT"));
             file.parseLeagueFile();
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
@@ -82,7 +84,7 @@ namespace somReporter
         [TestMethod()]
         public void testPythagoreanTheorem()
         {
-            Team team = new Team("AL TEST", Program.LEAGUES[0].Length);
+            Team team = new Team(RecordIndex.getNextId(RecordIndex.INDEX.TestTeamId), "AL TEST", Program.LEAGUES[0].Length);
             team.RunsScored = 533;
             team.RunsAllowed = 788;
 
@@ -108,7 +110,7 @@ namespace somReporter
 
         private Team createTestTeam(int w, int l)
         {
-            Team Team = new Team("XXX", Program.LEAGUES[0].Length);
+            Team Team = new Team(RecordIndex.getNextId(RecordIndex.INDEX.TestTeamId), "XXX", Program.LEAGUES[0].Length);
             Team.Wins = w;
             Team.Loses = l;
             return Team;

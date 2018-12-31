@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using somReporter.util.somReporter;
 using LIneupUsageEstimator;
+using LineupEngine;
 
 namespace somReporter.team
 {
@@ -18,6 +18,8 @@ namespace somReporter.team
         public void Initialize()
         {
             balanceItems = LineupTools.buildDefaultLineupTypes();
+            RecordIndex.resetIndex(RecordIndex.INDEX.TestTeamId);
+            RecordIndex.resetIndex(RecordIndex.INDEX.TestLineupDataId);
         }
 
         [TestCleanup()]
@@ -247,7 +249,7 @@ namespace somReporter.team
 
         private LineupDataObj createTestTeamLineup(String arm, String start, String end )
         {
-            LineupDataObj lineup = new LineupDataObj();
+            LineupDataObj lineup = new LineupDataObj(RecordIndex.getNextId(RecordIndex.INDEX.TestLineupDataId));
             lineup.PitcherArm = arm;
             // Converts 1R to the int 1 and letter 'R'
             if( start.Equals("E"))
@@ -293,7 +295,7 @@ namespace somReporter.team
         
         private Team buildTeam(String teamAbrv, String division)
         {
-            Team testTeam = new Team(division, 0);
+            Team testTeam = new Team(RecordIndex.getNextId(RecordIndex.INDEX.TestTeamId), division, 0);
             testTeam.Abrv = teamAbrv;
             return testTeam;
         }

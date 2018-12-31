@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using somReporter.team;
+using somReporter;
+using LineupEngine;
 
 namespace LIneupUsageEstimator.storage
 {
@@ -15,6 +17,7 @@ namespace LIneupUsageEstimator.storage
         public void Initialize()
         {
             LineupPersistence.clearDatabase();
+            RecordIndex.resetIndex(RecordIndex.INDEX.TestLineupDataId);
         }
 
         [TestCleanup()]
@@ -52,14 +55,16 @@ namespace LIneupUsageEstimator.storage
                 String teamName = "MyTeam" + i;
                 TeamLineup lineup = new TeamLineup();
 
-                LineupData lupLeft = new LineupData("L", new LineupBalanceItem(0, 9, "L"), new LineupBalanceItem(18, 9, "R"), 77, Guid.NewGuid());
+                LineupData lupLeft = new LineupData(RecordIndex.getNextId(RecordIndex.INDEX.TestLineupDataId), "L", 
+                    new LineupBalanceItem(0, 9, "L"), new LineupBalanceItem(18, 9, "R"), 77);
                 lineup.Lineups.Add(lupLeft);
                 List<Player> players = new List<Player>();
                 String[] names =  { "CatcherL1","FirstL1","SecondL1","ThirdL1","ShortstopL1","LeftL1","CenterL1","RightL1","DesignatedL1"};
                 foreach(String name in names)
                     players.Add(createTestPlayer(name));
 
-                LineupData lupRight = new LineupData("R", new LineupBalanceItem(0, 9, "L"), new LineupBalanceItem(18, 9, "R"), 888, Guid.NewGuid());
+                LineupData lupRight = new LineupData(RecordIndex.getNextId(RecordIndex.INDEX.TestLineupDataId),"R", 
+                    new LineupBalanceItem(0, 9, "L"), new LineupBalanceItem(18, 9, "R"), 888);
                 lineup.Lineups.Add(lupRight);
                 String[] namesR = { "CatcherR1", "FirstR1", "SecondR1", "ThirdR1", "ShortstopR1", "LeftR1", "CenterR1", "RightR1", "DesignatedR1" };
                 foreach (String name in namesR)

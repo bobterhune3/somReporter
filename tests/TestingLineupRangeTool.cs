@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LIneupUsageEstimator;
 using System.Windows.Forms;
+using LineupEngine;
 
 namespace tests
 {

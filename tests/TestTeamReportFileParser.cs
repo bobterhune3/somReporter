@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using somReporter.team;
 using somReporter.util.somReporter;
+using LineupEngine;
 
 namespace somReporter
 {
@@ -14,7 +15,7 @@ namespace somReporter
         [TestInitialize()]
         public void Initialize()
         {
-            teamReportFile = new SOMTeamReportFile(Config.getConfigurationFile("rosterReport.PRT"));
+            teamReportFile = new SOMTeamReportFile(util.somReporter.Config.getConfigurationFile("rosterReport.PRT"));
         }
 
         [TestCleanup()]
