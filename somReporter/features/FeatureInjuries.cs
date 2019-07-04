@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
 using System.IO;
+using somReporter.util.somReporter;
 
 namespace somReporter.features
 {
@@ -54,16 +55,16 @@ namespace somReporter.features
                 {
                     Boolean newInjury = !previous.ContainsKey(name);
                     if (newInjury)
-                       formattedInjuryLines.Add(String.Format("<b>{0,-30} {1} games left *NEW*</b>", name, current[name]));
+                       formattedInjuryLines.Add(String.Format("<b>{0,-30} {1}{2} games left *NEW*</b>", name, overInjuryWaterMark(current[name]), current[name]));
                     else
-                       formattedInjuryLines.Add(String.Format("{0,-30} {1} games left", name, current[name]));
+                       formattedInjuryLines.Add(String.Format("{0,-30} {1}{2} games left", name, overInjuryWaterMark(current[name]), current[name]));
 
                     if(!newInjury)
                         previous.Remove(name);
                 }
                 else
                 {
-                    formattedInjuryLines.Add(String.Format("{0,-30} {1} games left", name, current[name]));
+                    formattedInjuryLines.Add(String.Format("{0,-30} {1}{2} games left", name, overInjuryWaterMark(current[name]), current[name]));
                 }
             }
 
@@ -89,6 +90,13 @@ namespace somReporter.features
                 File.WriteAllText(injuryFile, rawData);
                 output.ShowInjuryData(formattedInjuryLines, backFromInjuryList);
             }
+        }
+
+        private string overInjuryWaterMark(int injuryCount)
+        {
+            if (injuryCount > Config.MAX_INJURY_DAYS)
+                return "*";
+            return "";
         }
 
         public void setDateStore(PersistentDictionary<string, string> dictionary)

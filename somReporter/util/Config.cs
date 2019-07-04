@@ -33,6 +33,7 @@ namespace somReporter.util.somReporter
         public static bool SHOW_SCHEDULE = true;
         public static bool SHOW_DIV_MAGIC_NUM = false;
 
+        public static int MAX_INJURY_DAYS = 20;
         public static int SCHEDULE_NUMBER_OF_DAYS = 5;
 
         public Config()
@@ -61,6 +62,7 @@ namespace somReporter.util.somReporter
             Console.Out.WriteLine("SHOW_SCHEDULE = " + SHOW_SCHEDULE);
             Console.Out.WriteLine("SCHEDULE_NUMBER_OF_DAYS = " + SCHEDULE_NUMBER_OF_DAYS);
             Console.Out.WriteLine("SHOW_DIV_MAGIC_NUM = " + SHOW_DIV_MAGIC_NUM);
+            Console.Out.WriteLine("MAX_INJURY_DAYS = " + MAX_INJURY_DAYS);
         }
 
         public void readConfiguration(String configFileName)
@@ -178,7 +180,11 @@ namespace somReporter.util.somReporter
                             Boolean.TryParse(value, out tmpValue);
                             SHOW_DIV_MAGIC_NUM = tmpValue;
                         }
-
+                        else if (key.Equals("MAX_INJURY_DAYS"))
+                        {
+                            Int32.TryParse(value, out tmpNValue);
+                            MAX_INJURY_DAYS = tmpNValue;
+                        }
                     }
                  }
             }
