@@ -110,6 +110,8 @@ namespace somReporter.features
 
             foreach (String line in lines) {
                 if (line.Length == 0) continue;
+                if (line.Equals("No injuries to report"))
+                    return map;
 
                 String[] split = line.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
                 map.Add(split[0], 

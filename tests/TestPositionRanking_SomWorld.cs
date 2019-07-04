@@ -121,7 +121,7 @@ namespace somReporter
 
             foreach (TestItem item in testCases)
             {
-                double result = scorer.calculateLeftFieldDefScore(item.Range, item.EFact);
+                double result = scorer.calculateLeftFieldDefScore(item.Range, item.EFact, 0);
                 Assert.AreEqual(item.Expect, result, item.ToString());
             }
         }
@@ -142,7 +142,7 @@ namespace somReporter
 
             foreach (TestItem item in testCases)
             {
-                double result = scorer.calculateCenterFieldDefScore(item.Range, item.EFact);
+                double result = scorer.calculateCenterFieldDefScore(item.Range, item.EFact, 0);
                 Assert.AreEqual(item.Expect, result, item.ToString());
             }
         }
@@ -163,7 +163,7 @@ namespace somReporter
 
             foreach (TestItem item in testCases)
             {
-                double result = scorer.calculateRightFieldDefScore(item.Range, item.EFact);
+                double result = scorer.calculateRightFieldDefScore(item.Range, item.EFact, 0);
                 Assert.AreEqual(item.Expect, result, item.ToString());
             }
         }
@@ -184,7 +184,7 @@ namespace somReporter
 
             foreach (TestItem item in testCases)
             {
-                double result = scorer.calculateCatcherDefScore(item.Range, item.EFact);
+                double result = scorer.calculateCatcherDefScore(item.Range, item.EFact, 0);
                 Assert.AreEqual(item.Expect, result, item.ToString());
             }
         }
@@ -194,18 +194,26 @@ namespace somReporter
     {
         public static TestItem create(int range, int efact, double expected)
         {
-            return new TestItem(range, efact, expected);
+            return new TestItem(range, efact, 0, expected);
         }
 
-        private TestItem(int range, int efact, double expected)
+        public static TestItem create(int range, int efact, int throwingArm, double expected)
+        {
+            return new TestItem(range, efact, throwingArm, expected);
+        }
+
+
+        private TestItem(int range, int efact, int throwingArm, double expected)
         {
             Range = range;
             EFact = efact;
             Expect = expected;
+            ThrowingArm = throwingArm;
         }
 
         public int Range  { get; set; }
         public int EFact  { get; set; }
+        public int ThrowingArm { get; set; }
         public double Expect { get; set; }
 
         public override string ToString()

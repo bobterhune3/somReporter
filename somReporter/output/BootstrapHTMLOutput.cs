@@ -163,7 +163,6 @@ namespace somReporter.output
         public void draftOrderTeamLine(int pickNum, int divPick, Team team)
         {
             lines.Add("<tr>");
-
             addTableCell(pickNum + 1, returnRankDifColor(pickNum, team.DraftPickPositionPrevious),
                          48, returnRankDifToolTip(pickNum, team.DraftPickPositionPrevious));
             addTableCell(team.Name, "#000000", 149, returnNextScheduleToolTip(team), false);
@@ -298,6 +297,10 @@ namespace somReporter.output
             if (usageLevel.Length == 0) //Skip line if player does not fall within boundry
                 return false;
 
+            // we are not reporting Hal team until there is a violation.
+            if (player.Team.Abrv[2] == 'H' && usageLevel.Contains("Violation"))
+                return false;
+
             lines.Add("<tr>");
             addTableCell(counter, "#000000", 30);
             lines.Add(String.Format("<td>{0}</td>", usageLevel));
@@ -322,9 +325,16 @@ namespace somReporter.output
                     getRunDeltaChange(player),
                     player.IsHitter ? "AB" : "IP"));
             }
-            addTableCell(player.TargetUsage - player.Replay, "#000000", 30);
 
-            if(player.PreviousReplay == 0)
+            int remaining = player.TargetUsage - player.Replay;
+            String colorRemaining = "#000000";  //black
+            if ( player.IsHitter && remaining < 12)
+                colorRemaining = "#FF0000";
+            else if ( !player.IsHitter && remaining < 8)
+                colorRemaining = "#FF0000";
+            addTableCell(remaining, colorRemaining, 30);
+
+            if (player.PreviousReplay == 0)
                 addTableCell("NEW", "#000000", 30);
             else
                 addTableCell(player.Replay-player.PreviousReplay, "#000000", 30);
