@@ -25,6 +25,7 @@ namespace somReporter
         public static IFeature featureUsage = null;
         public static IFeature featureInjuries = new FeatureInjuries();
         public static IFeature featureSchedule = null;
+        public static IFeature featureUnderUsage = null;
         
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
         private LineScoreReport lineScoreReport;
@@ -84,6 +85,9 @@ namespace somReporter
             Console.WriteLine("Process Who Hot...");
             program.showWhosHot();
 
+            Console.WriteLine("Process Injurioes...");
+            program.showInjuries();
+
             Console.WriteLine("Process Draft Order...");
             featureDraftOrder = FeatureFactory.loadFeature(FeatureFactory.FEATURE.DRAFT_ORDER);
             featureDraftOrder.process(program.outputStream());
@@ -91,6 +95,9 @@ namespace somReporter
             Console.WriteLine("Process Record Book...");
             featureRecordBook = FeatureFactory.loadFeature(FeatureFactory.FEATURE.RECORD_BOOK);
             featureRecordBook.process(program.outputStream());
+
+            Console.WriteLine("Process Player Under Usage ...");
+            featureUnderUsage.process(program.outputStream());
 
             Console.WriteLine("Process Player Usage ...");
             featureUsage.setDateStore(prevDictionaryFile);
@@ -118,10 +125,14 @@ namespace somReporter
 
         private void showWhosHot()
         {
-            output.ShowWhosHotData(newspaperStyleReport.getWhosHotData());
+           output.ShowWhosHotData(newspaperStyleReport.getWhosHotData());
+         }
+
+        private void showInjuries()
+        {
             ((FeatureInjuries)featureInjuries).setData(newspaperStyleReport.getInjuryData());
             featureInjuries.process(output);
-         }
+        }
 
         public String lookupPreviousSaveFile()
         {
@@ -194,6 +205,12 @@ namespace somReporter
 
             featureUsage = FeatureFactory.loadFeature(FeatureFactory.FEATURE.USAGE);
             featureUsage.initialize(teamReportFile);
+
+            featureUnderUsage = FeatureFactory.loadFeature(FeatureFactory.FEATURE.UNDERUSAGE);
+            ((FeatureUnderUsage)featureUnderUsage).setReportData(((FeatureUsage)featureUsage).teamComparisonReport);
+            featureUnderUsage.initialize(teamReportFile);
+
+
         }
 
         public void saveReportInformation()

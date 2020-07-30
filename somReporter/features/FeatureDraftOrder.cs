@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
+using somReportUtils;
 
 namespace somReporter.features
 {
     abstract class DraftOrderFeatureBase : IFeature
     {
         public abstract Report getReport();
-        public abstract void initialize(SOMReportFile file);
+        public abstract void initialize(ISOMReportFile file);
         public abstract void process(IOutput output);
         public Team[] actualDraftPicks;
 
@@ -45,7 +46,7 @@ namespace somReporter.features
             throw new NotImplementedException();
         }
 
-        public override void initialize(SOMReportFile file)
+        public override void initialize(ISOMReportFile file)
         {
             throw new NotImplementedException();
         }
@@ -144,25 +145,32 @@ namespace somReporter.features
             // 11.A6 (11)  18.A1  (16)
             for (int i = 0; i < picks.Length; i++)
             {
-                if (i < 7 || i > 18)
+                if (i < 6 )
+                {  // 1 to 5 (DET, STL< SD< BOS< TEX, BAL)
+                    actualDraftPicks[i] = picks[i];
+                    continue;
+                }
+                else if( i >= 19)
                 {
                     actualDraftPicks[i] = picks[i];
                     continue;
                 }
                 switch (i)
                 {
-                    case 7: actualDraftPicks[9] = picks[i]; break;
-                    case 8: actualDraftPicks[7] = picks[i]; break;
-                    case 9: actualDraftPicks[10] = picks[i]; break;
-                    case 10: actualDraftPicks[8] = picks[i]; break;
-                    case 11: actualDraftPicks[11] = picks[i]; break;
-                    case 12: actualDraftPicks[12] = picks[i]; break;
-                    case 13: actualDraftPicks[13] = picks[i]; break;
-                    case 14: actualDraftPicks[14] = picks[i]; break;
-                    case 15: actualDraftPicks[17] = picks[i]; break;
-                    case 16: actualDraftPicks[15] = picks[i]; break;
-                    case 17: actualDraftPicks[18] = picks[i]; break;
-                    case 18: actualDraftPicks[16] = picks[i]; break;
+                    // case is +1,   actualDraft is -1
+                    case 6: actualDraftPicks[7] = picks[i]; break;   // A8 - MIN
+                    case 7: actualDraftPicks[9] = picks[i]; break;  // N2 - CLE
+                    case 8: actualDraftPicks[6] = picks[i]; break;   // A7 - HOU
+                    case 9: actualDraftPicks[8] = picks[i]; break;   // N1 - TOR
+                    case 10: actualDraftPicks[10] = picks[i]; break;  // A6 - WAS
+                    case 11: actualDraftPicks[11] = picks[i]; break; // A5 - OAK
+                    case 12: actualDraftPicks[12] = picks[i]; break; // A4 = CHI
+                    case 13: actualDraftPicks[13] = picks[i]; break; // A3 = TB
+                    case 16: actualDraftPicks[14] = picks[i]; break; // F8 = ATL
+                    case 14: actualDraftPicks[15] = picks[i]; break; // A2 = SF
+                    case 17: actualDraftPicks[16] = picks[i]; break; // F7 = CIN
+                    case 15: actualDraftPicks[17] = picks[i]; break;  // A1 =MIL
+                    case 18: actualDraftPicks[18] = picks[i]; break;
                 }
             }
 
@@ -181,7 +189,7 @@ namespace somReporter.features
             throw new NotImplementedException();
         }
 
-        public override void initialize(SOMReportFile file)
+        public override void initialize(ISOMReportFile file)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using somReportUtils.output;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -165,37 +166,6 @@ namespace somReporter
             Match match = new Regex("^[0-9].+").Match(line);
             return !match.Success;
         }
-    }
-
-    public class SOMRecord
-    {
-        private string label = "";
-        private int record = 0;
-        private string team = "";
-        private string opponent = "";
-        private string description = "";
-
-
-        public SOMRecord(string label, int record, string team, string opponent)
-        {
-            this.label = label;
-            this.record = record;
-            this.team = team;
-            this.opponent = opponent;
-        }
-
-        public SOMRecord(string label, int record, string description)
-        {
-            this.label = label;
-            this.record = record;
-            this.description = description;
-        }
-
-        public string Label { get { return this.label; } }
-        public int RecordValue { get { return this.record; } }
-        public string Team { get { return this.team; } }
-        public string Opponent { get { return this.opponent; } }
-        public string Description { get { return this.description; } }
     }
 }
 

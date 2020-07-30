@@ -4,6 +4,7 @@ using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
 using System.IO;
 using somReporter.util.somReporter;
+using somReportUtils;
 
 namespace somReporter.features
 {
@@ -32,7 +33,7 @@ namespace somReporter.features
             currentDataLines = parseStringIntoLines(injuryData);
         }
 
-        public void initialize(SOMReportFile file)
+        public void initialize(ISOMReportFile file)
         {
             throw new NotImplementedException();
         }
@@ -92,9 +93,9 @@ namespace somReporter.features
             }
         }
 
-        private string overInjuryWaterMark(int injuryCount)
+        private string overInjuryWaterMark(int injuryDayCount)
         {
-            if (injuryCount > Config.MAX_INJURY_DAYS)
+            if (injuryDayCount > Config.MAX_INJURY_DAYS)
                 return "*";
             return "";
         }

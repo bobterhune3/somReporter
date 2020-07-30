@@ -68,13 +68,12 @@
     <Compile Include="features\FeatureSchedule.cs" />
     <Compile Include="features\FeatureStandings.cs" />
     <Compile Include="features\FeatureUsage.cs" />
+    <Compile Include="features\FeatureUnderUsage.cs" />
     <Compile Include="features\FeatureWhosHot.cs" />
-    <Compile Include="features\IFeature.cs" />
     <Compile Include="graphing\LineGraph.cs" />
     <Compile Include="output\BootstrapHTMLOutput.cs" />
     <Compile Include="output\ConsoleOutput.cs" />
     <Compile Include="output\HTMLOutput.cs" />
-    <Compile Include="output\IOutput.cs" />
     <Compile Include="reports\LeagueGrandTotalsReport.cs" />
     <Compile Include="reports\LeagueStandingsReport.cs" />
     <Compile Include="reports\LineScoreReport.cs" />

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
+using somReportUtils;
+using somReportUtils.output;
 
 namespace somReporter.features
 {
@@ -17,9 +19,9 @@ namespace somReporter.features
             throw new NotImplementedException();
         }
 
-        public void initialize(SOMReportFile leagueReportFile)
+        public void initialize(ISOMReportFile leagueReportFile)
         {
-            recordBookReport = (RecordBookReport)leagueReportFile.FindReport("RECORD BOOK FOR FOR");
+            recordBookReport = (RecordBookReport)leagueReportFile.FindReport("LEAGUE", "RECORD BOOK FOR FOR");
             recordBookReport.processReport(Program.LEAGUES[0].Length);
         }
 
@@ -35,6 +37,7 @@ namespace somReporter.features
                     output.recordBookItem(rec, counter++, true);
                 }
             }
+            output.endOfTable();
 
             counter = 1;
             List<SOMRecord> playerRecords = ((RecordBookReport)recordBookReport).getPlayerRecords();

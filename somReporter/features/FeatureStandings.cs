@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Isam.Esent.Collections.Generic;
+using somReportUtils;
 
 namespace somReporter.features
 {
@@ -85,9 +86,9 @@ namespace somReporter.features
         }
 
 
-        public void initialize(SOMReportFile leagueReportFile) { 
+        public void initialize(ISOMReportFile leagueReportFile) { 
             Console.WriteLine("    Building Standings...");
-            leagueStandingsReport = (LeagueStandingsReport)leagueReportFile.FindReport("LEAGUE STANDINGS FOR");
+            leagueStandingsReport = (LeagueStandingsReport)leagueReportFile.FindReport("LEAGUE", "LEAGUE STANDINGS FOR");
             leagueStandingsReport.processReport(Program.LEAGUES[0].Length);
         }
 

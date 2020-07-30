@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "somReporter", "somReporter\somReporter.csproj", "{AB628C89-8143-4CF8-ABD7-CE34DE707640}"
 EndProject
@@ -18,9 +18,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LIneupUsageEstimator", "..\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "screenshots", "screenshots", "{8C942BFE-888B-477D-9ABB-BF43ABD62F3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineupEngine", "..\LineupEngine\LineupEngine.csproj", "{36E844A9-6E91-4F00-BDD2-D4787EB682D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LineupEngine", "..\LineupEngine\LineupEngine.csproj", "{36E844A9-6E91-4F00-BDD2-D4787EB682D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineupRestServer", "..\LineupRestServer\LineupRestServer.csproj", "{3F9FDC1D-3966-4FC1-8D58-D980D092DF97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LineupRestServer", "..\LineupRestServer\LineupRestServer.csproj", "{3F9FDC1D-3966-4FC1-8D58-D980D092DF97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "somEncyclopedia", "somEncyclopedia\somEncyclopedia.csproj", "{BF2161CC-74BA-4325-83F7-D55936B31B27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,6 +54,10 @@ Global
 		{3F9FDC1D-3966-4FC1-8D58-D980D092DF97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F9FDC1D-3966-4FC1-8D58-D980D092DF97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F9FDC1D-3966-4FC1-8D58-D980D092DF97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF2161CC-74BA-4325-83F7-D55936B31B27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF2161CC-74BA-4325-83F7-D55936B31B27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF2161CC-74BA-4325-83F7-D55936B31B27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF2161CC-74BA-4325-83F7-D55936B31B27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,7 +66,7 @@ Global
 		{8C942BFE-888B-477D-9ABB-BF43ABD62F3C} = {61CDD412-5C61-49CE-852C-E915CE25746C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
 		SolutionGuid = {4003EDFC-A105-495A-A95D-ED6457E99A35}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.TransientFaultHandling.6.0.1304.0\lib\portable-net45+win+wp8;packages\EnterpriseLibrary.TransientFaultHandling.Data.6.0.1304.1\lib\NET45
 	EndGlobalSection
 EndGlobal

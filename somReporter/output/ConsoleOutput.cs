@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using somReporter.team;
+using somReportUtils.output;
 
 namespace somReporter.output
 {
@@ -166,6 +167,21 @@ namespace somReporter.output
         }
 
         public void ShowInjuryData(List<string> v1, List<string> v2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool underUsageReportItem(Player player, Player pitcher, int counter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void underUsageHeader(int playerCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void underUsageFooter()
         {
             throw new NotImplementedException();
         }

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using somReporter.output;
 using somReporter.team;
 using somReporter.util.somReporter;
 using Microsoft.Isam.Esent.Collections.Generic;
+using somReportUtils;
 
 namespace somReporter.features
 {
     class FeatureUsage : IFeature
     {
-        private ComparisonReport teamComparisonReport;
+        public ComparisonReport teamComparisonReport;
         private PersistentDictionary<string, string> database;
 
         public Report getReport()
@@ -20,12 +19,12 @@ namespace somReporter.features
             throw new NotImplementedException();
         }
 
-        public void initialize(SOMReportFile teamReportFile)
+        public void initialize(ISOMReportFile teamReportFile)
         {
             Console.WriteLine("    Building Comparison...");
             Console.WriteLine("      Showing Moral=" + Config.SHOW_MORAL + ", Showing Warnings=" + Config.SHOW_WARNING);
 
-            teamComparisonReport = (ComparisonReport)teamReportFile.FindReport("Comparison Report");
+            teamComparisonReport = (ComparisonReport)teamReportFile.FindReport("LEAGUE","Comparison Report");
             if (teamComparisonReport == null) {
                 System.Console.WriteLine("Are you sure you selected 'ALL REPORTS' for the Team Reports?");
                 throw new Exception("Unable to find Comparison Report in the Team Report File");

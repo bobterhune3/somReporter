@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using somReporter.util.somReporter;
+﻿using somReporter.util.somReporter;
 
 namespace somReporter.features
 {
@@ -17,7 +12,8 @@ namespace somReporter.features
             DRAFT_ORDER,
             RECORD_BOOK,
             USAGE,
-            SCHEDULE
+            SCHEDULE,
+            UNDERUSAGE
         }
 
         private static IFeature featureNotes = new FeatureNotes();
@@ -29,6 +25,7 @@ namespace somReporter.features
         private static IFeature featureRecordBook = new FeatureRecordBook();
         private static IFeature featureUsage = new FeatureUsage();
         private static IFeature FeatureSchedule = new FeatureSchedule();
+        private static IFeature featureunderUsage = new FeatureUnderUsage();
 
         public static IFeature loadFeature( FEATURE feature ) {
             switch(feature) {
@@ -51,6 +48,9 @@ namespace somReporter.features
                     return featureUsage;
                 case FEATURE.SCHEDULE:
                     return FeatureSchedule;
+                case FEATURE.UNDERUSAGE:
+                    return featureunderUsage;
+
             }
             return null;
         }

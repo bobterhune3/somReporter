@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>somEncyclopedia.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\somReportUtils\somReportUtils\somReportUtils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Esent.Collections">
+      <HintPath>..\libs\ESENT1.9.4\Esent.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Esent.Isam">
+      <HintPath>..\libs\ESENT1.9.4\Esent.Isam.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

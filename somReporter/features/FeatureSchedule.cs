@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using somReporter.reports.team;
 using System.Text.RegularExpressions;
 using System.Text;
+using somReportUtils;
 
 namespace somReporter.features
 {
@@ -17,7 +18,7 @@ namespace somReporter.features
             throw new NotImplementedException();
         }
 
-        public void initialize(SOMReportFile file)
+        public void initialize(ISOMReportFile file)
         {
             List<String> lines = file.readFileLinesOnly(false);
 

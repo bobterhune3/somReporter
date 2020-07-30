@@ -2,11 +2,10 @@
 using somReporter.util.somReporter;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using somReporter.team;
 using somReporter.features;
+using somReportUtils.output;
 
 namespace somReporter.output
 {
@@ -342,6 +341,8 @@ namespace somReporter.output
             return true;
         }
 
+
+
         private String getRunDeltaChange(Player player) {
             if (player.PreviousReplay == 0)
                 return "X";
@@ -371,6 +372,93 @@ namespace somReporter.output
 
             lines.Add("<span class=\"label label-danger\">Violation</span>Above Drop Dead Level</br>");
             lines.Add("</div></div>");
+        }
+
+
+
+        /// 
+        /// UNDER USAGE
+        /// 
+        public void underUsageHeader(int playerCount)
+        {
+            setBookmark("Most UnderUsed Players");
+            lines.Add("<h2 class=\"sub-header\">Under-Usage Report</h2>");
+            lines.Add("<pre>Hitters over 300ab or Pitchers over 100ip with less than 33% usage.</pre>");
+
+            if (playerCount == 0)
+                lines.Add("<pre>No players currently meets report.</pre>");
+            else
+            {
+                lines.Add("<div class=\"table-responsive\"><table class=\"table table-striped\"><thead><tr>");
+
+                addTableHeaderCell("#", 30);
+                addTableHeaderCell("Hitter", 50);
+                addTableHeaderCell("Team", 60);
+                addTableHeaderCell("Actual", 40, "The actual number of AB/IP on the card.");
+                addTableHeaderCell("Replay", 40, "The number of AB/IP so far in the replay.");
+                addTableHeaderCell("Usage %", 40, "Usage Percentage.");
+                addTableHeaderCell("", 10);
+                addTableHeaderCell("Pitcher", 50);
+                addTableHeaderCell("Team", 60);
+                addTableHeaderCell("Actual", 40, "The actual number of AB/IP on the card.");
+                addTableHeaderCell("Replay", 40, "The number of AB/IP so far in the replay.");
+                addTableHeaderCell("Usage %", 40, "Usage Percentage.");
+                lines.Add("</tr></thead><tbody>");
+            }
+        }
+
+        public bool underUsageReportItem(Player player, Player pitcher, int playerCount)
+        {
+            lines.Add("<tr>");
+            addTableCell(playerCount, "#000000", 30);
+
+            if (player == null || player.Empty)
+            {
+                addTableCell("---", "#000000", 50);
+                addTableCell("---", "#000000", 60);
+                addTableCell("---", "#000000", 40);
+                addTableCell("---", "#000000", 40);
+                addTableCell("---", "#000000", 40);
+            }
+            else
+            {
+                addTableCell(player.Name, "#000000", 50);
+                addTableCell(player.Team.Abrv, "#000000", 60);
+                addTableCell(player.Actual, "#000000", 40);
+                addTableCell(player.Replay, "#000000", 40);
+                float pct = ((float)player.Replay / (float)player.Actual) * 100f;
+                addTableCell(pct.ToString("0.0")+ "%", "#000000", 40);
+            }
+
+            addTableCell(playerCount, "#000000", 30);
+
+            if (pitcher == null || pitcher.Empty)
+            {
+                addTableCell("---", "#000000", 50);
+                addTableCell("---", "#000000", 60);
+                addTableCell("---", "#000000", 40);
+                addTableCell("---", "#000000", 40);
+                addTableCell("---", "#000000", 40);
+            }
+            else
+            {
+                addTableCell(pitcher.Name, "#000000", 50);
+                addTableCell(pitcher.Team.Abrv, "#000000", 60);
+                addTableCell(pitcher.Actual, "#000000", 40);
+                addTableCell(pitcher.Replay, "#000000", 40);
+                float pct = ((float)pitcher.Replay / (float)pitcher.Actual) * 100f;
+                addTableCell(pct.ToString("0.0") + "%", "#000000", 40);
+            }
+
+            lines.Add("</tr>");
+            return true;
+        }
+
+
+
+        public void underUsageFooter()
+        {
+            endOfTable();
         }
 
         private string getUsageLevel(int actual, int target, int replay, bool isHitter)
@@ -651,5 +739,6 @@ namespace somReporter.output
             int value = 163 - team.Wins - team.SecondPlaceTeamLosses;
             return "[" + value + "]";
         }
+
     }
 }

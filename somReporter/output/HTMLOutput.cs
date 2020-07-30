@@ -5,6 +5,7 @@ using System.Text;
 using somReporter.team;
 using somReporter.util.somReporter;
 using somReportUtils;
+using somReportUtils.output;
 
 namespace somReporter.output
 {
@@ -508,6 +509,21 @@ namespace somReporter.output
                     return "#FFFF55";
                 return "";
             }
+        }
+
+        public bool underUsageReportItem(Player player, Player pitcher, int counter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void underUsageHeader(int playerCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void underUsageFooter()
+        {
+            throw new NotImplementedException();
         }
     }
 }

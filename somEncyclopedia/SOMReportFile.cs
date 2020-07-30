@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using somEncyclopedia.team;
+using somReporter;
 using somReporter.team;
 using somReportUtils;
 
-namespace somReporter
+namespace somEncyclopedia
 {
     public class SOMReportFile : ISOMReportFile
     {
@@ -14,7 +16,7 @@ namespace somReporter
         private String m_LeagueName = "";
         private String m_TeamName = "";
         private String m_SeasonTitle = "";
-        private List<Report> reports = new List<Report>();
+        private Dictionary<string,List<Report>> allReports = new Dictionary<string, List<Report>>();
         private ComparisonReport comparisonReport = null;
 
         public string Season
@@ -37,14 +39,15 @@ namespace somReporter
             get { return m_SeasonTitle; }
         }
 
-        public List<Report> Reports
+        public Dictionary<string, List<Report>> getAllReports()
         {
-            get {return reports; }
+           return allReports;
         }
 
-        public Report FindReport(String name)
+        public Report FindReport(String team, String name)
         {
-            foreach(Report report in reports)
+            List<Report> reports = allReports[team];
+            foreach (Report report in reports)
             {
                 if (report.Name.Equals(name))
                     return report;
@@ -62,7 +65,7 @@ namespace somReporter
 
         public void parseLeagueFile() {
              List<String> lines = readReportLines(true);
-            organizeByReportType(lines);
+            organizeByReportType("LEAGUE", lines);
         }
 
         public void parseTeamFile()
@@ -87,37 +90,62 @@ namespace somReporter
                     int x = reportTitle.IndexOf(" For ");
                     if (x > 0)
                         reportTitle = reportTitle.Substring(0, x);
-                    try {
-                        currentTeam = match.Groups[2].Value.Substring(0, 12).Trim();
-                    }catch(Exception) { }
+                    try
+                    {
+                        currentTeam = match.Groups[2].Value.Substring(0, 13).Trim();
+                    }
+                    catch (Exception) { }
 
                     if (currentReport != null)
                     {
-                        currentReport = loadReport(reportTitle);
+                        currentReport = loadReport(reportTitle, currentTeam);
                         skipThisReport = !(currentReport is TeamReport);
-                        if (!skipThisReport && FindReport(reportTitle) == null)
-                            Reports.Add(currentReport);
+                        if (!skipThisReport && FindReport(currentTeam, reportTitle) == null)
+                            addReport(currentTeam,currentReport);
                     }
                     else
                     {
-                        currentReport = loadReport(reportTitle);
+                        currentReport = loadReport(reportTitle, currentTeam);
                         skipThisReport = !(currentReport is TeamReport);
-                        if (!skipThisReport && FindReport(reportTitle) == null)
-                            Reports.Add(currentReport);
+                        if (!skipThisReport && FindReport(currentTeam, reportTitle) == null)
+                            addReport(currentTeam,currentReport);
                     }
                 }
                 else
                 {
-                    if(!skipThisReport)
-                      ((TeamReport)currentReport).AddLine(currentTeam, line);
+                    if (!skipThisReport)
+                        ((TeamReport)currentReport).AddLine(currentTeam, line);
                 }
 
+                if (isNewReport(reportTitle, currentTeam))
+                    addReport(currentTeam, currentReport);
             }
-            if (isNewReport(reportTitle))
-                Reports.Add(currentReport);
         }
 
-        private void organizeByReportType(List<string> lines)
+        private void addReport(string team, Report report)
+        {
+            if (!getAllReports().ContainsKey(team))
+                getAllReports().Add(team, new List<Report>());
+            List<Report> reports = getAllReports()[team];
+            if(reports == null )
+            {
+                reports = new List<Report>();
+            }
+            reports.Add(report);
+        }
+
+        private Report loadReport(string reportTitle, string currentTeam)
+        {
+            
+            if (reportTitle.StartsWith("Primary Player Statistics For"))
+                return new PrimaryReport(reportTitle, currentTeam);
+            else if (reportTitle.StartsWith("Secondary Player Statistics For"))
+                return new SecondaryReport(reportTitle, currentTeam);
+            
+            return new Report(reportTitle);
+        }
+
+        private void organizeByReportType(String team, List<string> lines)
         {
             Report currentReport = null;
             String reportTitle = "";
@@ -132,16 +160,16 @@ namespace somReporter
                     if (currentReport != null)
                     {
 
-                        if (isNewReport(reportTitle))
+                        if (isNewReport(reportTitle, team))
                         {
-                            currentReport = loadReport(reportTitle);
-                            Reports.Add(currentReport);
+                            currentReport = loadReport(reportTitle, team);
+                            addReport(team, currentReport);
                         }
                     }
                     else
                     {
-                        currentReport = loadReport(reportTitle);
-                        Reports.Add(currentReport);
+                        currentReport = loadReport(reportTitle, team);
+                        addReport(team, currentReport);
                     }
                 }
                 else {
@@ -149,36 +177,16 @@ namespace somReporter
                 }
 
             }
-            if (isNewReport(reportTitle))
-                Reports.Add(currentReport);
+            if (isNewReport(reportTitle, team))
+                addReport(team, currentReport);
         }
 
-        private Report loadReport(string reportTitle)
+        private bool isNewReport(string reportTitle, string team)
         {
-            if (reportTitle.StartsWith("LEAGUE STANDINGS"))
-                return new LeagueStandingsReport(reportTitle, Program.LEAGUES[0].Length > 0 );
-            if (reportTitle.StartsWith("LEAGUE GRAND TOTALS (primary report) FOR"))
-                return new LeagueGrandTotalsReport(reportTitle);
-            else if (reportTitle.StartsWith("INJURY/MINOR LEAGUE REPORT FOR"))
-                return new LineScoreReport(reportTitle);
-            else if (reportTitle.StartsWith("AWARDS VOTING FOR"))
-                return new NewspaperStyleReport(reportTitle);
-            else if (reportTitle.StartsWith("RECORD BOOK FOR FOR"))
-                return new RecordBookReport(reportTitle);
-            else if (reportTitle.StartsWith("Comparison Report"))
-            {
-                if(comparisonReport == null)
-                    comparisonReport = new ComparisonReport(reportTitle);
-                return comparisonReport;
-            }
-            else
-                return new Report(reportTitle);
-        }
-
-
-        private bool isNewReport(string reportTitle)
-        {
-            foreach(Report report in reports )
+            if (!getAllReports().ContainsKey(team))
+                return true;
+            List<Report> reports = getAllReports()[team];
+            foreach ( Report report in reports )
             {
                 if (report.Name.Equals(reportTitle))
                     return false;
@@ -263,32 +271,17 @@ namespace somReporter
                 throw new Exception("Expecting ALL REPORTS to run, first report should be titled 'LEAGUE STANDINGS FOR'");
             m_SeasonTitle = match.Value.Trim();
             m_Season = match.Groups[1].Value.Trim();
-            m_TeamName = match.Groups[2].Value.Substring(0, 12).Trim();
+            m_TeamName = match.Groups[2].Value.Substring(0, 13).Trim();
         }
 
         public string cleanUpLine(string line)
         {
-     //       line = line.Replace("[0]", "");
+            //       line = line.Replace("[0]", "");
             line = line.Replace("[1]", "");
             line = line.Replace("[2]", "");
             line = line.Replace("[3]", "");
-         //   line = line.Replace("[4]", "");
+            //   line = line.Replace("[4]", "");
             return line.Trim();
-        }
-
-        public Report FindReport(string team, string name)
-        {
-            foreach (Report report in reports)
-            {
-                if (report.Name.Equals(name))
-                    return report;
-            }
-            return null;
-        }
-
-        public Dictionary<string, List<Report>> getAllReports()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Isam.Esent.Collections.Generic;
 using somReporter.output;
+using somReportUtils;
 
 namespace somReporter.features
 {
@@ -15,7 +12,7 @@ namespace somReporter.features
             throw new NotImplementedException();
         }
 
-        public void initialize(SOMReportFile file)
+        public void initialize(ISOMReportFile file)
         {
             throw new NotImplementedException();
         }
