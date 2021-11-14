@@ -15,7 +15,7 @@ namespace somReporter
         [TestInitialize()]
         public void Initialize()
         {
-            teamReportFile = new SOMTeamReportFile(util.somReporter.Config.getConfigurationFile("rosterReport.PRT"));
+            teamReportFile = new SOMTeamReportFile(util.somReporter.Config.getConfigurationFile("rosterReport.PRT"), LineupEngine.Config.config);
         }
 
         [TestCleanup()]

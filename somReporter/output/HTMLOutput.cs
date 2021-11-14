@@ -425,7 +425,7 @@ namespace somReporter.output
             }
         }
 
-        public bool usageReportItem(Player player, int counter )
+        public bool usageReportItem(Player player, int counter, bool inMinors )
         {
             string bgColor = getBackgroundColor(player.Actual, player.TargetUsage, player.Replay, player.IsHitter);
 
@@ -444,7 +444,10 @@ namespace somReporter.output
                 addTableCell(player.Actual, bgColor, "#000000", 75);
                 addTableCell(player.Replay, bgColor, "#000000", 75);
                 addTableCell(player.TargetUsage, bgColor, "#000000", 75);
-                addTableCell(player.TargetUsage- player.Replay, bgColor, "#000000", 30);
+                if(inMinors)
+                    addTableCell(player.TargetUsage- player.Replay, bgColor, "#000000", 30);
+                else
+                    addTableCell((player.TargetUsage - player.Replay)+ " (M)", bgColor, "#000000", 30);
 
             lines.Add("</tr></table>");
             return true;

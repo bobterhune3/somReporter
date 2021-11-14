@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using somReportUtils;
 
 namespace somReporter.util.somReporter
 {
-    public class Config
+    public class Config : IConfig
     {
-        private static Config config = null;
+        public static Config config = null;
 
         private const String CONFIG_FILE_NAME = "config.properties";
 
@@ -20,8 +17,8 @@ namespace somReporter.util.somReporter
         public static bool SHOW_MORAL = false;
         public static float WARNING_LEVEL = 0.8f;
         public static float SUGGESTION_LEVEL_PERCENT = 1.1f;
-        public static String PRT_FILE_LOCATION = "C:\\cdrombb\\print";
-        public static String LEAGUE_NAME = "2016ND";
+        public static String PRT_FILE_LOCATION = "F:\\cdrombb\\print";
+        public static String LEAGUE_NAME = "2020ND";
 
         public static bool SHOW_STANDINGS = true;
         public static bool SHOW_NOTES = true;
@@ -35,6 +32,10 @@ namespace somReporter.util.somReporter
 
         public static int MAX_INJURY_DAYS = 20;
         public static int SCHEDULE_NUMBER_OF_DAYS = 5;
+        private static float ESTIMATE_AB_MULTIPLIER = 1f;
+        private static float ESTIMATE_IP_MULTIPLIER = 1f;
+        private static int AB_MINIMUM = 50;
+        private static int IP_MINIMUM = 30;
 
         public Config()
         {
@@ -42,6 +43,12 @@ namespace somReporter.util.somReporter
                 readConfiguration(CONFIG_FILE_NAME);
             dumpValues();
         }
+
+
+        public float getABMultiplier()        {            return ESTIMATE_AB_MULTIPLIER;        }
+        public float getIPMultiplier()        {            return ESTIMATE_IP_MULTIPLIER;        }
+        public float getMinABAllowed()        {            return AB_MINIMUM;        }
+        public float getMinIPAllowed()        {            return IP_MINIMUM;        }
 
         private void dumpValues() {
             Console.Out.WriteLine("HAS_WILDCARD = " + HAS_WILDCARD);
@@ -63,6 +70,10 @@ namespace somReporter.util.somReporter
             Console.Out.WriteLine("SCHEDULE_NUMBER_OF_DAYS = " + SCHEDULE_NUMBER_OF_DAYS);
             Console.Out.WriteLine("SHOW_DIV_MAGIC_NUM = " + SHOW_DIV_MAGIC_NUM);
             Console.Out.WriteLine("MAX_INJURY_DAYS = " + MAX_INJURY_DAYS);
+            Console.Out.WriteLine("ESTIMATE_AB_MULTIPLIER = " + ESTIMATE_AB_MULTIPLIER);
+            Console.Out.WriteLine("ESTIMATE_IP_MULTIPLIER = " + ESTIMATE_IP_MULTIPLIER);
+            Console.Out.WriteLine("AB_MINIMUM = " + AB_MINIMUM);
+            Console.Out.WriteLine("IP_MINIMUM = " + IP_MINIMUM);
         }
 
         public void readConfiguration(String configFileName)
@@ -85,6 +96,7 @@ namespace somReporter.util.somReporter
 
                         bool tmpValue;
                         int tmpNValue;
+                        float tmpFValue;
                         //        Console.WriteLine(key + "=" + value);
 
                         if (key.Equals("HAS_WILDCARD"))
@@ -185,6 +197,26 @@ namespace somReporter.util.somReporter
                             Int32.TryParse(value, out tmpNValue);
                             MAX_INJURY_DAYS = tmpNValue;
                         }
+                        else if (key.Equals("ESTIMATE_AB_MULTIPLIER"))
+                        {
+                            float.TryParse(value, out tmpFValue);
+                            ESTIMATE_AB_MULTIPLIER = tmpFValue;
+                        }
+                        else if (key.Equals("ESTIMATE_IP_MULTIPLIER"))
+                        {
+                            float.TryParse(value, out tmpFValue);
+                            ESTIMATE_IP_MULTIPLIER = tmpFValue;
+                        }
+                        else if (key.Equals("AB_MINIMUM"))
+                        {
+                            Int32.TryParse(value, out tmpNValue);
+                            AB_MINIMUM = tmpNValue;
+                        }
+                        else if (key.Equals("IP_MINIMUM"))
+                        {
+                            Int32.TryParse(value, out tmpNValue);
+                            IP_MINIMUM = tmpNValue;
+                        }
                     }
                  }
             }
@@ -202,5 +234,6 @@ namespace somReporter.util.somReporter
 
             return Path.Combine(PRT_FILE_LOCATION, LEAGUE_NAME, filename);
         }
+
     }
 }

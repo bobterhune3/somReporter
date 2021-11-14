@@ -67,7 +67,6 @@
     <Compile Include="TestPlayerSorting.cs" />
     <Compile Include="TestPositionRanking_Read.cs" />
     <Compile Include="TestPositionRanking_SomWorld.cs" />
-    <Compile Include="TestRecordIndex.cs" />
     <Compile Include="TestTeamProfileBalancer.cs" />
     <Compile Include="TestTeamReportFileParser.cs" />
     <Compile Include="TestFileParser.cs" />
@@ -80,9 +79,9 @@
     <Compile Include="util\PairTestReports.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LineupEngine\LineupEngine.csproj">
-      <Project>{36e844a9-6e91-4f00-bdd2-d4787eb682d0}</Project>
-      <Name>LineupEngine</Name>
+    <ProjectReference Include="..\..\LineupEngine2\LineupEngine2.csproj">
+      <Project>{e953a411-ba6b-4960-85fd-2ef5acbb414e}</Project>
+      <Name>LineupEngine2</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\LIneupUsageEstimator\LIneupUsageEstimator.csproj">
       <Project>{f0417f15-67c0-4609-ab76-fd8d551cbff5}</Project>

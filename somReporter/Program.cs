@@ -28,7 +28,7 @@ namespace somReporter
         public static IFeature featureUnderUsage = null;
         
         private LeagueGrandTotalsReport leaguePrimaryStatReport;
-        private LineScoreReport lineScoreReport;
+        private LineScoreAndMinorsReport lineScoreReport;
         private NewspaperStyleReport newspaperStyleReport;
 
         private SOMReportFile leagueReportFile;
@@ -137,7 +137,9 @@ namespace somReporter
         public String lookupPreviousSaveFile()
         {
             string[] directories = Directory.GetDirectories(Directory.GetCurrentDirectory(), leagueReportFile.SeasonTitle+"*");
-            if (directories.Length == 0) {
+
+            if (directories.Length == 0)
+            {
                 // If there is no database, reset the wpct history file
                 if (File.Exists("wpct.csv"))
                     File.Delete("wpct.csv");
@@ -186,7 +188,7 @@ namespace somReporter
             leaguePrimaryStatReport.processReport(Program.LEAGUES[0].Length);
 
             Console.WriteLine("    Building League Report ...");
-            lineScoreReport = (LineScoreReport)leagueReportFile.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
+            lineScoreReport = (LineScoreAndMinorsReport)leagueReportFile.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
             lineScoreReport.processReport(Program.LEAGUES[0].Length);
 
             Console.WriteLine("    Building Awards...");

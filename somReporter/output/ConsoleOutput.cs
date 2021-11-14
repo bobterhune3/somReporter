@@ -161,7 +161,7 @@ namespace somReporter.output
         {
             throw new NotImplementedException();
         }
-        public bool usageReportItem(Player player, int counter)
+        public bool usageReportItem(Player player, int counter, bool inMinors)
         {
             throw new NotImplementedException();
         }

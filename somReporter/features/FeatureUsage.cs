@@ -13,7 +13,7 @@ namespace somReporter.features
     {
         public ComparisonReport teamComparisonReport;
         private PersistentDictionary<string, string> database;
-
+        private PrimaryStatsReport teamPrimaryStatsReport = null;
         public Report getReport()
         {
             throw new NotImplementedException();
@@ -24,11 +24,17 @@ namespace somReporter.features
             Console.WriteLine("    Building Comparison...");
             Console.WriteLine("      Showing Moral=" + Config.SHOW_MORAL + ", Showing Warnings=" + Config.SHOW_WARNING);
 
+            teamPrimaryStatsReport = (PrimaryStatsReport)teamReportFile.FindReport("LEAGUE", "Primary Player Statistics For");
+            teamPrimaryStatsReport.processReport(Program.LEAGUES[0].Length);
+            List<Player> replayPlayers = teamPrimaryStatsReport.getPlayers();
+
+
             teamComparisonReport = (ComparisonReport)teamReportFile.FindReport("LEAGUE","Comparison Report");
             if (teamComparisonReport == null) {
                 System.Console.WriteLine("Are you sure you selected 'ALL REPORTS' for the Team Reports?");
                 throw new Exception("Unable to find Comparison Report in the Team Report File");
-             }
+            }
+            teamComparisonReport.setPlayerActualData(replayPlayers);
             teamComparisonReport.processReport(Program.LEAGUES[0].Length);
         }
 
@@ -51,7 +57,8 @@ namespace somReporter.features
                 int previousReplay = checkForPreviousStorageInfo(player);
                 if (previousReplay > 0)
                     player.PreviousReplay = previousReplay;
-                if (output.usageReportItem(player, counter)) {
+                bool inMinors = teamPrimaryStatsReport.getTeamByAbbreviation(TeamUtils.prettyTeamNoDiceName(currentTeam.Abrv)).isPlayerInMinors(player);
+                if (output.usageReportItem(player, counter, inMinors)) {
                     Report.DATABASE.addPlayerUsage(player);
                     counter++;
                 }

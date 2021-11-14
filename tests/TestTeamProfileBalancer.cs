@@ -27,8 +27,8 @@ namespace somReporter.team
             TeamPitchingProfile profile = TeamPitchingProfile.generatedLikelyUsage(pitchers);
 
             Assert.AreEqual(8, profile.Starters().Count, "Count Starting Pitcher");
-            Assert.AreEqual(6, profile.Relievers().Count, "Count Starting Pitcher");
-            Assert.AreEqual(1, countClosers(profile), "Count Starting Pitcher");
+            Assert.AreEqual(7, profile.Relievers().Count, "Count Relieft Pitcher");
+            Assert.AreEqual(1, countClosers(profile), "Count Closers Pitcher");
         }
 
         [TestMethod]

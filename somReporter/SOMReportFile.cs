@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using somReporter.team;
+using somReporter.util.somReporter;
 using somReportUtils;
 
 namespace somReporter
@@ -16,6 +17,7 @@ namespace somReporter
         private String m_SeasonTitle = "";
         private List<Report> reports = new List<Report>();
         private ComparisonReport comparisonReport = null;
+        private PrimaryStatsReport primaryStatsReport = null;
 
         public string Season
         {
@@ -160,7 +162,7 @@ namespace somReporter
             if (reportTitle.StartsWith("LEAGUE GRAND TOTALS (primary report) FOR"))
                 return new LeagueGrandTotalsReport(reportTitle);
             else if (reportTitle.StartsWith("INJURY/MINOR LEAGUE REPORT FOR"))
-                return new LineScoreReport(reportTitle);
+                return new LineScoreAndMinorsReport(reportTitle);
             else if (reportTitle.StartsWith("AWARDS VOTING FOR"))
                 return new NewspaperStyleReport(reportTitle);
             else if (reportTitle.StartsWith("RECORD BOOK FOR FOR"))
@@ -168,8 +170,14 @@ namespace somReporter
             else if (reportTitle.StartsWith("Comparison Report"))
             {
                 if(comparisonReport == null)
-                    comparisonReport = new ComparisonReport(reportTitle);
+                    comparisonReport = new ComparisonReport(reportTitle, Config.config);
                 return comparisonReport;
+            }
+            else if(reportTitle.StartsWith("Primary Player Statistics"))
+            {
+                if (primaryStatsReport == null)
+                    primaryStatsReport = new PrimaryStatsReport(reportTitle, Config.config);
+                return primaryStatsReport;
             }
             else
                 return new Report(reportTitle);

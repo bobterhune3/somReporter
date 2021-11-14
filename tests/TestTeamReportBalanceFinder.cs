@@ -177,7 +177,7 @@ namespace somReporter.team
                 runLineupTest(results, createTestTeamLineup("R", (i + 1) + "R", (i + 1) + "R"), expectedRRight[i]);
             }
         }
-
+        /*
 
         [TestMethod]
         public void test_Balance_Calculation_All_Pitchers_Multiple_Divisions_On_Original_Spreadsheet()
@@ -223,6 +223,7 @@ namespace somReporter.team
                 runLineupTest(results, createTestTeamLineup("R", (i + 1) + "R", (i + 1) + "R"), expectedRRight[i]);
             }
         }
+        */
 
 
         [TestMethod]

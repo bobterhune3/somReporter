@@ -20,7 +20,7 @@ namespace somReporter
         }
 
         private LeagueStandingsReport leagueStandingsReport;
-        private LineScoreReport lineScoreReport;
+        private LineScoreAndMinorsReport lineScoreReport;
 
         [TestInitialize()]
         public void Initialize()
@@ -31,7 +31,7 @@ namespace somReporter
             leagueStandingsReport = (LeagueStandingsReport)file.FindReport("LEAGUE STANDINGS FOR");
             leagueStandingsReport.processReport(Program.LEAGUES[0].Length);
 
-            lineScoreReport = (LineScoreReport)file.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
+            lineScoreReport = (LineScoreAndMinorsReport)file.FindReport("INJURY/MINOR LEAGUE REPORT FOR");
             lineScoreReport.processReport(Program.LEAGUES[0].Length);
         }
 

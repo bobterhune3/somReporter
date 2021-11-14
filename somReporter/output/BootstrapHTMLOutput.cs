@@ -289,7 +289,7 @@ namespace somReporter.output
         }
 
 
-        public bool usageReportItem(Player player, int counter)
+        public bool usageReportItem(Player player, int counter, bool inMInors)
         {
             string usageLevel = getUsageLevel(player.Actual, player.TargetUsage, player.Replay, player.IsHitter);
 
@@ -333,10 +333,12 @@ namespace somReporter.output
                 colorRemaining = "#FF0000";
             addTableCell(remaining, colorRemaining, 30);
 
+            string postfix = inMInors ? " (M)" : "";
+
             if (player.PreviousReplay == 0)
-                addTableCell("NEW", "#000000", 30);
+                addTableCell("NEW"+ postfix, "#000000", 30);
             else
-                addTableCell(player.Replay-player.PreviousReplay, "#000000", 30);
+                addTableCell((player.Replay - player.PreviousReplay) + postfix, "#000000", 30);
             lines.Add("</tr>");
             return true;
         }
