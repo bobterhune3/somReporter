@@ -112,9 +112,11 @@ namespace somReporter.output
         public void divisionStandingsTeamLine(int rank, Team team)
         {
             lines.Add("<tr>");
+            string teamName = $"{team.Name} ({team.Manager})";
+
             addTableCell(rank, returnRankDifColor(rank, team.DivisionPositionPrevious),
                          15, returnRankDifToolTip(rank, team.DivisionPositionPrevious));
-            addTableCell(team.Name, "#000000", 149, returnNextScheduleToolTip(team), false);
+            addTableCell(teamName, "#000000", 149, returnNextScheduleToolTip(team), false);
             addTableCell(team.Wins, "#000000", 48);
             addTableCell(team.Loses, "#000000", 48);
             addTableCell(team.Wpct, 3, "#000000", 53);
