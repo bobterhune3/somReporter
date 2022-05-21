@@ -17,7 +17,6 @@ namespace somEncyclopedia
         private String m_TeamName = "";
         private String m_SeasonTitle = "";
         private Dictionary<string,List<Report>> allReports = new Dictionary<string, List<Report>>();
-        private ComparisonReport comparisonReport = null;
 
         public string Season
         {

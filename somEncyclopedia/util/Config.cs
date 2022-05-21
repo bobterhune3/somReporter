@@ -57,7 +57,6 @@ namespace somReporter.util.somReporter
                         string key = values[0];
                         string value = values[1];
 
-                        bool tmpValue;
                         //      int tmpNValue;
                         //        Console.WriteLine(key + "=" + value);
 

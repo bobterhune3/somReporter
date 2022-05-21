@@ -14,7 +14,7 @@ namespace somEncyclopedia.team
         private string teamName = "";
 
         public SecondaryReport(string title, string teamName) : base(title) {
-            teamName = teamName;
+            this.teamName = teamName;
         }
         
         public List<EncPlayer> getPlayers() {
